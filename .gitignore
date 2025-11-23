@@ -1,0 +1,6 @@
+# TEMP: Remove RetinexNet till complete PyTorch migration
+RetinexNet/
+
+# Python virtual environments
+.venv/
+__pycache__/
