@@ -42,15 +42,27 @@ class TraditionalEnhancements:
         """
         clahe_obj = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_size)
         
+        # Ensure image is in proper format
+        is_normalized = image.max() <= 1.0
+        
         if len(image.shape) == 3:
+            # Convert to uint8 first
+            if is_normalized:
+                img_uint8 = (image * 255).astype(np.uint8)
+            else:
+                img_uint8 = image.astype(np.uint8)
+            
             # Apply to each channel or convert to LAB
-            lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+            lab = cv2.cvtColor(img_uint8, cv2.COLOR_BGR2LAB)
             lab[:, :, 0] = clahe_obj.apply(lab[:, :, 0])
-            return cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+            result = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+            
+            # Convert back to normalized if input was normalized
+            return result.astype(np.float32) / 255.0 if is_normalized else result.astype(np.float32)
         else:
-            img_uint8 = (image * 255).astype(np.uint8) if image.max() <= 1.0 else image.astype(np.uint8)
+            img_uint8 = (image * 255).astype(np.uint8) if is_normalized else image.astype(np.uint8)
             result = clahe_obj.apply(img_uint8)
-            return result.astype(np.float32) / 255.0 if image.max() <= 1.0 else result.astype(np.float32)
+            return result.astype(np.float32) / 255.0 if is_normalized else result.astype(np.float32)
     
     @staticmethod
     def gamma_correction(image: np.ndarray, gamma: float = 2.2) -> np.ndarray:

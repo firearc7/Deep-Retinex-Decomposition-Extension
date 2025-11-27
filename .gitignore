@@ -6,3 +6,4 @@ RetinexNet/
 __pycache__/
 data/
 checkpoints/
+visual_examples/
