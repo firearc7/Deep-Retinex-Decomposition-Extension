@@ -136,7 +136,18 @@ def tensor_to_numpy(tensor):
     """Convert tensor to numpy array"""
     if len(tensor.shape) == 4:
         tensor = tensor[0]
-    return tensor.detach().cpu().numpy().transpose(1, 2, 0)
+    
+    np_array = tensor.detach().cpu().numpy()
+    
+    # Handle single channel (grayscale) images
+    if np_array.shape[0] == 1:
+        # (1, H, W) -> (H, W, 1) -> (H, W, 3) by repeating
+        np_array = np.repeat(np_array.transpose(1, 2, 0), 3, axis=2)
+    else:
+        # (C, H, W) -> (H, W, C)
+        np_array = np_array.transpose(1, 2, 0)
+    
+    return np_array
 
 
 def create_comparison_grid(images_dict, labels, output_path):
@@ -220,6 +231,9 @@ def process_single_image(model, image_path, output_dir, args):
     if args.device == 'cuda':
         torch.cuda.empty_cache()
     
+    # Always save baseline (model-only output, no DIP)
+    save_image(S_baseline_np, img_output_dir / 'output_baseline.png')
+    
     # Save intermediates if requested
     if args.save_intermediates:
         save_image(R_np, img_output_dir / 'reflectance.png')
@@ -275,9 +289,21 @@ def process_single_image(model, image_path, output_dir, args):
         config = EnhancementFactory.create_config(args.preset)
         pipeline = EnhancementPipeline(config)
         
+        # DEBUG: Print configuration
+        print(f"  DEBUG: Config for '{args.preset}':")
+        print(f"    apply_to_illumination: {config.get('apply_to_illumination', False)}")
+        print(f"    apply_to_output: {config.get('apply_to_output', False)}")
+        print(f"    illumination_methods: {config.get('illumination_methods', [])}")
+        print(f"    output_methods: {config.get('output_methods', [])}")
+        print(f"  DEBUG: Input shapes - R: {R_np.shape}, I: {I_np.shape}, I_delta: {I_delta_np.shape}")
+        print(f"  DEBUG: S_baseline mean: {S_baseline_np.mean():.4f}")
+        
         start_time = time.time()
-        enhanced, _ = pipeline.process_full_pipeline(R_np, I_np, I_delta_np)
+        enhanced, debug_results = pipeline.process_full_pipeline(R_np, I_np, I_delta_np)
         enhance_time = time.time() - start_time
+        
+        print(f"  DEBUG: Enhanced mean: {enhanced.mean():.4f}")
+        print(f"  DEBUG: Difference from baseline: {np.abs(enhanced - S_baseline_np).mean():.6f}")
         
         save_image(enhanced, img_output_dir / f'output_{args.preset}.png')
         print(f"  ✓ {args.preset}: {enhance_time:.3f}s")
