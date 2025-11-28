@@ -35,7 +35,9 @@ import json
 import time
 
 from src.model.retinexnet import RetinexNet
-from src.enhancements import EnhancementPipeline, EnhancementFactory
+from src.enhancements.pipeline import EnhancementPipeline, EnhancementFactory
+from src.enhancements.advanced_pipeline import AdvancedEnhancementPipeline, AdvancedEnhancementFactory
+from src.enhancements.preprocessing import ImagePreprocessor
 from experiments.experiment_framework import QualityMetrics
 
 
@@ -52,14 +54,20 @@ def parse_args():
     
     # Enhancement options
     parser.add_argument('--preset', type=str, default='balanced',
-                        choices=['baseline', 'minimal', 'balanced', 'aggressive', 
-                                'illumination_only', 'output_only', 'custom'],
-                        help='Enhancement preset to apply')
+                       choices=['baseline', 'minimal', 'balanced', 'aggressive', 
+                               'illumination_only', 'output_only', 'custom',
+                               'minimal_plus', 'balanced_plus', 'aggressive_plus',
+                               'quality_focused', 'speed_focused', 
+                               'outdoor_optimized', 'indoor_optimized'],
+                       help='Enhancement preset (add _plus for advanced pipeline with preprocessing)')
     
     # Comparison mode
     parser.add_argument('--compare', nargs='+', 
                         choices=['baseline', 'minimal', 'balanced', 'aggressive', 
-                                'illumination_only', 'output_only'],
+                                'illumination_only', 'output_only',
+                                'minimal_plus', 'balanced_plus', 'aggressive_plus',
+                                'quality_focused', 'speed_focused',
+                                'outdoor_optimized', 'indoor_optimized'],
                         help='Compare multiple presets (creates comparison grid)')
     
     # Additional options
@@ -248,8 +256,17 @@ def process_single_image(model, image_path, output_dir, args):
         # Multiple presets comparison
         presets = args.compare
         for preset_name in presets:
-            config = EnhancementFactory.create_config(preset_name)
-            pipeline = EnhancementPipeline(config)
+            # Check if advanced preset (ends with _plus or is optimized)
+            is_advanced = (preset_name.endswith('_plus') or 
+                         'focused' in preset_name or 
+                         'optimized' in preset_name)
+            
+            if is_advanced:
+                config = AdvancedEnhancementFactory.create_config(preset_name)
+                pipeline = AdvancedEnhancementPipeline(config)
+            else:
+                config = EnhancementFactory.create_config(preset_name)
+                pipeline = EnhancementPipeline(config)
             
             start_time = time.time()
             enhanced, _ = pipeline.process_full_pipeline(R_np, I_np, I_delta_np)
@@ -286,24 +303,22 @@ def process_single_image(model, image_path, output_dir, args):
         
     else:
         # Single preset
-        config = EnhancementFactory.create_config(args.preset)
-        pipeline = EnhancementPipeline(config)
+        # Check if advanced preset
+        is_advanced = (args.preset.endswith('_plus') or 
+                      'focused' in args.preset or 
+                      'optimized' in args.preset)
         
-        # DEBUG: Print configuration
-        print(f"  DEBUG: Config for '{args.preset}':")
-        print(f"    apply_to_illumination: {config.get('apply_to_illumination', False)}")
-        print(f"    apply_to_output: {config.get('apply_to_output', False)}")
-        print(f"    illumination_methods: {config.get('illumination_methods', [])}")
-        print(f"    output_methods: {config.get('output_methods', [])}")
-        print(f"  DEBUG: Input shapes - R: {R_np.shape}, I: {I_np.shape}, I_delta: {I_delta_np.shape}")
-        print(f"  DEBUG: S_baseline mean: {S_baseline_np.mean():.4f}")
+        if is_advanced:
+            config = AdvancedEnhancementFactory.create_config(args.preset)
+            pipeline = AdvancedEnhancementPipeline(config)
+            print(f"  Using ADVANCED pipeline for '{args.preset}'")
+        else:
+            config = EnhancementFactory.create_config(args.preset)
+            pipeline = EnhancementPipeline(config)
         
         start_time = time.time()
         enhanced, debug_results = pipeline.process_full_pipeline(R_np, I_np, I_delta_np)
         enhance_time = time.time() - start_time
-        
-        print(f"  DEBUG: Enhanced mean: {enhanced.mean():.4f}")
-        print(f"  DEBUG: Difference from baseline: {np.abs(enhanced - S_baseline_np).mean():.6f}")
         
         save_image(enhanced, img_output_dir / f'output_{args.preset}.png')
         print(f"  ✓ {args.preset}: {enhance_time:.3f}s")

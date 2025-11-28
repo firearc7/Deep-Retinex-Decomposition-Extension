@@ -3,20 +3,27 @@
 ## Table of Contents
 1. [Overview](#overview)
 2. [DIP Techniques Applied](#dip-techniques-applied)
-3. [Enhancement Pipeline Strategy](#enhancement-pipeline-strategy)
-4. [Metrics Selection & Justification](#metrics-selection--justification)
-5. [Experimental Results](#experimental-results)
-6. [Design Decisions & Trade-offs](#design-decisions--trade-offs)
+3. [Advanced DIP Techniques (NEW)](#advanced-dip-techniques-new)
+4. [Preprocessing Module (NEW)](#preprocessing-module-new)
+5. [Enhancement Pipeline Strategy](#enhancement-pipeline-strategy)
+6. [Metrics Selection & Justification](#metrics-selection--justification)
+7. [Experimental Results](#experimental-results)
+8. [Design Decisions & Trade-offs](#design-decisions--trade-offs)
+9. [Future Work Suggestions](#future-work-suggestions)
 
 ---
 
 ## Overview
 
 ### Project Goal
-Enhance Deep Retinex Decomposition for low-light image enhancement using **only traditional Digital Image Processing (DIP) techniques** as post-processing steps.
+Enhance Deep Retinex Decomposition for low-light image enhancement using **traditional Digital Image Processing (DIP) techniques** as preprocessing and post-processing steps.
 
 ### Core Philosophy
-**"Train Once, Experiment Forever"** - The deep learning model (RetinexNet) is trained once to decompose images into illumination (I) and reflectance (R) components. All DIP enhancements are applied as post-processing, requiring no retraining.
+**"Train Once, Experiment Forever"** - The deep learning model (RetinexNet) is trained once to decompose images into illumination (I) and reflectance (R) components. All DIP enhancements are applied as preprocessing (before model) and post-processing (after model), requiring no retraining.
+
+### Two-Tier Approach
+**Standard Pipeline**: Original DIP techniques for images within training distribution (LOL-v2 dataset)
+**Advanced Pipeline**: Preprocessing + advanced DIP techniques for custom images outside training distribution
 
 ### Why This Approach?
 1. **Efficiency**: No need to retrain for each enhancement combination
@@ -24,6 +31,8 @@ Enhance Deep Retinex Decomposition for low-light image enhancement using **only 
 3. **Interpretability**: Traditional methods are explainable and controllable
 4. **Resource-friendly**: No additional GPU requirements for enhancement
 5. **Hybrid benefits**: Combines deep learning's learning capacity with DIP's precision
+6. **Adaptability**: Preprocessing adapts to image characteristics automatically
+7. **Generalization**: Handles out-of-distribution images better
 
 ---
 
@@ -296,9 +305,370 @@ MSR(x,y) = Σ w_σ × R_σ(x,y)  where Σ w_σ = 1
 
 ---
 
+## Advanced DIP Techniques (NEW)
+
+### Extension: 8 Additional Techniques for Enhanced Quality
+
+To improve handling of custom images (outside LOL-v2 training distribution), we added 8 advanced DIP techniques:
+
+### 1. **Anisotropic Diffusion (Perona-Malik)**
+**Applied to**: Illumination map
+
+**Purpose**: Edge-preserving smoothing with better preservation of gradual transitions
+
+**Why better than bilateral?**
+- **Iterative**: Evolves the image gradually (8-15 iterations)
+- **Anisotropic**: Diffusion strength varies by local gradient
+- **Smoother transitions**: Better for illumination maps with gradual changes
+
+**Mathematical basis**:
+```
+∂I/∂t = div(c(∇I) × ∇I)
+
+where c(∇I) = exp(-(|∇I|/κ)²)  (edge-stopping function)
+```
+
+**Parameters**:
+- `iterations=8-15`: More iterations = smoother result
+- `kappa=25-40`: Edge sensitivity (lower = preserve more edges)
+- `gamma=0.1-0.15`: Diffusion rate (must be ≤0.25 for stability)
+
+**Advantages over bilateral**:
+- Better gradient preservation
+- No halo artifacts
+- More natural smoothing
+
+---
+
+### 2. **Multi-Scale Detail Enhancement (Laplacian Pyramid)**
+**Applied to**: Final output
+
+**Purpose**: Enhance details at multiple scales simultaneously
+
+**Process**:
+```
+1. Build Gaussian pyramid (3-4 levels)
+2. Compute Laplacian pyramid (differences between levels)
+3. Amplify each Laplacian level: L_i = L_i × strength
+4. Reconstruct image from amplified pyramid
+```
+
+**Why multi-scale?**
+- **Coarse details**: Large structures (objects, boundaries)
+- **Medium details**: Textures, patterns
+- **Fine details**: Sharp edges, text, small features
+
+**Parameters**:
+- `num_scales=3-4`: Number of pyramid levels
+- `detail_strength=1.3-1.8`: Amplification factor (1.0 = no change)
+
+**Advantages**:
+- More natural than single-scale sharpening
+- Avoids over-sharpening artifacts
+- Preserves overall tone
+
+---
+
+### 3. **Shadow Enhancement**
+**Applied to**: Final output
+
+**Purpose**: Selectively brighten shadow regions without affecting highlights
+
+**Algorithm**:
+```
+1. Compute luminance map
+2. Create shadow mask: mask = clip((threshold - luminance) / threshold, 0, 1)
+3. Smooth mask with Gaussian filter (avoid hard boundaries)
+4. Blend: output = image × (1 + mask × (factor - 1))
+```
+
+**Parameters**:
+- `shadow_threshold=0.3-0.4`: What counts as shadow
+- `enhancement_factor=1.3-1.6`: How much to brighten
+
+**Why spatially-varying?**
+- Preserves highlights (no over-brightening)
+- Natural transitions (smooth mask)
+- Targeted enhancement (only dark regions)
+
+---
+
+### 4. **Haze Removal (Dark Channel Prior)**
+**Applied to**: Reflectance map
+
+**Purpose**: Remove atmospheric haze/fog from outdoor scenes
+
+**Dark Channel Prior** (He et al., 2009):
+```
+Dark channel: DC(x) = min(R,G,B) min(local_window)
+Assumption: Haze-free patches have at least one dark pixel
+```
+
+**Process**:
+```
+1. Compute dark channel
+2. Estimate atmospheric light (brightest region in dark channel)
+3. Estimate transmission map
+4. Recover scene radiance: J = (I - A) / t + A
+```
+
+**Parameters**:
+- `omega=0.85-0.95`: Haze retention (0.95 = keep 5% haze for naturalness)
+- `t0=0.1-0.15`: Minimum transmission (prevents division by zero)
+
+**Use case**: Outdoor low-light scenes with visible haze
+
+---
+
+### 5. **Adaptive Bilateral Filter**
+**Applied to**: Illumination map
+
+**Purpose**: Spatially-varying bilateral filter that adapts to local image structure
+
+**Innovation**:
+```
+1. Compute local variance for each pixel
+2. High variance (edges) → less filtering
+3. Low variance (smooth) → more filtering
+```
+
+**Advantages over standard bilateral**:
+- Better edge preservation
+- Stronger smoothing in uniform regions
+- Reduced artifacts near edges
+
+---
+
+### 6. **Detail-Preserving Smoothing (Domain Transform)**
+**Applied to**: Post-processing
+
+**Purpose**: Fast edge-preserving smoothing alternative to bilateral
+
+**Why domain transform?**
+- **10-100× faster** than bilateral filter
+- **Similar quality** to bilateral
+- **Real-time capable** (for video processing)
+
+**Parameters**:
+- `sigma_s=40-60`: Spatial sigma (controls smoothing strength)
+- `sigma_r=0.3-0.4`: Range sigma (controls edge sensitivity)
+
+---
+
+### 7. **Contrast Stretching (Percentile-based)**
+**Applied to**: Output or reflectance
+
+**Purpose**: Adaptive histogram stretching without clipping issues
+
+**Algorithm**:
+```
+For each channel:
+  1. Compute percentiles: p_low (1-2%), p_high (98-99%)
+  2. Clip values to [p_low, p_high]
+  3. Stretch to [0, 1]: (x - p_low) / (p_high - p_low)
+```
+
+**Advantages over linear stretching**:
+- Robust to outliers
+- Preserves natural contrast
+- Per-channel processing (better color preservation)
+
+---
+
+### 8. **SSR with Color Restoration**
+**Applied to**: Alternative illumination adjustment
+
+**Single-Scale Retinex**:
+```
+R(x) = log(I(x)) - log(F(x) ⊗ I(x))
+
+where F(x) is Gaussian filter, ⊗ is convolution
+```
+
+**Color Restoration**:
+```
+C_i(x) = β × log(α × I_i(x) / ΣI(x))
+
+where i ∈ {R, G, B}, β=gain, α=offset
+```
+
+**Use case**: Alternative to RelightNet's illumination adjustment
+
+---
+
+## Preprocessing Module (NEW)
+
+### Motivation
+RetinexNet was trained on LOL-v2 dataset (indoor scenes, specific lighting conditions). Custom images may have:
+- **High noise** (sensor noise in very dark conditions)
+- **Color cast** (incorrect white balance)
+- **Extreme darkness** (mean brightness < 0.15)
+- **Compressed dynamic range** (details lost in shadows)
+
+**Solution**: Preprocess images BEFORE feeding to the model
+
+### Automatic Image Analysis
+
+Before preprocessing, analyze image characteristics:
+
+```python
+Statistics Computed:
+- mean_brightness: 0.210 → is_very_dark = True
+- noise_level: 450 → is_noisy = False  
+- contrast: 0.187 → is_low_contrast = True
+- color_cast: 0.08 → has_color_cast = False
+```
+
+### Preprocessing Techniques
+
+#### 1. **Adaptive Denoising (Non-Local Means)**
+**When**: If noise_level > threshold
+
+**Why NLM?**
+- **Better than Gaussian**: Preserves edges and textures
+- **Better than Bilateral**: Considers patch similarity, not just spatial proximity
+- **Adaptive parameters**: Strength varies with noise level
+
+**Algorithm**:
+```
+For pixel i, compute weighted average of similar patches:
+NLM(i) = Σ w(i,j) × v(j)
+
+where w(i,j) = exp(-||patch(i) - patch(j)||² / h²)
+```
+
+**Parameters by noise level**:
+- Low noise (<200): h=3, mild denoising
+- Moderate (200-500): h=6, standard denoising
+- High (>500): h=10, aggressive denoising
+
+---
+
+#### 2. **Color Cast Correction**
+**When**: If color_cast > 0.15
+
+**Two methods combined**:
+
+**Gray World Assumption**:
+```
+Assumption: Average color should be neutral gray
+avg_R, avg_G, avg_B = mean(R), mean(G), mean(B)
+gray_avg = (avg_R + avg_G + avg_B) / 3
+scale_R = gray_avg / avg_R  (similarly for G, B)
+```
+
+**White Patch Algorithm**:
+```
+Assumption: Brightest point should be white
+max_R, max_G, max_B = max(R), max(G), max(B)
+scale_R = 1.0 / max_R  (similarly for G, B)
+```
+
+**Hybrid approach**: 60% gray world + 40% white patch
+
+---
+
+#### 3. **Dark Region Enhancement**
+**When**: If mean_brightness < 0.25
+
+**Spatially-Varying Gamma Correction**:
+```
+1. Compute brightness mask: bright(x) = luminance(x)
+2. Dark mask: dark(x) = clip((threshold - bright(x)) / threshold, 0, 1)
+3. Apply stronger gamma to dark regions: 
+   output(x) = dark(x) × pow(input(x), 0.5) + (1-dark(x)) × input(x)
+```
+
+**Why spatially-varying?**
+- Brightens dark regions without over-brightening highlights
+- Smooth transitions (no artifacts)
+- Preserves overall tone
+
+---
+
+#### 4. **Illumination Normalization**
+**When**: Severe illumination variations
+
+**Single-Scale Retinex (preprocessing version)**:
+```
+1. Log domain: log_img = log(image + ε)
+2. Blur: blurred = GaussianBlur(log_img, sigma=80)
+3. Subtract: normalized = log_img - blurred
+4. Normalize to [0, 1]
+```
+
+**Effect**: Reduces severe illumination variations before model sees them
+
+---
+
+### Preprocessing Presets
+
+| Preset | Denoise | Color Correct | Dark Enhance | Use Case |
+|--------|---------|---------------|--------------|----------|
+| **auto** | Adaptive | Adaptive | Adaptive | RECOMMENDED |
+| minimal | If very noisy | No | No | Fast processing |
+| standard | Yes | Yes | No | Standard preprocessing |
+| aggressive | Yes | Yes | Yes | Very difficult images |
+| none | No | No | No | Skip preprocessing |
+
+---
+
 ## Enhancement Pipeline Strategy
 
-### Three-Stage Architecture
+### Standard Pipeline (Original)
+
+```
+Input Image
+    ↓
+DecomNet → R, I
+    ↓
+RelightNet → I_delta
+    ↓
+DIP Enhancement (illumination/output)
+    ↓
+Final Output
+```
+
+### Advanced Pipeline (NEW)
+
+```
+Input Image
+    ↓
+PREPROCESSING (adaptive)
+ ├─ Image analysis
+ ├─ Denoising (if needed)
+ ├─ Color correction (if needed)
+ └─ Dark enhancement (if needed)
+    ↓
+DecomNet → R, I
+    ↓
+RelightNet → I_delta
+    ↓
+STAGE 1: Illumination Enhancement
+ ├─ Anisotropic diffusion
+ ├─ CLAHE
+ └─ Adaptive gamma
+    ↓
+STAGE 2: Reflectance Enhancement (optional)
+ └─ Haze removal / Contrast stretching
+    ↓
+STAGE 3: Reconstruction
+ S = R_enhanced × I_enhanced
+    ↓
+STAGE 4: Output Enhancement
+ ├─ Multi-scale detail
+ ├─ Shadow enhancement
+ ├─ Unsharp masking
+ └─ Color balance
+    ↓
+STAGE 5: Post-processing
+ ├─ Contrast stretching
+ └─ Detail-preserving smoothing
+    ↓
+Final Output
+```
+
+### Three-Stage Architecture (Original)
 
 ```
 ┌─────────────┐      ┌──────────────┐      ┌─────────────┐
@@ -760,14 +1130,404 @@ Where:
 - **For research**: Experiment with individual techniques, analyze stage contributions
 - **For extreme cases**: Try aggressive preset, but check for artifacts
 
-### Future Work
-- Learnable DIP parameters (optimize via backprop through DIP operations)
-- Adaptive preset selection based on image content (CNN classifier)
-- Perceptual loss integration (LPIPS instead of MSE)
-- Video processing (temporal consistency constraints)
+---
+
+## Future Work Suggestions
+
+### 🎯 Image Processing Enhancements (Traditional DIP)
+
+#### 1. **Frequency Domain Processing**
+**Rationale**: Current methods are all spatial domain. Frequency domain can handle different phenomena.
+
+**Suggestions**:
+- **Homomorphic Filtering (Full Implementation)**
+  - Currently only in preprocessing
+  - Apply to final output for simultaneous illumination and reflectance enhancement
+  - Use Butterworth high-pass filter for better control
+  - **Benefit**: Better separation of illumination and reflectance in frequency domain
+
+- **Fourier Domain Denoising**
+  - Apply FFT, filter noise frequencies, inverse FFT
+  - Wiener filtering for optimal noise reduction
+  - **Benefit**: Better noise handling than spatial filters
+
+- **DCT-based Enhancement**
+  - JPEG-like DCT transform for local blocks
+  - Amplify high-frequency coefficients (details)
+  - **Benefit**: Faster than spatial convolutions, good for real-time
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: November 28, 2025  
+#### 2. **Morphological Operations**
+**Rationale**: Shape-based operations not yet explored.
+
+**Suggestions**:
+- **Top-hat/Bottom-hat Transform**
+  - Extract bright/dark features
+  - Useful for detecting small details in low-light
+  - **Use case**: Enhance small light sources (stars, distant lights)
+
+- **Morphological Gradient**
+  - Better edge detection than Sobel for noisy images
+  - Combination of dilation and erosion
+  - **Use case**: More robust edge enhancement
+
+- **Opening/Closing for Artifact Removal**
+  - Remove salt-and-pepper noise
+  - Fill small holes
+  - **Use case**: Post-processing cleanup
+
+---
+
+#### 3. **Advanced Color Space Processing**
+**Rationale**: Currently RGB-based. Other color spaces offer advantages.
+
+**Suggestions**:
+- **HSV/HSL Processing**
+  - Separate hue, saturation, value
+  - Enhance value channel independently
+  - Boost saturation for vivid colors
+  - **Benefit**: More intuitive color control
+
+- **Lab Color Space Enhancement**
+  - Perceptually uniform color space
+  - Enhance L channel (lightness) independently
+  - Color correction in a/b channels
+  - **Benefit**: Better color preservation
+
+- **YCbCr Processing**
+  - Separate luminance (Y) from chrominance (Cb, Cr)
+  - Apply different enhancements to each
+  - **Benefit**: Better for video (JPEG/MPEG standard)
+
+---
+
+#### 4. **Texture Enhancement**
+**Rationale**: Current methods focus on global/local contrast. Texture needs specific treatment.
+
+**Suggestions**:
+- **Local Binary Patterns (LBP)**
+  - Analyze local texture patterns
+  - Enhance textures selectively
+  - **Use case**: Bring out fabric, wood grain, wall details
+
+- **Gabor Filtering**
+  - Multi-orientation, multi-scale texture analysis
+  - Enhance specific orientations/frequencies
+  - **Use case**: Enhance directional textures (fur, grass, wood)
+
+- **Structure Tensor Analysis**
+  - Detect edge direction and coherence
+  - Apply anisotropic enhancement (parallel vs perpendicular)
+  - **Benefit**: Better edge enhancement without artifacts
+
+---
+
+#### 5. **Exposure Fusion Techniques**
+**Rationale**: Single image has limited dynamic range.
+
+**Suggestions**:
+- **Multi-Exposure Fusion (from single image)**
+  - Generate multiple virtual exposures from single input
+  - Fuse using Mertens algorithm
+  - **Benefit**: HDR-like result from LDR input
+
+- **Pyramid Blending**
+  - Create Laplacian pyramids of different enhancements
+  - Blend at each scale
+  - **Benefit**: Seamless fusion without artifacts
+
+- **Gradient Domain Fusion**
+  - Fuse in gradient domain, reconstruct via Poisson solver
+  - **Benefit**: Better preservation of local details
+
+---
+
+#### 6. **Adaptive Enhancement Based on Content**
+**Rationale**: Different image regions need different enhancements.
+
+**Suggestions**:
+- **Saliency-Based Enhancement**
+  - Detect salient regions (faces, objects)
+  - Apply stronger enhancement to important regions
+  - **Benefit**: Better perceptual quality
+
+- **Depth-Aware Processing** (if depth map available)
+  - Enhance foreground more than background
+  - Atmospheric perspective simulation
+  - **Benefit**: More natural depth perception
+
+- **Semantic Segmentation-Guided Enhancement**
+  - Segment image (sky, ground, objects)
+  - Apply different enhancements per segment
+  - **Example**: More dehazing for sky, less for people
+  - **Benefit**: Content-appropriate processing
+
+---
+
+#### 7. **Quality Assessment & Optimization**
+**Rationale**: Currently manual parameter tuning. Can be automated.
+
+**Suggestions**:
+- **No-Reference Quality Metrics (NIQE, BRISQUE)**
+  - Automatically evaluate output quality
+  - Use for parameter optimization
+  - **Benefit**: Objective quality assessment without reference
+
+- **Grid Search with Quality Metrics**
+  - Try different parameter combinations
+  - Select best based on NIQE/BRISQUE
+  - **Benefit**: Automated parameter tuning
+
+- **Bayesian Optimization**
+  - Efficiently search parameter space
+  - Minimize trials needed
+  - **Benefit**: Faster than grid search
+
+---
+
+#### 8. **Multi-Scale & Pyramid Approaches**
+**Rationale**: Already using Laplacian pyramid. Can extend.
+
+**Suggestions**:
+- **Steerable Pyramid**
+  - Better orientation selectivity than Laplacian
+  - Enhance specific orientations
+  - **Benefit**: Better edge/texture control
+
+- **Wavelet Transform Processing**
+  - Decompose into wavelet subbands
+  - Process different scales independently
+  - **Benefit**: Sparse representation, better denoising
+
+- **Gaussian Scale-Space**
+  - Process image at multiple scales
+  - Merge results
+  - **Benefit**: Scale-invariant enhancement
+
+---
+
+#### 9. **Retinex Refinements**
+**Rationale**: Using single-scale Retinex in preprocessing. Can improve.
+
+**Suggestions**:
+- **Multi-Scale Retinex with Color Restoration (MSRCR)**
+  - Already mentioned, but full implementation
+  - Multiple Gaussian scales (15, 80, 250)
+  - Color restoration factor
+  - **Benefit**: Better than SSR
+
+- **Naturalness Preserved Enhancement (NPE)**
+  - Retinex variant that preserves naturalness
+  - Brightness order constraint
+  - **Benefit**: No over-enhancement
+
+- **LIME (Low-light Image Enhancement)**
+  - Retinex variant with illumination map refinement
+  - Structure-aware smoothing
+  - **Benefit**: Better illumination estimation
+
+---
+
+#### 10. **Noise Handling Improvements**
+**Rationale**: Current NLM is good but computationally expensive.
+
+**Suggestions**:
+- **BM3D (Block-Matching 3D)**
+  - State-of-the-art denoising
+  - Groups similar patches, 3D transform
+  - **Benefit**: Best denoising quality
+
+- **Principal Component Analysis (PCA) Denoising**
+  - Learn PCA basis from image patches
+  - Project noisy patches, threshold, reconstruct
+  - **Benefit**: Adaptive to image content
+
+- **Dictionary Learning**
+  - Learn sparse dictionary from clean images
+  - Denoise via sparse coding
+  - **Benefit**: Very effective for specific domains
+
+---
+
+#### 11. **Edge Enhancement Techniques**
+**Rationale**: Edges carry important information in low-light.
+
+**Suggestions**:
+- **Canny Edge Detection + Enhancement**
+  - Detect edges robustly
+  - Enhance near edges more than smooth regions
+  - **Benefit**: Targeted enhancement
+
+- **Shock Filtering**
+  - Enhance edges while smoothing interiors
+  - PDE-based approach
+  - **Benefit**: Strong edge preservation
+
+- **Total Variation (TV) Enhancement**
+  - Minimize TV norm while enhancing
+  - Edge-preserving by design
+  - **Benefit**: Mathematical foundation
+
+---
+
+#### 12. **Illumination Map Refinement**
+**Rationale**: Model's illumination may not be perfect.
+
+**Suggestions**:
+- **Optimization-Based Refinement**
+  - Define energy function (smoothness + fidelity)
+  - Optimize illumination map
+  - **Benefit**: More coherent illumination
+
+- **Edge-Aware Interpolation**
+  - Upsample illumination map with edge awareness
+  - Use guided filter or bilateral upsampling
+  - **Benefit**: Better alignment with image structure
+
+- **Illumination Consistency Constraints**
+  - Enforce smoothness across boundaries
+  - Physical plausibility (no negative illumination)
+  - **Benefit**: More realistic results
+
+---
+
+#### 13. **Computational Efficiency**
+**Rationale**: Some methods are slow. Can optimize.
+
+**Suggestions**:
+- **GPU Acceleration**
+  - Port CPU-based methods to GPU (CUDA/OpenCL)
+  - Parallel processing of tiles
+  - **Benefit**: 10-100× speedup
+
+- **Integral Images for Fast Filtering**
+  - Use integral images for box filters
+  - Approximate Gaussian with iterated box filters
+  - **Benefit**: O(1) per pixel regardless of kernel size
+
+- **Separable Filter Optimization**
+  - Decompose 2D filters into 1D (when possible)
+  - **Benefit**: O(n) instead of O(n²)
+
+- **Lookup Tables (LUTs)**
+  - Precompute expensive functions
+  - Table lookup instead of calculation
+  - **Benefit**: Much faster for repeated operations
+
+---
+
+#### 14. **Tone Mapping Extensions**
+**Rationale**: Current tone mapping is basic.
+
+**Suggestions**:
+- **Global Operator (Reinhard)**
+  - Photographic tone mapping
+  - Key value adaptation
+  - **Benefit**: More photographic results
+
+- **Local Operator (Durand)**
+  - Bilateral decomposition
+  - Compress base layer, preserve detail
+  - **Benefit**: Better local contrast
+
+- **Gradient Domain HDR Compression**
+  - Compress in gradient domain
+  - Reconstruct via Poisson
+  - **Benefit**: Better detail preservation
+
+---
+
+#### 15. **Region-Based Processing**
+**Rationale**: Uniform processing may not be optimal everywhere.
+
+**Suggestions**:
+- **Superpixel Segmentation**
+  - Segment image into perceptually meaningful regions
+  - Process each superpixel independently
+  - **Benefit**: Coherent enhancement within regions
+
+- **K-Means Clustering for Adaptive Processing**
+  - Cluster pixels by brightness/color
+  - Apply different parameters to each cluster
+  - **Benefit**: Content-adaptive
+
+- **Graph-Based Segmentation**
+  - Use graph cuts for segmentation
+  - Region-based enhancement
+  - **Benefit**: Better boundary handling
+
+---
+
+### 🔬 Integration with Deep Learning
+
+#### 16. **Hybrid Approaches**
+**Suggestions**:
+- **Learnable DIP Parameters**
+  - Make DIP parameters trainable (via differentiable approximations)
+  - Backpropagate through enhancement pipeline
+  - **Benefit**: Optimal parameters for dataset
+
+- **Neural Architecture Search for DIP**
+  - Automatically discover best DIP combination
+  - Use reinforcement learning
+  - **Benefit**: Better than manual design
+
+---
+
+### 📊 Evaluation & Metrics
+
+#### 17. **Perceptual Quality Assessment**
+**Suggestions**:
+- **LPIPS (Learned Perceptual Image Patch Similarity)**
+  - Deep learning-based perceptual similarity
+  - Better correlation with human judgment
+  - **Benefit**: Better than MSE/PSNR
+
+- **FID (Fréchet Inception Distance)**
+  - Measure distributional similarity
+  - Used in GANs
+  - **Benefit**: Holistic quality assessment
+
+- **User Study Framework**
+  - Collect human preference data
+  - Train preference predictor
+  - **Benefit**: Ground truth for quality
+
+---
+
+### 🎬 Application Extensions
+
+#### 18. **Video Processing**
+**Suggestions**:
+- **Temporal Consistency**
+  - Optical flow-based consistency
+  - Prevent flickering between frames
+  - **Benefit**: Smooth video enhancement
+
+- **3D Filtering (Spatial + Temporal)**
+  - Use temporal dimension for denoising
+  - Better noise reduction in videos
+  - **Benefit**: Leverages temporal redundancy
+
+---
+
+### 🔧 Practical Improvements
+
+#### 19. **User Interface & Visualization**
+**Suggestions**:
+- **Interactive Parameter Tuning**
+  - Web-based or GUI tool
+  - Real-time preview
+  - **Benefit**: Easier experimentation
+
+- **Intermediate Visualization**
+  - Show R, I, I_delta at each stage
+  - Highlight what each DIP technique does
+  - **Benefit**: Better understanding
+
+---
+
+**Document Version**: 2.0  
+**Last Updated**: November 29, 2025  
 **Authors**: Deep Retinex Enhancement Team

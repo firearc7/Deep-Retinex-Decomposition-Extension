@@ -298,3 +298,301 @@ class TraditionalEnhancements:
         mapped = (image / (alpha * global_comp + beta * local_comp + 1e-6))
         
         return np.clip(mapped, 0, 1)
+    
+    @staticmethod
+    def multi_scale_detail_enhancement(image: np.ndarray, num_scales: int = 3, 
+                                      detail_strength: float = 1.5) -> np.ndarray:
+        """
+        Multi-scale detail enhancement using Laplacian pyramid
+        Best applied to: Reflectance or final output
+        
+        Args:
+            num_scales: Number of pyramid levels
+            detail_strength: Amplification factor for details
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        # Build Gaussian pyramid
+        gaussian_pyramid = [image]
+        for i in range(num_scales):
+            gaussian_pyramid.append(cv2.pyrDown(gaussian_pyramid[-1]))
+        
+        # Build Laplacian pyramid
+        laplacian_pyramid = []
+        for i in range(num_scales):
+            size = (gaussian_pyramid[i].shape[1], gaussian_pyramid[i].shape[0])
+            upsampled = cv2.pyrUp(gaussian_pyramid[i + 1], dstsize=size)
+            laplacian = gaussian_pyramid[i] - upsampled
+            laplacian_pyramid.append(laplacian)
+        
+        # Enhance details (amplify Laplacian levels)
+        enhanced_laplacian = [detail * detail_strength for detail in laplacian_pyramid]
+        
+        # Reconstruct
+        reconstructed = gaussian_pyramid[-1]
+        for i in range(num_scales - 1, -1, -1):
+            size = (enhanced_laplacian[i].shape[1], enhanced_laplacian[i].shape[0])
+            reconstructed = cv2.pyrUp(reconstructed, dstsize=size)
+            reconstructed = reconstructed + enhanced_laplacian[i]
+        
+        return np.clip(reconstructed, 0, 1)
+    
+    @staticmethod
+    def adaptive_bilateral_filter(image: np.ndarray, window_size: int = 5) -> np.ndarray:
+        """
+        Adaptive bilateral filter with edge-aware parameters
+        Best applied to: Illumination map
+        
+        Args:
+            window_size: Size of local window for adaptation
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        # Calculate local variance for each pixel
+        mean = cv2.boxFilter(image, -1, (window_size, window_size))
+        mean_sq = cv2.boxFilter(image**2, -1, (window_size, window_size))
+        variance = mean_sq - mean**2
+        
+        # Normalize variance to [0, 1]
+        variance = (variance - variance.min()) / (variance.max() - variance.min() + 1e-6)
+        
+        # Apply bilateral filter with varying parameters
+        # High variance (edges) -> less filtering
+        # Low variance (smooth) -> more filtering
+        result = np.zeros_like(image)
+        
+        # Convert to uint8 for bilateral filter
+        img_uint8 = (image * 255).astype(np.uint8)
+        
+        # Apply with adaptive sigma
+        base_sigma_color = 50
+        base_sigma_space = 50
+        
+        for i in range(0, image.shape[0], window_size):
+            for j in range(0, image.shape[1], window_size):
+                i_end = min(i + window_size, image.shape[0])
+                j_end = min(j + window_size, image.shape[1])
+                
+                patch = img_uint8[i:i_end, j:j_end]
+                var_patch = variance[i:i_end, j:j_end].mean()
+                
+                # Adapt parameters based on local variance
+                sigma_color = int(base_sigma_color * (1 - var_patch * 0.5))
+                sigma_space = int(base_sigma_space * (1 - var_patch * 0.5))
+                
+                filtered = cv2.bilateralFilter(patch, 9, sigma_color, sigma_space)
+                result[i:i_end, j:j_end] = filtered.astype(np.float32) / 255.0
+        
+        return result
+    
+    @staticmethod
+    def anisotropic_diffusion(image: np.ndarray, iterations: int = 10, 
+                            kappa: float = 50, gamma: float = 0.1) -> np.ndarray:
+        """
+        Perona-Malik anisotropic diffusion for edge-preserving smoothing
+        Best applied to: Illumination map (better than bilateral for gradual transitions)
+        
+        Args:
+            iterations: Number of diffusion iterations
+            kappa: Conduction coefficient (controls edge sensitivity)
+            gamma: Rate of diffusion (0 < gamma <= 0.25 for stability)
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        img = image.copy().astype(np.float32)
+        
+        for _ in range(iterations):
+            # Calculate gradients
+            grad_n = np.roll(img, 1, axis=0) - img  # North
+            grad_s = np.roll(img, -1, axis=0) - img  # South
+            grad_e = np.roll(img, -1, axis=1) - img  # East
+            grad_w = np.roll(img, 1, axis=1) - img  # West
+            
+            # Conduction coefficient (edge-stopping function)
+            c_n = np.exp(-(grad_n / kappa) ** 2)
+            c_s = np.exp(-(grad_s / kappa) ** 2)
+            c_e = np.exp(-(grad_e / kappa) ** 2)
+            c_w = np.exp(-(grad_w / kappa) ** 2)
+            
+            # Update image
+            img += gamma * (c_n * grad_n + c_s * grad_s + c_e * grad_e + c_w * grad_w)
+        
+        return np.clip(img, 0, 1)
+    
+    @staticmethod
+    def detail_preserving_smoothing(image: np.ndarray, sigma_s: float = 60, 
+                                   sigma_r: float = 0.4) -> np.ndarray:
+        """
+        Domain transform for edge-preserving smoothing (fast alternative to bilateral)
+        Best applied to: Any stage where smoothing is needed
+        
+        Args:
+            sigma_s: Spatial sigma
+            sigma_r: Range sigma
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        # Use OpenCV's edge-preserving filter
+        img_uint8 = (image * 255).astype(np.uint8)
+        result = cv2.edgePreservingFilter(img_uint8, flags=1, sigma_s=sigma_s, sigma_r=sigma_r)
+        
+        return result.astype(np.float32) / 255.0
+    
+    @staticmethod
+    def contrast_stretching(image: np.ndarray, lower_percentile: float = 2, 
+                          upper_percentile: float = 98) -> np.ndarray:
+        """
+        Percentile-based contrast stretching
+        Best applied to: Final output or illumination
+        
+        Args:
+            lower_percentile: Lower clip percentile
+            upper_percentile: Upper clip percentile
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        # Calculate percentiles for each channel
+        if len(image.shape) == 3:
+            stretched = np.zeros_like(image)
+            for c in range(image.shape[2]):
+                channel = image[:, :, c]
+                p_low = np.percentile(channel, lower_percentile)
+                p_high = np.percentile(channel, upper_percentile)
+                
+                stretched[:, :, c] = np.clip(
+                    (channel - p_low) / (p_high - p_low + 1e-6), 0, 1
+                )
+        else:
+            p_low = np.percentile(image, lower_percentile)
+            p_high = np.percentile(image, upper_percentile)
+            stretched = np.clip((image - p_low) / (p_high - p_low + 1e-6), 0, 1)
+        
+        return stretched
+    
+    @staticmethod
+    def shadow_enhancement(image: np.ndarray, shadow_threshold: float = 0.3,
+                         enhancement_factor: float = 1.5) -> np.ndarray:
+        """
+        Selectively enhance shadow regions
+        Best applied to: Final output for low-light images
+        
+        Args:
+            shadow_threshold: Brightness threshold for shadows
+            enhancement_factor: How much to brighten shadows
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        # Calculate luminance
+        if len(image.shape) == 3:
+            luminance = cv2.cvtColor((image * 255).astype(np.uint8), 
+                                    cv2.COLOR_RGB2GRAY).astype(np.float32) / 255.0
+        else:
+            luminance = image
+        
+        # Create shadow mask with smooth transition
+        shadow_mask = np.clip((shadow_threshold - luminance) / shadow_threshold, 0, 1)
+        
+        # Smooth the mask to avoid artifacts
+        shadow_mask = cv2.GaussianBlur(shadow_mask, (15, 15), 5)
+        
+        # Apply enhancement
+        if len(image.shape) == 3:
+            shadow_mask = shadow_mask[:, :, None]
+        
+        enhanced = image * (1 + shadow_mask * (enhancement_factor - 1))
+        
+        return np.clip(enhanced, 0, 1)
+    
+    @staticmethod
+    def haze_removal(image: np.ndarray, omega: float = 0.95, t0: float = 0.1,
+                    window_size: int = 15) -> np.ndarray:
+        """
+        Dark channel prior for haze/fog removal (adapted for low-light)
+        Can help with atmospheric effects in low-light outdoor scenes
+        Best applied to: Reflectance map
+        
+        Args:
+            omega: Haze retention factor (0-1)
+            t0: Minimum transmission
+            window_size: Window for dark channel calculation
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        # Dark channel
+        min_channel = np.min(image, axis=2) if len(image.shape) == 3 else image
+        dark_channel = cv2.erode(min_channel, np.ones((window_size, window_size)))
+        
+        # Atmospheric light (brightest region in dark channel)
+        flat_dark = dark_channel.flatten()
+        num_pixels = len(flat_dark)
+        num_brightest = int(num_pixels * 0.001)
+        indices = np.argpartition(flat_dark, -num_brightest)[-num_brightest:]
+        
+        if len(image.shape) == 3:
+            brightest_pixels = image.reshape(-1, 3)[indices]
+            atmospheric_light = brightest_pixels.max(axis=0)
+        else:
+            atmospheric_light = flat_dark[indices].max()
+        
+        # Transmission map
+        transmission = 1 - omega * (dark_channel / (atmospheric_light.max() + 1e-6))
+        transmission = np.maximum(transmission, t0)
+        
+        # Recover scene radiance
+        if len(image.shape) == 3:
+            transmission = transmission[:, :, None]
+            atmospheric_light = atmospheric_light[None, None, :]
+        
+        recovered = (image - atmospheric_light) / (transmission + 1e-6) + atmospheric_light
+        
+        return np.clip(recovered, 0, 1)
+    
+    @staticmethod
+    def ssr_with_color_restoration(image: np.ndarray, sigma: float = 80,
+                                   gain: float = 128, offset: float = 128) -> np.ndarray:
+        """
+        Single-Scale Retinex with color restoration
+        Best applied to: Can be alternative to model-based illumination adjustment
+        
+        Args:
+            sigma: Gaussian kernel sigma
+            gain: Amplification gain
+            offset: Output offset
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        # Apply SSR
+        image_log = np.log(image + 1e-6)
+        
+        if len(image.shape) == 3:
+            retinex = np.zeros_like(image)
+            for c in range(3):
+                blurred = cv2.GaussianBlur(image[:, :, c], (0, 0), sigma)
+                retinex[:, :, c] = image_log[:, :, c] - np.log(blurred + 1e-6)
+        else:
+            blurred = cv2.GaussianBlur(image, (0, 0), sigma)
+            retinex = image_log - np.log(blurred + 1e-6)
+        
+        # Normalize
+        retinex = (retinex - retinex.min()) / (retinex.max() - retinex.min() + 1e-6)
+        
+        # Color restoration
+        if len(image.shape) == 3:
+            intensity = image.sum(axis=2) / 3.0
+            for c in range(3):
+                alpha = np.log(gain * image[:, :, c] / (intensity + 1e-6) + 1e-6)
+                retinex[:, :, c] = retinex[:, :, c] * alpha
+        
+        # Gain and offset
+        retinex = gain * retinex + offset
+        retinex = retinex / 255.0
+        
+        return np.clip(retinex, 0, 1)

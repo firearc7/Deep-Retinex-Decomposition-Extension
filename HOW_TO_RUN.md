@@ -1,6 +1,8 @@
-# 🚀 MINIMAL WORKFLOW GUIDE
+# 🚀 COMPREHENSIVE WORKFLOW GUIDE
 
 > **Quick Start**: This guide shows the essential steps to get from zero to results in ~20 minutes.
+> 
+> **New**: Now includes advanced preprocessing and 8 additional DIP techniques for better custom image handling!
 
 ---
 
@@ -15,6 +17,21 @@ source /home/yajat/Documents/LMA/.venv/bin/activate
 ```bash
 cd /home/yajat/Documents/DIP/Deep-Retinex-Decomposition-Extension
 ```
+
+3. **Ensure dependencies installed**:
+```bash
+pip install torch torchvision opencv-python pillow numpy scipy matplotlib tqdm kaggle
+```
+
+---
+
+## 📚 Documentation Quick Links
+
+- **QUICK_START.md** - Quick reference card for all presets
+- **ADVANCED_PIPELINE_GUIDE.md** - Comprehensive guide to new preprocessing and advanced DIP techniques
+- **IMPLEMENTATION_SUMMARY.md** - What was built and how it works
+- **DIP_ENHANCEMENTS_JUSTIFICATION.md** - Technical details and future work suggestions
+- **QUICK_INFERENCE_GUIDE.md** - Detailed guide for processing custom images
 
 ---
 
@@ -408,6 +425,33 @@ pipeline = EnhancementPipeline(custom_config)
 enhanced = pipeline.process_full_pipeline(R, I, I_delta)
 ```
 
+### Q: What's the difference between standard and advanced pipelines?
+
+**A:** 
+- **Standard Pipeline** (original): For LOL-v2 dataset images
+  - Presets: `baseline`, `minimal`, `balanced`, `aggressive`
+  - Fast processing (0.05-0.15s per image)
+  - 5 DIP techniques
+
+- **Advanced Pipeline** (NEW): For custom images outside training distribution
+  - Presets: `balanced_plus`, `outdoor_optimized`, `indoor_optimized`, `quality_focused`, etc.
+  - Includes preprocessing (noise reduction, color correction, dark enhancement)
+  - 13 DIP techniques (5 original + 8 advanced)
+  - Adaptive processing based on image analysis
+  - Slower but much better quality (0.3-1.5s per image)
+
+**See**: `ADVANCED_PIPELINE_GUIDE.md` for detailed explanation
+
+### Q: Which preset should I use for my custom images?
+
+**A:** Quick decision tree:
+- **Unknown/General**: Use `balanced_plus` (recommended default)
+- **Outdoor/Sunset**: Use `outdoor_optimized` (includes haze removal)
+- **Indoor/Noisy**: Use `indoor_optimized` (stronger denoising)
+- **Maximum Quality**: Use `quality_focused` (slower but best results)
+- **Speed Critical**: Use `speed_focused` (faster processing)
+- **LOL-v2 Test Set**: Use `balanced` (original pipeline)
+
 ### Q: What if training fails with CUDA out of memory?
 
 **A:** Reduce batch size:
@@ -417,18 +461,106 @@ python train.py --batch_size 4 --patch_size 32 ...
 
 ---
 
-## 🎉 Summary
+## � What's New in Version 2.0
+
+### Added Components
+1. **Preprocessing Module** (`src/enhancements/preprocessing.py`)
+   - Automatic image analysis (brightness, noise, color cast, contrast)
+   - Adaptive denoising (Non-Local Means)
+   - Color cast correction (gray world + white patch)
+   - Dark region enhancement
+   - Illumination normalization
+
+2. **8 New DIP Techniques** (added to `traditional_dip.py`)
+   - Anisotropic Diffusion (Perona-Malik)
+   - Adaptive Bilateral Filter
+   - Detail-Preserving Smoothing
+   - Multi-Scale Detail Enhancement (Laplacian pyramid)
+   - Contrast Stretching
+   - Shadow Enhancement
+   - Haze Removal (Dark Channel Prior)
+   - SSR with Color Restoration
+
+3. **Advanced Pipeline** (`src/enhancements/advanced_pipeline.py`)
+   - 5-stage processing (preprocessing → illumination → reflectance → output → post-processing)
+   - 7 new presets optimized for different scenarios
+   - Adaptive processing based on image characteristics
+
+4. **Comprehensive Documentation**
+   - `ADVANCED_PIPELINE_GUIDE.md` - Full technical guide
+   - `IMPLEMENTATION_SUMMARY.md` - What was built
+   - `QUICK_START.md` - Quick reference card
+
+### Processing Custom Images
+
+**New workflow for custom images:**
+
+```bash
+# Single image with advanced pipeline (RECOMMENDED)
+python quick_inference.py --input your_image.jpg --preset balanced_plus
+
+# Compare multiple presets
+python quick_inference.py --input your_image.jpg \
+    --compare baseline balanced balanced_plus outdoor_optimized
+
+# Batch processing
+python quick_inference.py --input your_folder/ --preset balanced_plus
+
+# Maximum quality (slower)
+python quick_inference.py --input your_image.jpg --preset quality_focused
+```
+
+**Output location**: `results/quick_inference/{image_name}/`
+
+---
+
+## �🎉 Summary
 
 **You now have:**
 1. ✅ Dataset downloaded (LOL-v2 with 689 + 900 training pairs)
-2. ✅ Training script ready to use
+2. ✅ Training script ready to use (18 minutes for 100 epochs)
 3. ✅ Comparison script to test all DIP presets
 4. ✅ HTML/CSV reports for analysis
-5. ✅ **NO NEED TO RETRAIN** for different DIP configurations!
+5. ✅ **Standard pipeline** for LOL-v2 test images
+6. ✅ **Advanced pipeline** for custom images (NEW!)
+7. ✅ **Preprocessing** for better out-of-distribution handling (NEW!)
+8. ✅ **13 DIP techniques** total (5 original + 8 advanced) (NEW!)
+9. ✅ **7 optimized presets** for different scenarios (NEW!)
+10. ✅ **Comprehensive documentation** (5 guides, ~8000 lines) (NEW!)
 
 **Next steps:**
-1. Run training (2-3 hours)
-2. Run comparison script
-3. Open HTML report and see which preset works best!
+1. **For LOL-v2 evaluation**: Run `compare_enhancements.py` with standard presets
+2. **For custom images**: Use `quick_inference.py` with advanced presets
+3. **Read documentation**: Check `QUICK_START.md` for quick reference
 
-**Key insight**: Train the model ONCE, then experiment with dozens of DIP configurations in minutes, not days! 🚀
+**Key insights**: 
+- Train the model ONCE, experiment with DIP configurations forever! 🚀
+- Use **standard pipeline** for LOL-v2, **advanced pipeline** for custom images! 🎯
+- **19 future enhancements suggested** in `DIP_ENHANCEMENTS_JUSTIFICATION.md`! 💡
+
+---
+
+## 📚 Further Reading
+
+**Essential Documentation:**
+- **QUICK_START.md** - Quick reference (preset comparison, common commands)
+- **ADVANCED_PIPELINE_GUIDE.md** - Comprehensive technical guide (3000+ lines)
+- **IMPLEMENTATION_SUMMARY.md** - Implementation details and achievements
+- **DIP_ENHANCEMENTS_JUSTIFICATION.md** - Technical justification + 19 future work suggestions
+- **QUICK_INFERENCE_GUIDE.md** - Detailed guide for custom image processing
+
+**For Future Development:**
+See "Future Work Suggestions" section in `DIP_ENHANCEMENTS_JUSTIFICATION.md` for 19 detailed suggestions including:
+- Frequency domain processing (FFT, DCT, wavelets)
+- Morphological operations (top-hat, morphological gradient)
+- Advanced color space processing (HSV, Lab, YCbCr)
+- Texture enhancement (LBP, Gabor filters, structure tensor)
+- Exposure fusion and HDR techniques
+- Content-aware adaptive enhancement
+- Quality assessment and optimization
+- Multi-scale pyramid approaches
+- Retinex refinements (MSRCR, NPE, LIME)
+- Advanced noise handling (BM3D, PCA denoising)
+- Edge enhancement techniques
+- Computational efficiency optimizations
+- And more!
