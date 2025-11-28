@@ -119,6 +119,9 @@ def train_one_epoch(model, dataloader, optimizer, device, epoch):
         
         pbar.set_postfix({'loss': f'{avg_loss:.4f}'})
     
+    # Clear GPU cache after training epoch
+    torch.cuda.empty_cache()
+    
     return total_loss / num_batches
 
 
@@ -134,6 +137,10 @@ def validate(model, dataloader, device):
             
             loss = model(low_img, high_img)
             total_loss += loss.item()
+            
+            # Free GPU memory after each batch
+            del low_img, high_img, loss
+            torch.cuda.empty_cache()
     
     return total_loss / len(dataloader)
 
@@ -238,7 +245,7 @@ def main(args):
     
     val_loader = DataLoader(
         val_dataset,
-        batch_size=args.batch_size,  # Use same batch size as training for faster validation
+        batch_size=4,  # Use batch_size=4 for validation (full-size images need more memory)
         shuffle=False,
         num_workers=args.num_workers,
         pin_memory=True

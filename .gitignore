@@ -5,5 +5,4 @@ RetinexNet/
 .venv/
 __pycache__/
 data/
-checkpoints/
-visual_examples/
+results

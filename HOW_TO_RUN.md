@@ -1,26 +1,42 @@
-# 🚀 COMPLETE WORKFLOW GUIDE
+# 🚀 MINIMAL WORKFLOW GUIDE
 
-## Step-by-Step: From Dataset to Results
+> **Quick Start**: This guide shows the essential steps to get from zero to results in ~20 minutes.
 
-### ✅ Step 1: Download Dataset (DONE!)
+---
 
-You've already completed this step successfully!
+## Prerequisites
+
+1. **Activate virtual environment**:
+```bash
+source /home/yajat/Documents/LMA/.venv/bin/activate
+```
+
+2. **Navigate to project directory**:
+```bash
+cd /home/yajat/Documents/DIP/Deep-Retinex-Decomposition-Extension
+```
+
+---
+
+## Step 1: Download Dataset (~5 minutes)
+
+Download the LOL-v2 dataset from Kaggle:
 
 ```bash
 python download_dataset.py --dataset lol-v2 --source kaggle --output_dir data
 ```
 
 **Result**: 
-- Real subset: 689 train pairs, 100 test pairs
-- Synthetic subset: 900 train pairs, 100 test pairs
+- Real subset: 689 train + 100 eval pairs
+- Synthetic subset: 900 train + 100 eval pairs
+- Location: `data/real/` and `data/synthetic/`
 
 ---
 
-### 🎓 Step 2: Train the Model (DO THIS ONCE - 2-3 hours on GPU)
+## Step 2: Train the Model (~18 minutes for 100 epochs)
 
-Choose ONE subset to train on:
+Train on the Real subset (recommended):
 
-#### Option A: Train on Real subset (Recommended - real captured images)
 ```bash
 python train.py \
     --train_low_dir data/real/train/low \
@@ -28,26 +44,127 @@ python train.py \
     --val_low_dir data/real/eval/low \
     --val_high_dir data/real/eval/high \
     --epochs 100 \
-    --batch_size 8 \
-    --lr 0.001
+    --batch_size 8
 ```
 
-#### Option B: Train on Synthetic subset (More training data - 900 pairs)
+**What happens**:
+- Training: 87 batches/epoch at ~23 it/s (3 sec/epoch)
+- Validation: 100 images at batch_size=1 (7-8 sec/epoch)
+- Total time: ~18-20 minutes
+- Best model saved to: `checkpoints/retinexnet_best.pt`
+- Logs saved to: `logs/training_YYYYMMDD_HHMMSS.log`
+
+**Hardware requirements**:
+- 6GB VRAM: `--batch_size 8` ✅ (recommended)
+- 4GB VRAM: `--batch_size 4`
+- 8GB+ VRAM: `--batch_size 16`
+
+---
+
+## Step 3: Evaluate & Compare (~2 minutes)
+
+Compare all DIP enhancement presets on the evaluation set:
+
 ```bash
-python train.py \
-    --train_low_dir data/synthetic/train/low \
-    --train_high_dir data/synthetic/train/high \
-    --val_low_dir data/synthetic/eval/low \
-    --val_high_dir data/synthetic/eval/high \
-    --epochs 100 \
-    --batch_size 8 \
-    --lr 0.001
+python compare_enhancements.py \
+    --checkpoint checkpoints/retinexnet_best.pt \
+    --input_dir data/real/eval/low \
+    --output_dir results/comparison \
+    --presets baseline minimal balanced aggressive illumination_only output_only \
+    --save_images
 ```
 
-**Training Tips:**
-- ✅ **For 6GB VRAM**: Use `--batch_size 8` (recommended, default above)
-- ⚠️ **For 4GB VRAM**: Use `--batch_size 4` or `--batch_size 6`
-- 🚀 **For 8GB+ VRAM**: Use `--batch_size 16` or higher
+**Outputs**:
+- `results/comparison/comparison_results.csv` - Detailed metrics per image
+- `results/comparison/comparison_report.html` - Interactive HTML report
+- `results/comparison/comparison_summary.json` - Average metrics
+- `results/comparison/<image_name>/` - Enhanced images for each preset
+
+**View results**:
+```bash
+firefox results/comparison/comparison_report.html
+```
+
+---
+
+## Step 4: Generate Visual Examples (~30 seconds)
+
+Create side-by-side comparison grids:
+
+```bash
+python generate_visual_comparison.py \
+    --checkpoint checkpoints/retinexnet_best.pt \
+    --input_dir data/real/eval/low \
+    --output_dir results/visual_examples \
+    --num_images 10 \
+    --presets minimal balanced aggressive
+```
+
+**Outputs**:
+- `results/visual_examples/comparison_*.png` - Comparison grids
+- `results/visual_examples/<image_name>/` - Individual enhanced images
+
+---
+
+## Step 5: Analyze Training (optional)
+
+Generate training analysis plots and reports:
+
+```bash
+python analyze_training.py
+```
+
+**Outputs**:
+- `results/training_analysis/training_analysis.png` - Loss curves & LR schedule
+- `results/training_analysis/training_report.txt` - Convergence analysis
+
+---
+
+## Step 6: Test on Custom Images ⭐
+
+Use the quick inference script for your own photos (PNG, JPG, JPEG supported, any size):
+
+### Single Image (Recommended)
+```bash
+python quick_inference.py \
+    --input /path/to/your/image.png \
+    --preset balanced
+```
+
+### Compare Multiple Presets
+```bash
+python quick_inference.py \
+    --input manual/image1.png \
+    --compare minimal balanced aggressive
+```
+
+### Process Entire Directory
+```bash
+python quick_inference.py \
+    --input /path/to/photos/ \
+    --preset balanced \
+    --output results/my_enhanced_photos
+```
+
+### With Metrics and Intermediate Outputs
+```bash
+python quick_inference.py \
+    --input manual/image1.png \
+    --preset balanced \
+    --save_intermediates \
+    --compute_metrics
+```
+
+**Outputs**:
+- Enhanced images in `results/quick_inference/<image_name>/`
+- Comparison grids (if using `--compare`)
+- Intermediate outputs: reflectance, illumination maps (if `--save_intermediates`)
+- Quality metrics JSON (if `--compute_metrics`)
+
+**Supported Formats**: PNG, JPG, JPEG, BMP, TIFF, WebP (any format PIL supports)  
+**Image Sizes**: Any size (tested from 640×480 to 4K 3840×2160)
+
+See [QUICK_INFERENCE_GUIDE.md](QUICK_INFERENCE_GUIDE.md) for more options.
 - 📖 **See BATCH_SIZE_GUIDE.md** for detailed VRAM recommendations
 - If you get CUDA out of memory: Reduce batch size by 2
 - If you want faster training: Use `--epochs 50`
