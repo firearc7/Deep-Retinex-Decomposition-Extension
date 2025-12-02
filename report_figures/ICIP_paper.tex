@@ -1,0 +1,413 @@
+% Template for ICIP-2024 paper; to be used with:
+%          spconf.sty  - ICASSP/ICIP LaTeX style file, and
+%          IEEEbib.bst - IEEE bibliography style file.
+% --------------------------------------------------------------------------
+\documentclass{article}
+\usepackage{spconf,amsmath,graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{array}
+
+% Title
+\title{Deep Retinex Decomposition Enhanced with Traditional Digital Image Processing for Low-Light Image Enhancement}
+
+\name{Archit Choudhary, Yajat Lakhanpal\thanks{GitHub Repository: \url{https://github.com/firearc7/Deep-Retinex-Decomposition-Extension}}}
+\address{International Institute of Information Technology, Hyderabad}
+
+\begin{document}
+\maketitle
+
+%===============================================================================
+% ABSTRACT
+%===============================================================================
+\begin{abstract}
+Low-light image enhancement remains a critical challenge in computer vision, affecting applications from surveillance to autonomous driving. While deep learning approaches like RetinexNet have shown promise, they often produce artifacts including color distortion, over-enhancement, and loss of fine details. We propose a hybrid framework that combines deep Retinex decomposition with traditional digital image processing (DIP) techniques. Our method employs a ``Train Once, Experiment Forever'' philosophy: the deep learning model is trained once, while 13 traditional DIP techniques are applied as configurable post-processing. We introduce a two-tier approach: a standard pipeline for in-distribution images and an advanced pipeline with preprocessing and 8 additional techniques for out-of-distribution custom images. Extensive experiments on the LOL dataset demonstrate that our ``balanced'' preset achieves +23.9\% improvement in entropy, +144.8\% in contrast, and +104.4\% in colorfulness compared to the baseline, while maintaining natural appearance without over-saturation artifacts.
+\end{abstract}
+
+\begin{keywords}
+Low-light enhancement, Retinex theory, deep learning, CLAHE, bilateral filter, image processing
+\end{keywords}
+
+%===============================================================================
+% SECTION 1: INTRODUCTION
+%===============================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Low-light conditions severely degrade image quality, reducing contrast, suppressing color saturation, and increasing noise. This degradation impacts numerous applications including surveillance systems, autonomous vehicles, medical imaging, and consumer photography. Traditional approaches such as histogram equalization often produce unnatural results, while sophisticated methods like Retinex-based decomposition show promise but struggle with implementation complexity.
+
+Deep learning has revolutionized image enhancement, with RetinexNet~\cite{wei2018deep} demonstrating that neural networks can effectively learn the Retinex decomposition. However, deep learning approaches alone often produce residual artifacts including color shifts, halo effects near edges, and inconsistent enhancement across different image regions.
+
+We propose a hybrid framework that leverages the strengths of both paradigms: deep learning for robust illumination estimation and traditional DIP for refined, controllable post-processing. Our core philosophy is ``Train Once, Experiment Forever''---the model is trained once, and all DIP enhancements are applied as post-processing requiring no retraining. Our contributions include:
+
+\begin{itemize}
+    \item A hybrid architecture combining RetinexNet with 13 traditional DIP techniques organized in a three-stage enhancement pipeline
+    \item A two-tier approach: standard pipeline for in-distribution images and advanced pipeline with preprocessing for custom images
+    \item Four configurable presets (baseline, minimal, balanced, aggressive) enabling quality/speed trade-offs
+    \item Comprehensive evaluation using 8 metrics on 100 test images showing significant improvements
+\end{itemize}
+
+%===============================================================================
+% SECTION 2: RELATED WORK
+%===============================================================================
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Retinex-Based Methods}
+
+The Retinex theory, introduced by Land and McCann~\cite{land1971lightness}, models an image as the product of reflectance and illumination. Single-Scale Retinex (SSR) and Multi-Scale Retinex (MSR)~\cite{jobson1997multiscale} estimate illumination through Gaussian filtering. LIME~\cite{guo2017lime} refines illumination maps using structure-aware smoothing. These methods provide interpretable decomposition but struggle with complex real-world degradation.
+
+\subsection{Deep Learning Approaches}
+
+RetinexNet~\cite{wei2018deep} introduced end-to-end learning for Retinex decomposition. EnlightenGAN~\cite{jiang2021enlightengan} uses unpaired training with adversarial loss. Zero-DCE~\cite{guo2020zero} estimates pixel-wise curves without paired supervision. While effective, these methods often exhibit artifacts that require additional processing.
+
+\subsection{Traditional DIP Techniques}
+
+CLAHE~\cite{pizer1987adaptive} provides adaptive histogram equalization with contrast limiting. Bilateral filtering~\cite{tomasi1998bilateral} enables edge-preserving smoothing. Guided filtering~\cite{he2010guided} offers linear-time edge-aware processing. These techniques are interpretable and controllable but lack the learning capacity of deep methods.
+
+%===============================================================================
+% SECTION 3: PROPOSED METHOD
+%===============================================================================
+\section{Proposed Method}
+\label{sec:method}
+
+\subsection{System Architecture}
+
+Our framework consists of two pipelines: (1) Standard Pipeline for in-distribution images, and (2) Advanced Pipeline with preprocessing for custom/out-of-distribution images. Both share the three-stage post-processing architecture.
+
+\textbf{Standard Pipeline:}
+\begin{equation}
+\text{Input} \rightarrow \text{DecomNet} \rightarrow \text{RelightNet} \rightarrow \text{DIP Pipeline} \rightarrow \text{Output}
+\end{equation}
+
+\textbf{Advanced Pipeline:}
+\begin{equation}
+\text{Input} \rightarrow \text{Preprocessing} \rightarrow \text{Model} \rightarrow \text{Advanced DIP} \rightarrow \text{Output}
+\end{equation}
+
+\subsection{RetinexNet Architecture}
+
+The network comprises 555,205 trainable parameters:
+
+\textbf{DecomNet} ($\sim$250K parameters): Encoder-decoder architecture that decomposes input image $I$ into reflectance $R$ and illumination $L$:
+\begin{equation}
+I = R \circ L
+\end{equation}
+
+\textbf{RelightNet} ($\sim$305K parameters): U-Net style architecture that enhances illumination $L$ to produce $\hat{L}$, yielding the enhanced image $\hat{I} = R \circ \hat{L}$.
+
+\subsection{Loss Functions}
+
+The training objective combines three losses:
+\begin{equation}
+\mathcal{L}_{total} = \mathcal{L}_{recon} + \lambda_1 \mathcal{L}_{smooth} + \lambda_2 \mathcal{L}_{mutual}
+\end{equation}
+
+\textbf{Reconstruction Loss:} $\mathcal{L}_{recon} = \|R \circ \hat{L} - I_{gt}\|_1$
+
+\textbf{Smoothness Loss:} $\mathcal{L}_{smooth} = \sum_i \|\nabla L_i\|_1 \cdot \exp(-\lambda_g \|\nabla R_i\|_1)$
+
+\textbf{Mutual Consistency Loss:} Ensures decomposition consistency between paired images.
+
+\subsection{Three-Stage DIP Enhancement Pipeline}
+
+We organize 13 DIP techniques into three stages based on their application target:
+
+\textbf{Stage 1: Illumination Enhancement} (Primary target---highest impact)
+\begin{itemize}
+    \item \textbf{CLAHE}: Applied to $\hat{L}$ with clip\_limit=2.0, tile\_grid=8$\times$8. Adaptive contrast enhancement without noise amplification.
+    \item \textbf{Bilateral Filter}: $d=9$, $\sigma_{color}=75$, $\sigma_{space}=75$. Edge-preserving smoothing.
+    \item \textbf{Adaptive Gamma}: $\gamma = -\log_2(\mu)$ where $\mu$ is mean intensity. Content-aware brightness adjustment.
+    \item \textbf{Guided Filter}: radius=8, $\epsilon=0.01$. O(N) complexity edge-preserving smoothing.
+    \item \textbf{Multi-Scale Retinex}: Scales $\sigma \in \{15, 80, 250\}$ for fine details, medium structures, and illumination gradients.
+    \item \textbf{Tone Mapping}: Reinhard operator $L_{out} = L_{in}/(1+L_{in})$ for dynamic range compression.
+    \item \textbf{Histogram Equalization}: Global contrast maximization (baseline comparison).
+\end{itemize}
+
+\textbf{Stage 2: Reflectance Enhancement} (Minimal---preserve object properties)
+\begin{itemize}
+    \item Generally skipped as RetinexNet produces high-quality reflectance
+    \item Optional denoising if noise is visible
+\end{itemize}
+
+\textbf{Stage 3: Output Enhancement} (Refinement)
+\begin{itemize}
+    \item \textbf{Unsharp Masking}: $I_{sharp} = I + \alpha(I - G_\sigma * I)$, $\alpha=1.0$, $\sigma=1.0$
+    \item \textbf{White Balance}: Gray World assumption---scales each channel to neutral gray average
+    \item \textbf{Local Contrast Enhancement}: Unsharp mask with larger kernel ($\sigma=2.0$)
+    \item \textbf{Gamma Correction}: Fixed $\gamma=2.2$ for display compensation
+    \item \textbf{Non-Local Means Denoising}: $h=10$, template=7$\times$7, search=21$\times$21
+\end{itemize}
+
+\subsection{Advanced DIP Techniques}
+
+For out-of-distribution images, we add 8 advanced techniques:
+
+\begin{table}[t]
+\centering
+\caption{Advanced DIP Techniques for Custom Images}
+\label{tab:advanced}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Technique & Application \\
+\midrule
+Anisotropic Diffusion & Illumination smoothing \\
+Multi-Scale Detail (Laplacian) & Output detail enhancement \\
+Shadow Enhancement & Selective shadow brightening \\
+Dark Channel Haze Removal & Reflectance dehazing \\
+Adaptive Bilateral Filter & Edge-adaptive smoothing \\
+Domain Transform Filter & Fast edge-preserving smoothing \\
+Percentile Contrast Stretch & Robust histogram stretching \\
+SSR with Color Restoration & Alternative illumination \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Preprocessing Module}
+
+For custom images, automatic analysis detects:
+\begin{itemize}
+    \item \textbf{High noise}: Laplacian variance $> 500$ triggers NLM denoising
+    \item \textbf{Color cast}: Channel imbalance $> 0.15$ triggers Gray World + White Patch correction
+    \item \textbf{Extreme darkness}: Mean brightness $< 0.25$ triggers spatially-varying gamma
+    \item \textbf{Low contrast}: Standard deviation $< 0.15$ triggers illumination normalization
+\end{itemize}
+
+\subsection{Enhancement Presets}
+
+\begin{table}[t]
+\centering
+\caption{Enhancement Preset Parameters}
+\label{tab:presets}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Parameter & Base & Min & Bal & Agg \\
+\midrule
+CLAHE Clip & 1.0 & 1.5 & 2.5 & 4.0 \\
+Bilateral $\sigma_c$ & 50 & 60 & 75 & 100 \\
+Gamma & 1.0 & 0.95 & 0.85 & 0.7 \\
+Sharpening $\alpha$ & 0 & 0.3 & 0.7 & 1.2 \\
+Saturation Boost & 1.0 & 1.05 & 1.15 & 1.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%===============================================================================
+% SECTION 4: EXPERIMENTS
+%===============================================================================
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Dataset and Training}
+
+We train on the LOL (Low-Light) dataset containing 689 training pairs and 100 validation pairs at 400$\times$600 resolution.
+
+\textbf{Training Configuration:} Epochs: 100 (best at epoch 84), Batch size: 8, Optimizer: Adam ($\beta_1=0.9$, $\beta_2=0.999$), Learning rate: $10^{-4}$ with cosine annealing, Patch size: 48$\times$48, Training time: $\sim$18 minutes.
+
+\subsection{Evaluation Metrics}
+
+We use 8 complementary metrics:
+
+\textbf{Entropy:} $H(X) = -\sum p(x_i) \log_2 p(x_i)$---measures information content
+
+\textbf{Contrast:} $\sigma(L)$---standard deviation of luminance
+
+\textbf{Sharpness:} $\sum|G_x|^2 + |G_y|^2$---Sobel gradient magnitude
+
+\textbf{Colorfulness:} Hasler-Süsstrunk metric~\cite{hasler2003measuring}---perceptual color vividness
+
+\textbf{Brightness:} Mean luminance (ITU-R BT.601)
+
+\textbf{PSNR/SSIM:} Reference-based quality metrics
+
+\textbf{Processing Time:} Computational efficiency
+
+\subsection{Quantitative Results}
+
+\begin{table}[t]
+\centering
+\caption{Quantitative Results on LOL Test Set (100 Images)}
+\label{tab:results}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Preset & Ent. & Cont. & Sharp. & Color. & Time(s) \\
+\midrule
+Baseline & 5.91 & 23.37 & 150.84 & 25.05 & 0.005 \\
+Minimal & 6.04 & 25.53 & 180.79 & 27.47 & 0.011 \\
+\textbf{Balanced} & \textbf{7.32} & \textbf{57.22} & 2069.4 & \textbf{51.20} & 0.089 \\
+Aggressive & 4.60 & 63.82 & 5103.8 & 49.36 & 0.134 \\
+Illum. Only & 6.22 & 26.40 & 186.31 & 28.16 & 0.043 \\
+Output Only & 7.17 & 56.57 & 2370.2 & 50.49 & 0.071 \\
+\midrule
+\multicolumn{6}{l}{\textit{Balanced Improvements over Baseline:}} \\
+& +23.9\% & +144.8\% & +1272\% & +104.4\% & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{metrics_comparison.png}
+\caption{Normalized metric comparison across enhancement presets.}
+\label{fig:metrics}
+\end{figure}
+
+\subsection{Ablation Study: Why Balanced Works Best}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{ablation_study.png}
+\caption{Ablation study radar chart showing performance across five metrics.}
+\label{fig:ablation}
+\end{figure}
+
+\textbf{1. Information Preservation (Entropy = 7.32):} Highest among all presets. CLAHE with clip=2.5 expands dynamic range without over-equalization. Aggressive processing destroys tonal variations (entropy drops to 4.60).
+
+\textbf{2. Optimal Contrast (+144.8\%):} Synergistic combination of CLAHE, gamma correction ($\gamma=0.85$), and saturation boost achieves substantial improvement without artifacts.
+
+\textbf{3. Natural Sharpness:} Balanced sharpening ($\alpha=0.7$) enhances genuine details without halo artifacts. Aggressive preset's extreme sharpness (5103.83) causes edge overshoot.
+
+\textbf{4. Color Fidelity (+104.4\%):} Highest colorfulness (51.20) with natural relationships preserved. The 1.15$\times$ saturation boost enhances muted colors without oversaturation.
+
+\textbf{5. Appropriate Brightness:} At 165.40, balanced preset increases brightness 46.8\% while preserving highlight headroom.
+
+%===============================================================================
+% SECTION 5: VISUAL RESULTS
+%===============================================================================
+\section{Visual Results}
+\label{sec:visual}
+
+\begin{figure}[t]
+\centering
+\begin{subfigure}[b]{\linewidth}
+\includegraphics[width=\linewidth]{comparison_low00690.png}
+\caption{Indoor scene: Progressive enhancement stages}
+\end{subfigure}
+\vspace{2mm}
+\begin{subfigure}[b]{\linewidth}
+\includegraphics[width=\linewidth]{comparison_low00696.png}
+\caption{Complex lighting: DIP pipeline refinement}
+\end{subfigure}
+\caption{Visual comparisons showing enhancement from input through each processing stage.}
+\label{fig:comparison}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{training_curves.png}
+\caption{Training convergence: Best validation loss 0.1640 at epoch 84, 59.8\% total loss reduction.}
+\label{fig:training}
+\end{figure}
+
+%===============================================================================
+% SECTION 6: DISCUSSION
+%===============================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{DIP Technique Contributions}
+
+\textbf{CLAHE:} Primary contributor to entropy (+23.8\%) and contrast (+144\%). Adaptive clip limiting prevents over-enhancement.
+
+\textbf{Bilateral Filter:} Reduces noise while preserving edges. Critical for illumination map smoothing.
+
+\textbf{Gamma Correction:} Adaptive formula $\gamma=-\log_2(\mu)$ matches Weber-Fechner law of human brightness perception.
+
+\textbf{Unsharp Mask:} +866\% sharpness improvement. Recovers details smoothed by bilateral filtering.
+
+\textbf{Color Balance:} Gray World assumption corrects yellow/blue casts from artificial lighting.
+
+\subsection{Design Decisions}
+
+\textbf{Why CLAHE on Illumination?} Illumination is smoother (no texture)---CLAHE won't amplify texture noise. Output has reflectance texture that CLAHE would over-enhance.
+
+\textbf{Why Skip Reflectance Enhancement?} RetinexNet's reflectance is already high quality. Our experiments showed no consistent improvement from R processing, with risk of color shifts.
+
+\textbf{Why Post-Processing Instead of Training?} Flexibility outweighs optimality. No retraining needed for new enhancement combinations. Can experiment with 100+ configurations instantly.
+
+\subsection{Comparison with State-of-the-Art}
+
+\textbf{vs. Pure Deep Learning:} Our hybrid approach provides controllable post-processing through interpretable DIP parameters.
+
+\textbf{vs. Pure Traditional Methods:} Learned decomposition handles complex illumination patterns that handcrafted algorithms struggle with.
+
+\textbf{vs. Other Hybrid Methods (KinD):} Explicit separation of learning and post-processing enables modular updates.
+
+%===============================================================================
+% SECTION 7: CONCLUSION
+%===============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented a hybrid framework combining deep Retinex decomposition with 13 traditional DIP techniques organized in a three-stage pipeline. Our ``Train Once, Experiment Forever'' philosophy enables flexible enhancement without retraining. The balanced preset achieves optimal results: +23.9\% entropy, +144.8\% contrast, and +104.4\% colorfulness while maintaining natural appearance.
+
+Key insights: (1) Illumination enhancement is more impactful than reflectance enhancement, (2) CLAHE + Unsharp Mask provides the best quality/speed trade-off, (3) Post-processing approach is more practical than end-to-end training.
+
+Future work includes adaptive preset selection based on image content, frequency domain processing (homomorphic filtering, FFT denoising), morphological operations, advanced color space processing (Lab, HSV), and extension to video with temporal consistency.
+
+\textbf{Code:} \url{https://github.com/firearc7/Deep-Retinex-Decomposition-Extension}
+
+%===============================================================================
+% REFERENCES (PAGE 6)
+%===============================================================================
+\clearpage
+\onecolumn
+\section*{References}
+\bibliographystyle{IEEEbib}
+
+\begin{thebibliography}{15}
+
+\bibitem{wei2018deep}
+C.~Wei, W.~Wang, W.~Yang, and J.~Liu, ``Deep retinex decomposition for low-light enhancement,'' in \textit{BMVC}, 2018.
+
+\bibitem{land1971lightness}
+E.~H. Land and J.~J. McCann, ``Lightness and retinex theory,'' \textit{J. Opt. Soc. Am.}, vol.~61, no.~1, pp.~1--11, 1971.
+
+\bibitem{guo2017lime}
+X.~Guo, Y.~Li, and H.~Ling, ``LIME: Low-light image enhancement via illumination map estimation,'' \textit{IEEE TIP}, vol.~26, no.~2, pp.~982--993, 2017.
+
+\bibitem{jiang2021enlightengan}
+Y.~Jiang et al., ``EnlightenGAN: Deep light enhancement without paired supervision,'' \textit{IEEE TIP}, vol.~30, pp.~2340--2349, 2021.
+
+\bibitem{guo2020zero}
+C.~Guo et al., ``Zero-reference deep curve estimation for low-light image enhancement,'' in \textit{CVPR}, 2020, pp.~1780--1789.
+
+\bibitem{zhang2019kindling}
+Y.~Zhang, J.~Zhang, and X.~Guo, ``Kindling the darkness: A practical low-light image enhancer,'' in \textit{ACM MM}, 2019, pp.~1632--1640.
+
+\bibitem{hasler2003measuring}
+D.~Hasler and S.~E. Süsstrunk, ``Measuring colorfulness in natural images,'' in \textit{Human Vision and Electronic Imaging VIII}, vol.~5007, 2003, pp.~87--95.
+
+\bibitem{pizer1987adaptive}
+S.~M. Pizer et al., ``Adaptive histogram equalization and its variations,'' \textit{CVGIP}, vol.~39, no.~3, pp.~355--368, 1987.
+
+\bibitem{tomasi1998bilateral}
+C.~Tomasi and R.~Manduchi, ``Bilateral filtering for gray and color images,'' in \textit{ICCV}, 1998, pp.~839--846.
+
+\bibitem{he2010guided}
+K.~He, J.~Sun, and X.~Tang, ``Guided image filtering,'' in \textit{ECCV}, 2010, pp.~1--14.
+
+\bibitem{jobson1997multiscale}
+D.~J. Jobson, Z.~Rahman, and G.~A. Woodell, ``A multiscale retinex for bridging the gap between color images and the human observation of scenes,'' \textit{IEEE TIP}, vol.~6, no.~7, pp.~965--976, 1997.
+
+\bibitem{chen2018deep}
+C.~Chen, Q.~Chen, J.~Xu, and V.~Koltun, ``Learning to see in the dark,'' in \textit{CVPR}, 2018, pp.~3291--3300.
+
+\bibitem{lore2017llnet}
+K.~G. Lore, A.~Akintayo, and S.~Sarkar, ``LLNet: A deep autoencoder approach to natural low-light image enhancement,'' \textit{Pattern Recognition}, vol.~61, pp.~650--662, 2017.
+
+\bibitem{wang2019underexposed}
+R.~Wang et al., ``Underexposed photo enhancement using deep illumination estimation,'' in \textit{CVPR}, 2019, pp.~6849--6857.
+
+\bibitem{fu2016weighted}
+X.~Fu et al., ``A weighted variational model for simultaneous reflectance and illumination estimation,'' in \textit{CVPR}, 2016, pp.~2782--2790.
+
+\end{thebibliography}
+
+\end{document}

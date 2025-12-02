@@ -1,0 +1,190 @@
+% ICIP Paper LaTeX Tables and Justification Content
+% Auto-generated for Deep Retinex Decomposition with Traditional DIP Enhancement
+% ================================================================================
+
+% ================================================================================
+% TABLE 1: TRAINING CONFIGURATION
+% ================================================================================
+\begin{table}[t]
+\centering
+\caption{Training Configuration}
+\label{tab:training}
+\begin{tabular}{ll}
+\toprule
+Parameter & Value \\
+\midrule
+Dataset & LOL Dataset \\
+Training Samples & 689 pairs \\
+Validation Samples & 100 pairs \\
+Batch Size & 8 \\
+Patch Size & 48$\times$48 \\
+Optimizer & Adam \\
+Learning Rate & 0.001 $\rightarrow$ 0.0001 \\
+Epochs & 100 \\
+Parameters & 555,205 \\
+Training Time & $\sim$18 minutes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ================================================================================
+% TABLE 2: QUALITY METRICS
+% ================================================================================
+\begin{table}[t]
+\centering
+\caption{Average Quality Metrics Across 100 Test Images}
+\label{tab:metrics}
+\begin{tabular}{lccccc}
+\toprule
+Preset & Entropy & Contrast & Sharpness & Colorfulness & Brightness \\
+\midrule
+Baseline & 5.91$\pm$0.61 & 23.37$\pm$5.38 & 150.84$\pm$100.46 & 25.05$\pm$10.68 & 112.70$\pm$12.48 \\
+Minimal & 6.04$\pm$0.61 & 25.53$\pm$5.91 & 180.79$\pm$120.61 & 27.47$\pm$11.70 & 123.71$\pm$14.13 \\
+\textbf{Balanced} & \textbf{7.32$\pm$0.42} & \textbf{57.22$\pm$8.55} & 2069.40$\pm$1304.53 & \textbf{51.20$\pm$20.60} & 165.40$\pm$20.43 \\
+Aggressive & 4.60$\pm$0.71 & 63.82$\pm$7.61 & 5103.83$\pm$3027.43 & 49.36$\pm$20.06 & 217.08$\pm$10.49 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ================================================================================
+% TABLE 3: IMPROVEMENT PERCENTAGES
+% ================================================================================
+\begin{table}[t]
+\centering
+\caption{Improvement Over Baseline (\%)}
+\label{tab:improvement}
+\begin{tabular}{lcccc}
+\toprule
+Preset & Entropy & Contrast & Sharpness & Colorfulness \\
+\midrule
+Minimal & +2.2\% & +9.3\% & +19.9\% & +9.6\% \\
+\textbf{Balanced} & \textbf{+23.9\%} & \textbf{+144.8\%} & +1271.9\% & \textbf{+104.4\%} \\
+Aggressive & -22.2\% & +173.1\% & +3283.5\% & +97.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ================================================================================
+% TABLE 4: BALANCED PRESET JUSTIFICATION - TRADE-OFF ANALYSIS
+% ================================================================================
+\begin{table}[t]
+\centering
+\caption{Why Balanced Works Best: Trade-off Analysis}
+\label{tab:tradeoff}
+\begin{tabular}{lccc}
+\toprule
+Metric & Balanced & Aggressive & Analysis \\
+\midrule
+Entropy & 7.32 & 4.60 & +59.6\% information preserved \\
+Contrast & 57.22 & 63.82 & Sufficient for visibility \\
+Sharpness & 2069 & 5104 & Natural edges, no halo artifacts \\
+Colorfulness & 51.20 & 49.36 & +3.7\% better color fidelity \\
+Brightness & 165.4 & 217.1 & 65\% vs 85\% (no over-exposure) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ================================================================================
+% TABLE 5: ENHANCEMENT TECHNIQUES PER PRESET
+% ================================================================================
+\begin{table}[t]
+\centering
+\caption{DIP Techniques Applied per Enhancement Preset}
+\label{tab:techniques}
+\begin{tabular}{lcccc}
+\toprule
+Technique & Target & Minimal & Balanced & Aggressive \\
+\midrule
+CLAHE & Illumination & \checkmark & \checkmark & \checkmark\checkmark \\
+Bilateral Filter & Illumination & \checkmark & -- & -- \\
+Adaptive Gamma & Illumination & -- & \checkmark & \checkmark\checkmark \\
+Unsharp Masking & Output & -- & \checkmark & \checkmark\checkmark \\
+Color Balance & Output & -- & \checkmark & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ================================================================================
+% DETAILED JUSTIFICATION SECTIONS (for paper text)
+% ================================================================================
+
+% ENTROPY JUSTIFICATION:
+% ---------------------
+% Balanced achieves highest entropy (7.32) because:
+% 1. Moderate CLAHE (clip_limit=2.0) redistributes histogram without saturation
+% 2. Adaptive gamma formula: gamma = -0.3 / log10(mean_luminance)
+%    - Automatically adjusts based on image brightness
+%    - Prevents over-exposure in bright regions
+%    - Adequately boosts dark regions without clipping
+% 3. Aggressive fails (-22.2%) because:
+%    - High CLAHE clip limits cause histogram saturation at extremes
+%    - Excessive gamma pushes pixels toward maximum intensity
+%    - Information is lost due to clipping
+
+% CONTRAST JUSTIFICATION:
+% ----------------------
+% Balanced achieves 144.8% improvement with good trade-off:
+% 1. CLAHE on illumination map enhances local contrast adaptively
+% 2. Tile-based approach (8x8) ensures both bright/dark regions enhanced
+% 3. Aggressive achieves higher (173.1%) but at cost of entropy loss
+% 4. Balanced's 57.22 is sufficient for excellent visibility
+
+% SHARPNESS JUSTIFICATION:
+% -----------------------
+% Balanced controls sharpness appropriately:
+% 1. Unsharp masking with moderate parameters (alpha=1.5, sigma=1.0)
+% 2. Enhances genuine edges without amplifying noise
+% 3. 1271.9% increase provides visually crisp results
+% 4. Aggressive's 3283.5% over-sharpens:
+%    - Amplifies noise
+%    - Creates halo artifacts around edges
+%    - Reduces perceptual quality despite higher numbers
+
+% COLORFULNESS JUSTIFICATION:
+% --------------------------
+% Balanced achieves best colorfulness (51.20):
+% 1. Color balance using percentile stretching (1% clip)
+% 2. Expands color gamut while preserving relationships
+% 3. Removes color cast from illumination adjustment
+% 4. Enhances saturation naturally
+% 5. Key insight: Similar colorfulness to aggressive (49.36) but 
+%    better entropy means more information preserved
+
+% BRIGHTNESS JUSTIFICATION:
+% ------------------------
+% Balanced achieves optimal brightness (165.40):
+% 1. Represents ~65% of maximum intensity (0-255 scale)
+% 2. Bright enough for clear visibility
+% 3. Leaves headroom for highlights (no clipping)
+% 4. Aggressive (217.08 = 85%) risks over-exposure in bright regions
+
+% ================================================================================
+% MATHEMATICAL FORMULAS FOR PAPER
+% ================================================================================
+
+% Retinex Decomposition:
+% S = R \circ L  (element-wise multiplication)
+
+% Total Loss:
+% L_total = L_decom + L_relight
+
+% Decomposition Loss:
+% L_decom = L_recon^low + L_recon^high + 0.001*L_mutual + 0.1*L_smooth + 0.01*L_equal
+
+% Relighting Loss:
+% L_relight = L_recon^relight + 3*L_smooth^delta
+
+% CLAHE:
+% L'_delta = CLAHE(L_delta; c_limit=2.0, t_size=8x8)
+
+% Bilateral Filter:
+% L''_delta = sum_q G_s(||p-q||) * G_r(|L'(p) - L'(q)|) * L'(q)
+
+% Adaptive Gamma:
+% gamma = -0.3 / log10(mu_L + epsilon), clamped to [0.5, 3.0]
+
+% Unsharp Masking:
+% S'_out = S_out + alpha * (S_out - G_sigma * S_out), alpha=1.5
+
+% Color Balance (per channel c):
+% S''_out(c) = (S'_out(c) - p_1(c)) / (p_99(c) - p_1(c))

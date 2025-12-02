@@ -1,0 +1,842 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% Packages
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{array}
+
+% Custom colors
+\definecolor{iiitblue}{RGB}{0, 82, 147}
+\definecolor{accentorange}{RGB}{230, 126, 34}
+\definecolor{successgreen}{RGB}{39, 174, 96}
+
+\setbeamercolor{structure}{fg=iiitblue}
+\setbeamercolor{title}{fg=white,bg=iiitblue}
+\setbeamercolor{frametitle}{fg=white,bg=iiitblue}
+\setbeamercolor{block title}{fg=white,bg=iiitblue}
+\setbeamercolor{block body}{bg=iiitblue!10}
+
+% Remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% Add frame numbers
+\setbeamertemplate{footline}[frame number]
+
+% Title information
+\title[Deep Retinex + DIP]{Deep Retinex Decomposition Enhanced with\\Traditional Digital Image Processing}
+\subtitle{Low-Light Image Enhancement}
+\author[Choudhary \& Lakhanpal]{Archit Choudhary \and Yajat Lakhanpal}
+\institute[IIIT-H]{International Institute of Information Technology, Hyderabad}
+\date{December 2025}
+
+\begin{document}
+
+%===============================================================================
+% SLIDE 1: Title Slide (~30 seconds)
+%===============================================================================
+\begin{frame}
+\titlepage
+\vspace{-1cm}
+\centering
+\small GitHub: \url{https://github.com/firearc7/Deep-Retinex-Decomposition-Extension}
+\end{frame}
+
+%===============================================================================
+% SLIDE 2: Motivation (~45 seconds)
+%===============================================================================
+\begin{frame}{Why Low-Light Enhancement Matters}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{The Problem:}
+\begin{itemize}
+    \item Low-light conditions degrade image quality
+    \item Reduced contrast and suppressed colors
+    \item Increased noise levels
+    \item Impacts critical applications
+\end{itemize}
+
+\vspace{0.5cm}
+\textbf{Applications:}
+\begin{itemize}
+    \item Surveillance systems
+    \item Autonomous vehicles
+    \item Medical imaging
+    \item Consumer photography
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\centering
+\includegraphics[width=0.9\linewidth]{comparison_low00690.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 3: Problem with Existing Methods (~45 seconds)
+%===============================================================================
+\begin{frame}{Limitations of Existing Approaches}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Traditional Methods:}
+\begin{itemize}
+    \item Histogram Equalization $\rightarrow$ Unnatural results
+    \item SSR/MSR $\rightarrow$ Complex tuning, halo artifacts
+    \item LIME $\rightarrow$ Limited adaptability
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Deep Learning Methods:}
+\begin{itemize}
+    \item RetinexNet $\rightarrow$ Color artifacts
+    \item EnlightenGAN $\rightarrow$ Inconsistent enhancement
+    \item Zero-DCE $\rightarrow$ Over/under enhancement
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{block}{Key Insight}
+\centering
+\textbf{Neither approach alone is sufficient!}
+\vspace{0.3cm}
+
+Deep learning: Good at learning patterns\\
+Traditional DIP: Good at fine-grained control
+
+\vspace{0.3cm}
+$\Downarrow$
+\vspace{0.3cm}
+
+\textbf{Hybrid Approach}\\
+``Train Once, Experiment Forever''
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 4: Our Approach - Overview (~45 seconds)
+%===============================================================================
+\begin{frame}{Our Approach: Hybrid Framework}
+\centering
+\begin{tikzpicture}[scale=0.85, transform shape]
+    % Boxes
+    \node[draw, fill=iiitblue!20, rounded corners, minimum width=2.2cm, minimum height=1cm] (input) at (0,0) {Low-Light\\Image};
+    \node[draw, fill=accentorange!30, rounded corners, minimum width=2.2cm, minimum height=1cm] (decom) at (3.5,0) {DecomNet\\(250K)};
+    \node[draw, fill=accentorange!30, rounded corners, minimum width=2.2cm, minimum height=1cm] (relight) at (7,0) {RelightNet\\(305K)};
+    \node[draw, fill=successgreen!30, rounded corners, minimum width=2.2cm, minimum height=1cm] (dip) at (10.5,0) {DIP\\Pipeline};
+    \node[draw, fill=iiitblue!30, rounded corners, minimum width=2.2cm, minimum height=1cm] (output) at (14,0) {Enhanced\\Output};
+    
+    % Arrows
+    \draw[->, thick] (input) -- (decom);
+    \draw[->, thick] (decom) -- (relight) node[midway, above] {\small $R, L$};
+    \draw[->, thick] (relight) -- (dip) node[midway, above] {\small $\hat{I}$};
+    \draw[->, thick] (dip) -- (output);
+    
+    % Labels
+    \node[above=0.4cm of decom, text=accentorange] {\small\textbf{Deep Learning}};
+    \node[above=0.4cm of dip, text=successgreen!70!black] {\small\textbf{Traditional DIP}};
+\end{tikzpicture}
+
+\vspace{0.5cm}
+\begin{columns}
+\begin{column}{0.33\textwidth}
+\centering
+\textbf{RetinexNet}\\
+\small 555K params\\
+Learns decomposition
+\end{column}
+\begin{column}{0.33\textwidth}
+\centering
+\textbf{13 DIP Techniques}\\
+\small 3-stage pipeline\\
+Controllable enhancement
+\end{column}
+\begin{column}{0.33\textwidth}
+\centering
+\textbf{4 Presets}\\
+\small Quality/speed trade-off\\
+No retraining needed
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 5: Retinex Theory (~45 seconds)
+%===============================================================================
+\begin{frame}{Retinex Decomposition}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Retinex Theory (Land \& McCann, 1971):}
+\begin{equation*}
+I = R \circ L
+\end{equation*}
+where:
+\begin{itemize}
+    \item $I$ = Observed image
+    \item $R$ = Reflectance (intrinsic)
+    \item $L$ = Illumination (lighting)
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Enhancement:}
+\begin{equation*}
+\hat{I} = R \circ \hat{L}
+\end{equation*}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{Loss Functions:}
+
+\textit{Reconstruction:}
+\begin{equation*}
+\mathcal{L}_{recon} = \|R \circ \hat{L} - I_{gt}\|_1
+\end{equation*}
+
+\textit{Smoothness:}
+\begin{equation*}
+\mathcal{L}_{smooth} = \sum_i \|\nabla L_i\|_1 \cdot e^{-\lambda \|\nabla R_i\|}
+\end{equation*}
+
+\textit{Total:}
+\begin{equation*}
+\mathcal{L} = \mathcal{L}_{recon} + \lambda_1 \mathcal{L}_{smooth} + \lambda_2 \mathcal{L}_{mutual}
+\end{equation*}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 6: Three-Stage DIP Pipeline (~1 minute)
+%===============================================================================
+\begin{frame}{Three-Stage DIP Enhancement Pipeline}
+\begin{columns}
+\begin{column}{0.55\textwidth}
+\textbf{Stage 1: Illumination Enhancement} (Primary)
+\begin{itemize}
+    \item \textcolor{iiitblue}{\textbf{CLAHE}}: Adaptive contrast, clip=2.0
+    \item \textcolor{iiitblue}{\textbf{Bilateral Filter}}: Edge-preserving, $\sigma=75$
+    \item \textcolor{iiitblue}{\textbf{Adaptive Gamma}}: $\gamma = -\log_2(\mu)$
+    \item \textcolor{iiitblue}{\textbf{Guided Filter}}: O(N) complexity
+    \item \textcolor{iiitblue}{\textbf{Multi-Scale Retinex}}: $\sigma \in \{15,80,250\}$
+    \item \textcolor{iiitblue}{\textbf{Tone Mapping}}: Reinhard operator
+    \item \textcolor{iiitblue}{\textbf{Histogram EQ}}: Baseline comparison
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Stage 2: Reflectance} (Skip---already good)
+
+\vspace{0.2cm}
+\textbf{Stage 3: Output Enhancement}
+\begin{itemize}
+    \item Unsharp Mask, White Balance, Local Contrast
+    \item Gamma Correction, NLM Denoising
+\end{itemize}
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.7, transform shape]
+    \node[draw, fill=iiitblue!20, rounded corners, minimum width=3cm] (s1) at (0,3) {Stage 1: Illumination};
+    \node[draw, fill=gray!20, rounded corners, minimum width=3cm] (s2) at (0,1.5) {Stage 2: Reflectance};
+    \node[draw, fill=successgreen!20, rounded corners, minimum width=3cm] (s3) at (0,0) {Stage 3: Output};
+    
+    \draw[->, thick] (s1) -- (s2);
+    \draw[->, thick] (s2) -- (s3);
+    
+    \node[right=0.3cm of s1, text=iiitblue] {\small HIGH impact};
+    \node[right=0.3cm of s2, text=gray] {\small SKIP};
+    \node[right=0.3cm of s3, text=successgreen!70!black] {\small REFINE};
+\end{tikzpicture}
+
+\vspace{0.5cm}
+\textbf{Key Design Decision:}\\
+\small Illumination $>$ Reflectance\\
+(RetinexNet R is already good)
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 7: DIP Techniques Details (~1 minute)
+%===============================================================================
+\begin{frame}{DIP Techniques: Mathematical Formulations}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{1. CLAHE} (Contrast Limited Adaptive HE)
+\begin{itemize}
+    \item Applied to L channel in LAB space
+    \item clip\_limit=2.0, tile\_grid=8$\times$8
+    \item Prevents noise amplification
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{2. Bilateral Filter}
+\begin{equation*}
+I_{bf}(x) = \frac{1}{W} \sum_{x_i} I(x_i) \cdot G_s \cdot G_r
+\end{equation*}
+\begin{itemize}
+    \item $G_s$: Spatial Gaussian
+    \item $G_r$: Range (intensity) Gaussian
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{3. Adaptive Gamma}
+\begin{equation*}
+\gamma = -\log_2(\mu), \quad I_{out} = I_{in}^\gamma
+\end{equation*}
+\begin{itemize}
+    \item Matches Weber-Fechner law
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{4. Unsharp Masking}
+\begin{equation*}
+I_{sharp} = I + \alpha(I - G_\sigma * I)
+\end{equation*}
+\begin{itemize}
+    \item $\alpha=1.0$, $\sigma=1.0$
+    \item High-frequency enhancement
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{5. White Balance (Gray World)}
+\begin{equation*}
+I_c = I_c \times \frac{\bar{I}_{gray}}{\bar{I}_c}
+\end{equation*}
+\begin{itemize}
+    \item Corrects color casts
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{6. Multi-Scale Retinex}
+\begin{equation*}
+MSR = \sum_{\sigma} w_\sigma \cdot [\log I - \log(G_\sigma * I)]
+\end{equation*}
+\begin{itemize}
+    \item $\sigma \in \{15, 80, 250\}$
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 8: Advanced DIP & Preprocessing (~45 seconds)
+%===============================================================================
+\begin{frame}{Advanced Pipeline: For Custom Images}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Preprocessing Module:}\\
+\small Automatic image analysis detects:
+\begin{itemize}
+    \item High noise $\rightarrow$ NLM Denoising
+    \item Color cast $\rightarrow$ Gray World + White Patch
+    \item Extreme darkness $\rightarrow$ Spatially-varying gamma
+    \item Low contrast $\rightarrow$ Illumination normalization
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Preprocessing Presets:}
+\begin{itemize}
+    \item \textbf{auto}: Adaptive (recommended)
+    \item \textbf{minimal}: Fast, if noisy only
+    \item \textbf{standard}: Full preprocessing
+    \item \textbf{aggressive}: Very difficult images
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{8 Advanced DIP Techniques:}
+
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Technique & Purpose \\
+\midrule
+Anisotropic Diffusion & Better smoothing \\
+Laplacian Pyramid & Multi-scale detail \\
+Shadow Enhancement & Selective brightening \\
+Dark Channel Prior & Haze removal \\
+Adaptive Bilateral & Edge-adaptive \\
+Domain Transform & Fast smoothing \\
+Percentile Stretch & Robust contrast \\
+SSR + Color Restore & Alt. illumination \\
+\bottomrule
+\end{tabular}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 9: Enhancement Presets (~30 seconds)
+%===============================================================================
+\begin{frame}{Enhancement Presets}
+\begin{columns}
+\begin{column}{0.55\textwidth}
+\centering
+\begin{table}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Parameter & Base & Min & \textbf{Bal} & Agg \\
+\midrule
+CLAHE Clip & 1.0 & 1.5 & \textbf{2.5} & 4.0 \\
+Bilateral $\sigma$ & 50 & 60 & \textbf{75} & 100 \\
+Gamma & 1.0 & 0.95 & \textbf{0.85} & 0.7 \\
+Sharpening & 0 & 0.3 & \textbf{0.7} & 1.2 \\
+Saturation & 1.0 & 1.05 & \textbf{1.15} & 1.3 \\
+\midrule
+Time (s) & 0.005 & 0.011 & \textbf{0.089} & 0.134 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Preset Use Cases:}
+
+\vspace{0.3cm}
+\textbf{Baseline}: Raw model output\\
+\small Benchmark, when sufficient
+
+\vspace{0.2cm}
+\textbf{Minimal}: Subtle improvement\\
+\small Real-time video, mobile
+
+\vspace{0.2cm}
+\textbf{Balanced} ⭐: Best quality/speed\\
+\small Production default
+
+\vspace{0.2cm}
+\textbf{Aggressive}: Maximum enhancement\\
+\small Extremely poor inputs, forensics
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 10: Training Details (~30 seconds)
+%===============================================================================
+\begin{frame}{Training Configuration}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Dataset: LOL (Low-Light)}
+\begin{itemize}
+    \item 689 training pairs
+    \item 100 validation pairs
+    \item Resolution: 400 $\times$ 600
+    \item Paired low/normal-light images
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Training Setup:}
+\begin{itemize}
+    \item Epochs: 100 (best at epoch 84)
+    \item Batch size: 8, Patch size: 48
+    \item Optimizer: Adam ($\beta_1=0.9$, $\beta_2=0.999$)
+    \item LR: $10^{-4}$ with cosine annealing
+    \item Training time: $\sim$18 minutes
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\centering
+\includegraphics[width=\linewidth]{training_curves.png}
+\vspace{0.2cm}
+
+\textbf{Best Val Loss: 0.1640}\\
+\textbf{Loss Reduction: 59.8\%}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 11: Evaluation Metrics (~30 seconds)
+%===============================================================================
+\begin{frame}{Evaluation Metrics (8 Metrics)}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{No-Reference Metrics:}
+
+\textbf{1. Entropy}: $H = -\sum p(x_i) \log_2 p(x_i)$
+\begin{itemize}
+    \item Information content
+    \item Optimal: 7.5-8.0
+\end{itemize}
+
+\textbf{2. Contrast}: $\sigma(L)$
+\begin{itemize}
+    \item Standard deviation of luminance
+    \item Higher = better separation
+\end{itemize}
+
+\textbf{3. Sharpness}: $\sum|G_x|^2 + |G_y|^2$
+\begin{itemize}
+    \item Sobel gradient magnitude
+    \item Edge strength indicator
+\end{itemize}
+
+\textbf{4. Colorfulness}: Hasler-Süsstrunk
+\begin{itemize}
+    \item Perceptual color vividness
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{5. Brightness}: Mean luminance
+\begin{itemize}
+    \item ITU-R BT.601 weights
+    \item Optimal: 0.4-0.6
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Reference-Based:}
+
+\textbf{6. PSNR}: $20\log_{10}(MAX/\sqrt{MSE})$
+\begin{itemize}
+    \item Standard benchmark
+\end{itemize}
+
+\textbf{7. SSIM}: Luminance + Contrast + Structure
+\begin{itemize}
+    \item Better perceptual correlation
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Practical:}
+
+\textbf{8. Processing Time}
+\begin{itemize}
+    \item Real-time constraint
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 12: Quantitative Results (~1 minute)
+%===============================================================================
+\begin{frame}{Quantitative Results (100 Test Images)}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\centering
+\begin{table}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Preset & Ent. & Cont. & Color. & Time \\
+\midrule
+Baseline & 5.91 & 23.37 & 25.05 & 0.005 \\
+Minimal & 6.04 & 25.53 & 27.47 & 0.011 \\
+\textbf{Balanced} & \textbf{7.32} & \textbf{57.22} & \textbf{51.20} & 0.089 \\
+Aggressive & 4.60 & 63.82 & 49.36 & 0.134 \\
+\midrule
+Illum Only & 6.22 & 26.40 & 28.16 & 0.043 \\
+Output Only & 7.17 & 56.57 & 50.49 & 0.071 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3cm}
+\textbf{Balanced Improvements:}
+\begin{itemize}
+    \item Entropy: \textcolor{successgreen}{\textbf{+23.9\%}}
+    \item Contrast: \textcolor{successgreen}{\textbf{+144.8\%}}
+    \item Colorfulness: \textcolor{successgreen}{\textbf{+104.4\%}}
+    \item Sharpness: \textcolor{successgreen}{\textbf{+866\%}}
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\centering
+\includegraphics[width=\linewidth]{metrics_comparison.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 13: Ablation Study (~1 minute)
+%===============================================================================
+\begin{frame}{Ablation Study: Why Balanced Works Best}
+\begin{columns}
+\begin{column}{0.42\textwidth}
+\centering
+\includegraphics[width=\linewidth]{ablation_study.png}
+\end{column}
+\begin{column}{0.58\textwidth}
+\textbf{1. Information Preservation}
+\begin{itemize}
+    \item Highest entropy (7.32)
+    \item Aggressive destroys tonal variations (4.60)
+\end{itemize}
+
+\textbf{2. Optimal Contrast (+144.8\%)}
+\begin{itemize}
+    \item CLAHE + Gamma synergy
+    \item Without saturation artifacts
+\end{itemize}
+
+\textbf{3. Natural Sharpness}
+\begin{itemize}
+    \item No halo artifacts
+    \item Aggressive: edge overshoot
+\end{itemize}
+
+\textbf{4. Color Fidelity (+104.4\%)}
+\begin{itemize}
+    \item Highest colorfulness: 51.20
+    \item Natural relationships preserved
+\end{itemize}
+
+\textbf{5. Appropriate Brightness}
+\begin{itemize}
+    \item Preserves highlight headroom
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 14: Visual Results (~45 seconds)
+%===============================================================================
+\begin{frame}{Visual Results}
+\centering
+\includegraphics[width=0.85\linewidth]{comparison_low00696.png}
+
+\vspace{0.3cm}
+\textbf{Progressive enhancement: Input $\rightarrow$ RetinexNet $\rightarrow$ DIP Pipeline $\rightarrow$ Output}
+\end{frame}
+
+%===============================================================================
+% SLIDE 15: More Visual Results (~30 seconds)
+%===============================================================================
+\begin{frame}{More Visual Comparisons}
+\centering
+\includegraphics[width=0.85\linewidth]{comparison_low00690.png}
+
+\vspace{0.3cm}
+Natural-looking enhancement with improved visibility, enhanced colors, and preserved details
+\end{frame}
+
+%===============================================================================
+% SLIDE 16: Demo Slide
+%===============================================================================
+\begin{frame}
+\centering
+\vspace{2cm}
+{\Huge \textbf{DEMO}}
+
+\vspace{1cm}
+{\Large Live demonstration of the enhancement system}
+
+\vspace{1cm}
+\begin{itemize}
+    \centering
+    \item[$\bullet$] Custom image enhancement
+    \item[$\bullet$] Preset comparison (Baseline vs Balanced vs Aggressive)
+    \item[$\bullet$] Preprocessing for out-of-distribution images
+    \item[$\bullet$] Real-time processing
+\end{itemize}
+\end{frame}
+
+%===============================================================================
+% SLIDE 17: Design Decisions (~30 seconds)
+%===============================================================================
+\begin{frame}{Key Design Decisions}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Why CLAHE on Illumination?}
+\begin{itemize}
+    \item Illumination is smooth (no texture)
+    \item CLAHE won't amplify texture noise
+    \item Output has reflectance texture
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Why Skip Reflectance?}
+\begin{itemize}
+    \item RetinexNet R is already high quality
+    \item No consistent improvement observed
+    \item Risk of color shifts
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Why Post-Processing?}
+\begin{itemize}
+    \item No retraining needed
+    \item 100+ configurations instantly
+    \item Flexibility $>$ Optimality
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{Stage Separation Results:}
+
+\vspace{0.3cm}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Configuration & Sharpness \\
+\midrule
+Baseline & 150.84 \\
+Illumination Only & 186.31 (+23.5\%) \\
+Output Only & 2370.22 (+1471\%) \\
+Balanced (both) & 2069.40 (+866\%) \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5cm}
+\textbf{Key Insight:}\\
+Output enhancement amplifies illumination improvements
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 18: Comparison with SOTA (~30 seconds)
+%===============================================================================
+\begin{frame}{Advantages Over Existing Methods}
+\begin{columns}
+\begin{column}{0.33\textwidth}
+\begin{block}{vs. Pure Deep Learning}
+\begin{itemize}
+    \item Controllable parameters
+    \item No retraining needed
+    \item Interpretable processing
+    \item Adapt to use cases
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{vs. Pure Traditional}
+\begin{itemize}
+    \item Handles complex lighting
+    \item Learned decomposition
+    \item More robust
+    \item Better generalization
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}{0.33\textwidth}
+\begin{block}{vs. Other Hybrids}
+\begin{itemize}
+    \item Modular architecture
+    \item Independent updates
+    \item Flexible presets
+    \item Two-tier approach
+\end{itemize}
+\end{block}
+\end{column}
+\end{columns}
+
+\vspace{0.3cm}
+\centering
+\begin{table}
+\small
+\begin{tabular}{@{}lc@{}}
+\toprule
+Component & Specification \\
+\midrule
+Total Parameters & 555,205 \\
+Training Time & $\sim$18 minutes \\
+Inference & Real-time capable (11 fps CPU) \\
+DIP Techniques & 13 standard + 8 advanced \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{frame}
+
+%===============================================================================
+% SLIDE 19: Future Work (~45 seconds)
+%===============================================================================
+\begin{frame}{Future Work}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Frequency Domain Processing:}
+\begin{itemize}
+    \item Homomorphic filtering
+    \item FFT-based denoising
+    \item DCT-based enhancement
+\end{itemize}
+
+\textbf{Advanced Techniques:}
+\begin{itemize}
+    \item Morphological operations
+    \item Lab/HSV color space processing
+    \item Texture enhancement (LBP, Gabor)
+    \item Exposure fusion from single image
+\end{itemize}
+
+\textbf{Content-Aware Processing:}
+\begin{itemize}
+    \item Saliency-based enhancement
+    \item Semantic segmentation-guided
+    \item Depth-aware processing
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{Quality Assessment:}
+\begin{itemize}
+    \item NIQE, BRISQUE (no-reference)
+    \item LPIPS (perceptual)
+    \item Automatic parameter optimization
+\end{itemize}
+
+\textbf{Computational Efficiency:}
+\begin{itemize}
+    \item GPU acceleration
+    \item Integral images
+    \item Lookup tables (LUTs)
+\end{itemize}
+
+\textbf{Applications:}
+\begin{itemize}
+    \item Video processing with temporal consistency
+    \item Mobile deployment
+    \item Interactive parameter tuning
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
+% SLIDE 20: Conclusion (~30 seconds)
+%===============================================================================
+\begin{frame}{Conclusion}
+\begin{block}{Summary}
+\begin{itemize}
+    \item Proposed a \textbf{hybrid framework} combining deep Retinex decomposition with \textbf{13 traditional DIP techniques}
+    \item \textbf{``Train Once, Experiment Forever''}: No retraining for new enhancement combinations
+    \item \textbf{Two-tier approach}: Standard pipeline + Advanced pipeline with preprocessing
+    \item \textbf{Balanced preset} achieves optimal results:
+    \begin{itemize}
+        \item +23.9\% entropy, +144.8\% contrast, +104.4\% colorfulness, +866\% sharpness
+    \end{itemize}
+    \item \textbf{Key insight}: Illumination enhancement $>$ Reflectance enhancement
+\end{itemize}
+\end{block}
+
+\vspace{0.2cm}
+\centering
+\begin{block}{Code Available}
+\centering
+\url{https://github.com/firearc7/Deep-Retinex-Decomposition-Extension}
+\end{block}
+\end{frame}
+
+%===============================================================================
+% SLIDE 21: Thank You
+%===============================================================================
+\begin{frame}
+\centering
+\vspace{1.5cm}
+{\Huge \textbf{Thank You!}}
+
+\vspace{1cm}
+{\Large Questions?}
+
+\vspace{1.5cm}
+\textbf{Archit Choudhary \& Yajat Lakhanpal}\\
+International Institute of Information Technology, Hyderabad
+
+\vspace{0.5cm}
+\small
+GitHub: \url{https://github.com/firearc7/Deep-Retinex-Decomposition-Extension}
+\end{frame}
+
+\end{document}
