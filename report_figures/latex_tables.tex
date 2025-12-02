@@ -16,7 +16,7 @@ Parameter & Value \\
 Dataset & LOL Dataset \\
 Training Samples & 689 pairs \\
 Validation Samples & 100 pairs \\
-Batch Size & 8 \\
+Batch Size & 16 \\
 Patch Size & 48$\times$48 \\
 Optimizer & Adam \\
 Learning Rate & 0.001 $\rightarrow$ 0.0001 \\
@@ -95,11 +95,12 @@ Brightness & 165.4 & 217.1 & 65\% vs 85\% (no over-exposure) \\
 \toprule
 Technique & Target & Minimal & Balanced & Aggressive \\
 \midrule
-CLAHE & Illumination & \checkmark & \checkmark & \checkmark\checkmark \\
-Bilateral Filter & Illumination & \checkmark & -- & -- \\
-Adaptive Gamma & Illumination & -- & \checkmark & \checkmark\checkmark \\
+CLAHE & Illumination & -- & \checkmark & \checkmark\checkmark \\
+Bilateral Filter & Illumination & -- & \checkmark & \checkmark \\
+Adaptive Gamma & Illumination & \checkmark & -- & \checkmark \\
 Unsharp Masking & Output & -- & \checkmark & \checkmark\checkmark \\
 Color Balance & Output & -- & \checkmark & \checkmark \\
+Tone Mapping & Output & -- & -- & \checkmark \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -132,7 +133,7 @@ Color Balance & Output & -- & \checkmark & \checkmark \\
 % SHARPNESS JUSTIFICATION:
 % -----------------------
 % Balanced controls sharpness appropriately:
-% 1. Unsharp masking with moderate parameters (alpha=1.5, sigma=1.0)
+% 1. Unsharp masking with moderate parameters (alpha=1.2, sigma=1.0)
 % 2. Enhances genuine edges without amplifying noise
 % 3. 1271.9% increase provides visually crisp results
 % 4. Aggressive's 3283.5% over-sharpens:
@@ -184,7 +185,7 @@ Color Balance & Output & -- & \checkmark & \checkmark \\
 % gamma = -0.3 / log10(mu_L + epsilon), clamped to [0.5, 3.0]
 
 % Unsharp Masking:
-% S'_out = S_out + alpha * (S_out - G_sigma * S_out), alpha=1.5
+% S'_out = S_out + alpha * (S_out - G_sigma * S_out), alpha=1.2 (balanced), 2.0 (aggressive)
 
 % Color Balance (per channel c):
 % S''_out(c) = (S'_out(c) - p_1(c)) / (p_99(c) - p_1(c))

@@ -97,13 +97,13 @@ The deep learning component (DecomNet + RelightNet) handles scene-adaptive decom
 
 The complete network comprises 555,205 trainable parameters, split between two sub-networks:
 
-\textbf{DecomNet} ($\sim$250K parameters): Encoder-decoder architecture that decomposes input image~$I$ into reflectance~$R$ and illumination~$L$:
+\textbf{DecomNet} ($\sim$208K parameters): Convolutional architecture that decomposes input image~$I$ into reflectance~$R$ and illumination~$L$:
 \begin{equation}
 I = R \circ L
 \end{equation}
-where $\circ$ denotes element-wise multiplication. The encoder uses convolutional layers with ReLU to extract features, while the decoder uses transposed convolutions to reconstruct full-resolution maps. Sigmoid activation ensures outputs are in $[0, 1]$.
+where $\circ$ denotes element-wise multiplication. The network uses stacked convolutional layers with ReLU activation to extract features, with sigmoid activation ensuring outputs are in $[0, 1]$.
 
-\textbf{RelightNet} ($\sim$305K parameters): U-Net architecture with skip connections that enhances illumination~$L$ to produce~$\hat{L}$. Skip connections preserve spatial details. The enhanced image is:
+\textbf{RelightNet} ($\sim$347K parameters): U-Net style architecture with skip connections that enhances illumination~$L$ to produce~$\hat{L}$. Skip connections preserve spatial details. The enhanced image is:
 \begin{equation}
 \hat{I} = R \circ \hat{L}
 \end{equation}
@@ -152,7 +152,7 @@ This stage is generally skipped because RetinexNet produces high-quality reflect
 
 \textbf{Stage 3: Output Enhancement} (Refinement of final image)
 \begin{itemize}
-    \item \textbf{Unsharp Masking}: Edge enhancement using $I_{sharp} = I + \alpha(I - G_\sigma * I)$ with $\alpha=1.0$, $\sigma=1.0$. Recovers smoothed details.
+    \item \textbf{Unsharp Masking}: Edge enhancement using $I_{sharp} = I + \alpha(I - G_\sigma * I)$ with $\alpha=1.2$ (balanced) or $\alpha=2.0$ (aggressive), $\sigma=1.0$. Recovers smoothed details.
     \item \textbf{White Balance}: Gray World scales each channel to neutral gray average, correcting color casts.
     \item \textbf{Color Balance}: Percentile-based stretching (1st to 99th percentile) for robust color correction.
     \item \textbf{Local Contrast Enhancement}: Unsharp mask with larger kernel ($\sigma=2.0$) for local contrast.
@@ -205,12 +205,12 @@ We train and evaluate on the LOL (Low-Light) dataset~\cite{wei2018deep}, which c
     \item \textbf{Training time}: Approximately 18 minutes on GPU
 \end{itemize}
 
-Figure~\ref{fig:training} shows the training convergence. The validation loss reaches its minimum of 0.1640 at epoch 84, representing a 59.8\% reduction from the initial loss. The step decay at epoch 50 enables fine-tuning in the later training phase.
+Figure~\ref{fig:training} shows the training convergence. The validation loss reaches its minimum of 0.1640 at epoch 84, representing a 35.1\% reduction from initial validation loss. The training loss shows 59.9\% reduction over the full training. The step decay at epoch 50 enables fine-tuning in the later training phase.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{training_analysis.png}
-\caption{Training analysis: Loss convergence showing best validation loss of 0.1640 at epoch 84, with learning rate step decay at epoch 50. Total loss reduction of 59.8\% from initial to best.}
+\caption{Training analysis: Loss convergence showing best validation loss of 0.1640 at epoch 84, with learning rate step decay at epoch 50. Training loss reduced by 59.9\%, validation loss by 35.1\%.}
 \label{fig:training}
 \end{figure}
 
