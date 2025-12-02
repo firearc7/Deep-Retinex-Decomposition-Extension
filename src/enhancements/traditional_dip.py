@@ -290,30 +290,26 @@ class TraditionalEnhancements:
         enhanced = image * (1 + shadow_mask * (enhancement_factor - 1))
         return np.clip(enhanced, 0, 1)
     
-    # ==================== E1: EDGE-PRESERVING DENOISING ON R ====================
+    # illumination aware denoising methods
     
     @staticmethod
     def illumination_aware_bilateral(image: np.ndarray, illumination: np.ndarray,
                                     base_sigma_color: float = 50, 
                                     base_sigma_space: float = 50,
                                     strength_multiplier: float = 2.0) -> np.ndarray:
-        """
-        Bilateral filter with illumination-aware strength.
-        Stronger filtering in darker regions where noise is more visible.
-        """
+        # bilateral filter with stronger filtering in dark regions
         if image.max() > 1.0:
             image = image / 255.0
         if illumination.max() > 1.0:
             illumination = illumination / 255.0
         
-        # compute local darkness (inverse of illumination)
+        # compute local darkness as inverse of illumination
         if len(illumination.shape) == 3:
             darkness = 1.0 - np.mean(illumination, axis=2)
         else:
             darkness = 1.0 - illumination
         
-        # adaptive sigma: stronger in dark regions
-        # scale from 1.0 (bright) to strength_multiplier (dark)
+        # stronger sigma in dark regions
         adaptive_strength = 1.0 + darkness * (strength_multiplier - 1.0)
         mean_strength = np.mean(adaptive_strength)
         
@@ -330,10 +326,7 @@ class TraditionalEnhancements:
     def illumination_aware_guided_filter(image: np.ndarray, illumination: np.ndarray,
                                         base_radius: int = 8, base_eps: float = 0.01,
                                         strength_multiplier: float = 3.0) -> np.ndarray:
-        """
-        Guided filter with illumination-aware parameters.
-        Larger radius and higher eps in darker regions for stronger denoising.
-        """
+        # guided filter with adaptive strength based on illumination
         if illumination.max() > 1.0:
             illumination = illumination / 255.0
         
@@ -353,10 +346,7 @@ class TraditionalEnhancements:
     @staticmethod
     def wavelet_shrinkage_denoise(image: np.ndarray, wavelet: str = 'db1',
                                  level: int = 2, threshold_factor: float = 0.5) -> np.ndarray:
-        """
-        Wavelet-based denoising using soft thresholding.
-        Requires PyWavelets (pywt).
-        """
+        # wavelet denoising with soft thresholding
         try:
             import pywt
         except ImportError:
@@ -394,10 +384,7 @@ class TraditionalEnhancements:
     def illumination_aware_wavelet_denoise(image: np.ndarray, illumination: np.ndarray,
                                           base_threshold: float = 0.5,
                                           strength_multiplier: float = 2.0) -> np.ndarray:
-        """
-        Wavelet denoising with illumination-aware threshold.
-        Stronger denoising in darker regions.
-        """
+        # wavelet denoising with adaptive threshold based on illumination
         if illumination.max() > 1.0:
             illumination = illumination / 255.0
         
@@ -409,15 +396,12 @@ class TraditionalEnhancements:
             image, threshold_factor=adaptive_threshold
         )
     
-    # ==================== E3: PHOTOMETRIC POST-ADJUSTMENTS ====================
+    # micro contrast enhancement methods
     
     @staticmethod
     def dog_local_contrast(image: np.ndarray, sigma1: float = 1.0, 
                           sigma2: float = 2.0, amount: float = 1.0) -> np.ndarray:
-        """
-        Difference of Gaussians (DoG) for local contrast enhancement.
-        Applied specifically to reflectance for micro-contrast control.
-        """
+        # difference of gaussians for local contrast
         if image.max() > 1.0:
             image = image / 255.0
         
@@ -432,10 +416,7 @@ class TraditionalEnhancements:
     def reflectance_micro_contrast(reflectance: np.ndarray, 
                                   method: str = 'unsharp',
                                   amount: float = 0.5) -> np.ndarray:
-        """
-        Enhance micro-contrast in reflectance component.
-        Options: 'unsharp', 'dog', 'laplacian'
-        """
+        # micro contrast enhancement on reflectance
         if reflectance.max() > 1.0:
             reflectance = reflectance / 255.0
         
@@ -469,17 +450,13 @@ class TraditionalEnhancements:
     def illumination_gamma_curve(illumination: np.ndarray, 
                                 gamma: float = 0.8,
                                 adaptive: bool = True) -> np.ndarray:
-        """
-        Apply gamma curve to illumination for global brightness control.
-        If adaptive=True, gamma is adjusted based on mean illumination.
-        """
+        # gamma curve for illumination brightness control
         if illumination.max() > 1.0:
             illumination = illumination / 255.0
         
         if adaptive:
             mean_illum = np.mean(illumination)
-            # darker images get lower gamma (more brightening)
-            # formula: gamma = base_gamma * (0.5 + mean_illum)
+            # adjust gamma based on mean illumination
             gamma = gamma * (0.5 + mean_illum)
             gamma = np.clip(gamma, 0.4, 1.5)
         

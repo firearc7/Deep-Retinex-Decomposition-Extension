@@ -22,10 +22,10 @@ class EnhancementPipeline:
             'bilateral_params': {'d': 9, 'sigma_color': 75, 'sigma_space': 75},
             'gamma': 2.2,
             'reflectance_methods': [],
-            'reflectance_denoise_method': 'bilateral',  # E1: bilateral, guided, wavelet
-            'reflectance_denoise_illumination_aware': True,  # E1: adaptive strength
-            'reflectance_micro_contrast': False,  # E3: local contrast on R
-            'reflectance_micro_contrast_method': 'unsharp',  # E3: unsharp, dog, laplacian
+            'reflectance_denoise_method': 'bilateral',
+            'reflectance_denoise_illumination_aware': True,
+            'reflectance_micro_contrast': False,
+            'reflectance_micro_contrast_method': 'unsharp',
             'reflectance_micro_contrast_amount': 0.5,
             'output_methods': ['unsharp_mask', 'color_balance'],
             'unsharp_params': {'kernel_size': 5, 'sigma': 1.0, 'amount': 1.5},
@@ -61,13 +61,13 @@ class EnhancementPipeline:
     
     def enhance_reflectance(self, reflectance: np.ndarray, 
                            illumination: Optional[np.ndarray] = None) -> np.ndarray:
-        # enhance reflectance map with optional illumination-aware processing
+        # enhance reflectance with optional illumination awareness
         if not self.config['apply_to_reflectance']:
             return reflectance
         
         enhanced = reflectance.copy()
         
-        # E1: Edge-preserving denoising with illumination-aware strength
+        # edge preserving denoising with illumination aware strength
         denoise_method = self.config.get('reflectance_denoise_method', 'bilateral')
         illum_aware = self.config.get('reflectance_denoise_illumination_aware', False)
         
@@ -85,7 +85,7 @@ class EnhancementPipeline:
                     enhanced, illumination
                 )
         elif denoise_method:
-            # fallback to standard methods
+            # standard methods without illumination awareness
             if denoise_method == 'bilateral':
                 enhanced = self.enhancements.bilateral_filter(enhanced)
             elif denoise_method == 'guided':
@@ -93,7 +93,7 @@ class EnhancementPipeline:
             elif denoise_method == 'wavelet':
                 enhanced = self.enhancements.wavelet_shrinkage_denoise(enhanced)
         
-        # E3: Micro-contrast enhancement on reflectance
+        # micro contrast enhancement on reflectance
         if self.config.get('reflectance_micro_contrast', False):
             method = self.config.get('reflectance_micro_contrast_method', 'unsharp')
             amount = self.config.get('reflectance_micro_contrast_amount', 0.5)
@@ -101,7 +101,7 @@ class EnhancementPipeline:
                 enhanced, method=method, amount=amount
             )
         
-        # Legacy methods
+        # additional methods
         for method in self.config['reflectance_methods']:
             if method == 'bilateral_filter':
                 enhanced = self.enhancements.bilateral_filter(enhanced)
@@ -131,13 +131,13 @@ class EnhancementPipeline:
     
     def process_full_pipeline(self, R: np.ndarray, I: np.ndarray, 
                              I_delta: Optional[np.ndarray] = None) -> Tuple[np.ndarray, Dict]:
-        # process full enhancement pipeline
+        # full enhancement pipeline
         results = {}
         
         # determine which illumination to use for illumination-aware processing
         illum_for_awareness = I_delta if I_delta is not None else I
         
-        # E1: enhance reflectance with illumination-aware denoising
+        # enhance reflectance with illumination aware denoising
         R_enhanced = self.enhance_reflectance(R, illumination=illum_for_awareness)
         results['reflectance_enhanced'] = R_enhanced
         
@@ -242,28 +242,25 @@ class EnhancementFactory:
                 'color_balance_percent': 1,
             },
             
-            # NEW: E1+E3 experimental preset with illumination-aware reflectance processing
+            # experimental preset with reflectance processing
             'experimental_e1e3': {
                 'apply_to_illumination': True,
-                'apply_to_reflectance': True,  # Enable R processing
+                'apply_to_reflectance': True,
                 'apply_to_output': True,
                 'illumination_methods': ['clahe', 'bilateral_filter'],
                 'clahe_params': {'clip_limit': 2.0, 'tile_size': (8, 8)},
                 'bilateral_params': {'d': 7, 'sigma_color': 50, 'sigma_space': 50},
-                # E1: Illumination-aware denoising on R
                 'reflectance_methods': [],
-                'reflectance_denoise_method': 'bilateral',  # bilateral, guided, or wavelet
+                'reflectance_denoise_method': 'bilateral',
                 'reflectance_denoise_illumination_aware': True,
-                # E3: Micro-contrast on R
                 'reflectance_micro_contrast': True,
-                'reflectance_micro_contrast_method': 'dog',  # unsharp, dog, or laplacian
+                'reflectance_micro_contrast_method': 'dog',
                 'reflectance_micro_contrast_amount': 0.3,
-                # Output enhancement
                 'output_methods': ['color_balance'],
                 'color_balance_percent': 1,
             },
             
-            # E1 only: Test illumination-aware denoising
+            # bilateral denoising preset
             'e1_denoise_bilateral': {
                 'apply_to_illumination': True,
                 'apply_to_reflectance': True,
@@ -309,7 +306,7 @@ class EnhancementFactory:
                 'color_balance_percent': 1,
             },
             
-            # E3 only: Test micro-contrast on R
+            # micro contrast unsharp preset
             'e3_micro_contrast_unsharp': {
                 'apply_to_illumination': True,
                 'apply_to_reflectance': True,
