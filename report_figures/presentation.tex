@@ -226,7 +226,11 @@ where:
 \end{itemize}
 
 \vspace{0.2cm}
-\textbf{Stage 2: Reflectance} (Skip---already good)
+\textbf{Stage 2: Reflectance} (\textcolor{accentorange}{\textbf{NEW: E1 Techniques}})
+\begin{itemize}
+    \item \textcolor{accentorange}{\textbf{Illumination-Aware Denoising}}
+    \item Bilateral/Guided with adaptive strength
+\end{itemize}
 
 \vspace{0.2cm}
 \textbf{Stage 3: Output Enhancement}
@@ -239,21 +243,21 @@ where:
 \centering
 \begin{tikzpicture}[scale=0.7, transform shape]
     \node[draw, fill=iiitblue!20, rounded corners, minimum width=3cm] (s1) at (0,3) {Stage 1: Illumination};
-    \node[draw, fill=gray!20, rounded corners, minimum width=3cm] (s2) at (0,1.5) {Stage 2: Reflectance};
+    \node[draw, fill=accentorange!20, rounded corners, minimum width=3cm] (s2) at (0,1.5) {Stage 2: Reflectance};
     \node[draw, fill=successgreen!20, rounded corners, minimum width=3cm] (s3) at (0,0) {Stage 3: Output};
     
     \draw[->, thick] (s1) -- (s2);
     \draw[->, thick] (s2) -- (s3);
     
     \node[text=iiitblue] at (3,3) {\small HIGH impact};
-    \node[text=gray] at (2.3,1.5) {\small SKIP};
+    \node[text=accentorange] at (2.8,1.5) {\small \textbf{E1 NEW!}};
     \node[text=successgreen!70!black] at (2.5,0) {\small REFINE};
 \end{tikzpicture}
 
 \vspace{0.5cm}
-\textbf{Key Design Decision:}\\
-\small Illumination $>$ Reflectance\\
-(RetinexNet R is already good)
+\textbf{Key Innovation:}\\
+\small E1 = Illumination-aware\\
+denoising on reflectance
 \end{column}
 \end{columns}
 \end{frame}
@@ -312,6 +316,61 @@ MSR = \sum_{\sigma} w_\sigma \cdot [\log I - \log(G_\sigma * I)]
 \end{frame}
 
 %===============================================================================
+% SLIDE 7.5: E1/E3 Illumination-Aware Techniques (NEW)
+%===============================================================================
+\begin{frame}{E1/E3: Illumination-Aware Enhancement (Key Innovation)}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{The Problem:}
+\begin{itemize}
+    \item Noise is \textbf{spatially non-uniform}
+    \item Dark regions $\rightarrow$ more noise (sensor)
+    \item Standard filters apply \textbf{uniform} strength
+    \item Over-smooths lit areas OR under-smooths shadows
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{E1: Illumination-Aware Denoising}
+\begin{equation*}
+\sigma_{adaptive} = \sigma_{base} \cdot (1 + (1-\bar{I}) \cdot k)
+\end{equation*}
+\begin{itemize}
+    \item $\bar{I}$ = local mean illumination
+    \item Dark regions $\rightarrow$ stronger filtering
+    \item Lit regions $\rightarrow$ preserve details
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{E1 Techniques Implemented:}
+
+\vspace{0.2cm}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Technique & SSIM Retention \\
+\midrule
+E1: Guided Filter & \textbf{80.4\%} \\
+E1: Bilateral & 74.6\% \\
+E1+E3 Combined & 76.0\% \\
+Standard Balanced & 65.8\% \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+\textbf{E3: Micro-Contrast on R}
+\begin{itemize}
+    \item DoG (Difference of Gaussians)
+    \item Unsharp masking on reflectance
+    \item Fine texture enhancement
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Key Insight:}\\
+Retinex decomposition \textit{enables} illumination-aware processing!
+\end{column}
+\end{columns}
+\end{frame}
+
+%===============================================================================
 % SLIDE 8: Additional DIP Techniques (~45 seconds)
 %===============================================================================
 \begin{frame}{Additional DIP Techniques Available}
@@ -352,7 +411,7 @@ Domain Transform & $O(N)$ \\
 
 \vspace{0.5cm}
 \textbf{Key Point:}\\
-\small All techniques implemented and available for experimentation via preset configuration.
+\small 16+ techniques implemented and available for experimentation via preset configuration.
 \end{column}
 \end{columns}
 \end{frame}
@@ -360,44 +419,53 @@ Domain Transform & $O(N)$ \\
 %===============================================================================
 % SLIDE 9: Enhancement Presets (~30 seconds)
 %===============================================================================
-\begin{frame}{Enhancement Presets}
+\begin{frame}{Enhancement Presets (Including E1/E3)}
 \begin{columns}
 \begin{column}{0.55\textwidth}
 \centering
 \begin{table}
 \small
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccc@{}}
 \toprule
-Parameter & None & Min & \textbf{Bal} & Agg \\
+Preset & SSIM & Entropy & Color. \\
 \midrule
-CLAHE Clip & -- & -- & \textbf{2.0} & 3.0 \\
-Bilateral $d$ & -- & -- & \textbf{7} & 9 \\
-Bilateral $\sigma$ & -- & -- & \textbf{50} & 75 \\
-Unsharp Amt & -- & -- & \textbf{1.2} & 2.0 \\
-\midrule
-Time (s) & 0.005 & 0.011 & \textbf{0.089} & 0.134 \\
+Baseline & 0.691 & 6.09 & 9.87 \\
+Balanced & 0.455 & 7.42 & 20.14 \\
+\textcolor{accentorange}{\textbf{E1: Guided}} & \textcolor{accentorange}{\textbf{0.556}} & \textcolor{accentorange}{\textbf{7.47}} & \textcolor{accentorange}{\textbf{22.16}} \\
+E1: Bilateral & 0.516 & 7.39 & 19.51 \\
+E1+E3 & 0.526 & 7.41 & 20.96 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\vspace{0.2cm}
+\textbf{New E1/E3 Presets:}
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item \texttt{e1\_denoise\_guided}
+    \item \texttt{e1\_denoise\_bilateral}
+    \item \texttt{e3\_micro\_contrast\_unsharp}
+    \item \texttt{experimental\_e1e3}
+\end{itemize}
 \end{column}
 \begin{column}{0.45\textwidth}
 \textbf{Preset Use Cases:}
 
 \vspace{0.3cm}
-\textbf{None}: Raw model output\\
-\small Benchmark comparison
+\textbf{Balanced}: Good perceptual quality\\
+\small Standard enhancement
 
 \vspace{0.2cm}
-\textbf{Minimal}: Subtle improvement\\
-\small Real-time video, mobile
+\textcolor{accentorange}{\textbf{E1: Guided} (Best):}\\
+\small Best SSIM + colorfulness\\
+\small \textit{Recommended for quality}
 
 \vspace{0.2cm}
-\textbf{Balanced} (Best): Best quality/speed\\
-\small Production default
+\textbf{E1: Bilateral}:\\
+\small Good SSIM, faster
 
 \vspace{0.2cm}
-\textbf{Aggressive}: Maximum enhancement\\
-\small Extremely poor inputs
+\textbf{E1+E3 Combined}:\\
+\small Full pipeline with micro-contrast
 \end{column}
 \end{columns}
 \end{frame}
@@ -505,37 +573,43 @@ Time (s) & 0.005 & 0.011 & \textbf{0.089} & 0.134 \\
 %===============================================================================
 \begin{frame}{Quantitative Results (100 Test Images)}
 \begin{columns}
-\begin{column}{0.5\textwidth}
+\begin{column}{0.55\textwidth}
 \centering
 \begin{table}
 \small
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-Preset & Ent. & Cont. & Color. & Time \\
+Preset & PSNR & SSIM & Ent. & Color. \\
 \midrule
-Baseline & 5.91 & 23.37 & 25.05 & 0.005 \\
-Minimal & 6.04 & 25.53 & 27.47 & 0.011 \\
-\textbf{Balanced} & \textbf{7.32} & \textbf{57.22} & \textbf{51.20} & 0.089 \\
-Aggressive & 4.60 & 63.82 & 49.36 & 0.134 \\
+Baseline & \textbf{17.25} & \textbf{0.691} & 6.09 & 9.87 \\
+Balanced & 9.92 & 0.455 & 7.42 & 20.14 \\
+Aggressive & 5.58 & 0.362 & 3.87 & 19.71 \\
 \midrule
-Illum Only & 6.22 & 26.40 & 28.16 & 0.043 \\
-Output Only & 7.17 & 56.57 & 50.49 & 0.071 \\
+\textbf{E1: Guided} & 9.88 & \textbf{0.556} & \textbf{7.47} & \textbf{22.16} \\
+E1: Bilateral & 9.91 & 0.516 & 7.39 & 19.51 \\
+E1+E3 Comb. & 9.79 & 0.526 & 7.41 & 20.96 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\vspace{0.3cm}
-\textbf{Balanced Improvements:}
+\vspace{0.2cm}
+\textbf{Key Finding:}\\
+E1 Guided Filter achieves \textbf{best trade-off}:
 \begin{itemize}
-    \item Entropy: \textcolor{successgreen}{\textbf{+23.9\%}}
-    \item Contrast: \textcolor{successgreen}{\textbf{+144.8\%}}
-    \item Colorfulness: \textcolor{successgreen}{\textbf{+104.4\%}}
-    \item Sharpness: \textcolor{successgreen}{\textbf{+1272\%}}
+    \item SSIM: \textcolor{successgreen}{\textbf{0.556}} (80.4\% retained)
+    \item vs Balanced: 0.455 (65.8\% retained)
+    \item Colorfulness: \textcolor{successgreen}{\textbf{+124.5\%}}
 \end{itemize}
 \end{column}
-\begin{column}{0.5\textwidth}
+\begin{column}{0.45\textwidth}
 \centering
 \includegraphics[width=\linewidth]{metrics_comparison.png}
+
+\vspace{0.3cm}
+\textbf{Trade-off Insight:}\\
+\small Baseline = best PSNR/SSIM\\
+Enhanced = better perceptual quality\\
+\textbf{E1 minimizes the gap!}
 \end{column}
 \end{columns}
 \end{frame}
@@ -543,7 +617,7 @@ Output Only & 7.17 & 56.57 & 50.49 & 0.071 \\
 %===============================================================================
 % SLIDE 13: Ablation Study (~1 minute)
 %===============================================================================
-\begin{frame}{Ablation Study: Why Balanced Works Best}
+\begin{frame}{Ablation Study: Why E1 Guided Filter Works Best}
 \begin{columns}
 \begin{column}{0.42\textwidth}
 \centering
@@ -551,29 +625,29 @@ Output Only & 7.17 & 56.57 & 50.49 & 0.071 \\
 \end{column}
 \begin{column}{0.58\textwidth}
 \small
-\textbf{1. Information Preservation}
+\textbf{1. Best SSIM Retention}
 \begin{itemize}\setlength{\itemsep}{0pt}
-    \item Highest entropy (7.32); Aggressive destroys tonal info (4.60)
+    \item E1 Guided: \textbf{80.4\%} vs Balanced: 65.8\%
+    \item Preserves structure while enhancing
 \end{itemize}
 
-\textbf{2. Optimal Contrast (+144.8\%)}
+\textbf{2. Illumination-Aware Advantage}
 \begin{itemize}\setlength{\itemsep}{0pt}
-    \item CLAHE + Bilateral synergy without saturation artifacts
+    \item Noise $\propto$ darkness (sensor limitation)
+    \item Stronger filtering in shadows only
+    \item Preserves details in lit regions
 \end{itemize}
 
-\textbf{3. Natural Sharpness}
+\textbf{3. Best Colorfulness (+124.5\%)}
 \begin{itemize}\setlength{\itemsep}{0pt}
-    \item No halo artifacts; Aggressive causes edge overshoot
+    \item Edge-preserving prevents color bleeding
+    \item Natural color relationships maintained
 \end{itemize}
 
-\textbf{4. Color Fidelity (+104.4\%)}
+\textbf{4. Highest Entropy (7.47)}
 \begin{itemize}\setlength{\itemsep}{0pt}
-    \item Highest colorfulness (51.20) with natural relationships
-\end{itemize}
-
-\textbf{5. Appropriate Brightness}
-\begin{itemize}\setlength{\itemsep}{0pt}
-    \item Preserves highlight headroom
+    \item Best information preservation
+    \item Adaptive filtering avoids over-smoothing
 \end{itemize}
 \end{column}
 \end{columns}
@@ -776,12 +850,13 @@ DIP Techniques & 16 implemented \\
 \begin{itemize}
     \item Proposed a \textbf{hybrid framework} combining deep Retinex decomposition with \textbf{traditional DIP techniques}
     \item \textbf{``Train Once, Experiment Forever''}: No retraining for new enhancement combinations
-    \item \textbf{Three-stage pipeline}: Illumination, Reflectance (skip), Output enhancement
-    \item \textbf{Balanced preset} achieves optimal results:
+    \item \textbf{Key contribution}: Illumination-aware edge-preserving denoising (E1) for reflectance
+    \item \textbf{E1 Guided Filter} achieves optimal perceptual-fidelity trade-off:
     \begin{itemize}
-        \item +23.9\% entropy, +144.8\% contrast, +1272\% sharpness, +104.4\% colorfulness
+        \item \textbf{0.556 SSIM} (80.4\% retention vs 65.8\% for balanced)
+        \item \textbf{+22.7\% entropy}, \textbf{+124.5\% colorfulness}
     \end{itemize}
-    \item \textbf{Key insight}: Illumination enhancement $>$ Reflectance enhancement
+    \item \textbf{Key insight}: Retinex decomposition \textit{enables} spatially-adaptive processing
 \end{itemize}
 \end{block}
 

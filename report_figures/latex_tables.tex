@@ -28,79 +28,88 @@ Training Time & $\sim$18 minutes \\
 \end{table}
 
 % ================================================================================
-% TABLE 2: QUALITY METRICS
+% TABLE 2: QUALITY METRICS (Updated with PSNR/SSIM)
 % ================================================================================
 \begin{table}[t]
 \centering
-\caption{Average Quality Metrics Across 100 Test Images}
+\caption{Average Quality Metrics Across 100 Test Images (Including E1/E3 Presets)}
 \label{tab:metrics}
+\begin{tabular}{lcccccc}
+\toprule
+Preset & PSNR$\uparrow$ & SSIM$\uparrow$ & Entropy & Contrast & Colorfulness & Time(s) \\
+\midrule
+Baseline & \textbf{17.25} & \textbf{0.691} & 6.09 & 9.13 & 9.87 & 0.000 \\
+Minimal & 16.03 & 0.670 & 6.18 & 9.98 & 10.82 & 0.005 \\
+Balanced & 9.92 & 0.455 & 7.42 & 22.25 & 20.14 & 0.024 \\
+Aggressive & 5.58 & 0.362 & 3.87 & 24.81 & 19.71 & 0.063 \\
+\midrule
+\textbf{E1: Guided} & 9.88 & \textbf{0.556} & \textbf{7.47} & 22.38 & \textbf{22.16} & 0.038 \\
+E1: Bilateral & 9.91 & 0.516 & 7.39 & 22.01 & 19.51 & 0.024 \\
+E3: Unsharp & 9.76 & 0.478 & 7.42 & 23.06 & 21.52 & 0.021 \\
+E1+E3 Combined & 9.79 & 0.526 & 7.41 & 22.89 & 20.96 & 0.027 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ================================================================================
+% TABLE 3: IMPROVEMENT PERCENTAGES (Updated with E1/E3)
+% ================================================================================
+\begin{table}[t]
+\centering
+\caption{Improvement Over Baseline (\%) - Including E1/E3 Presets}
+\label{tab:improvement}
 \begin{tabular}{lccccc}
 \toprule
-Preset & Entropy & Contrast & Sharpness & Colorfulness & Brightness \\
+Preset & SSIM Ret. & Entropy & Contrast & Colorfulness \\
 \midrule
-Baseline & 5.91$\pm$0.61 & 23.37$\pm$5.38 & 150.84$\pm$100.46 & 25.05$\pm$10.68 & 112.70$\pm$12.48 \\
-Minimal & 6.04$\pm$0.61 & 25.53$\pm$5.91 & 180.79$\pm$120.61 & 27.47$\pm$11.70 & 123.71$\pm$14.13 \\
-\textbf{Balanced} & \textbf{7.32$\pm$0.42} & \textbf{57.22$\pm$8.55} & 2069.40$\pm$1304.53 & \textbf{51.20$\pm$20.60} & 165.40$\pm$20.43 \\
-Aggressive & 4.60$\pm$0.71 & 63.82$\pm$7.61 & 5103.83$\pm$3027.43 & 49.36$\pm$20.06 & 217.08$\pm$10.49 \\
+Balanced & 65.8\% & +22.0\% & +143.7\% & +104.0\% \\
+Aggressive & 52.4\% & -36.4\% & +171.7\% & +99.7\% \\
+\midrule
+\textbf{E1: Guided} & \textbf{80.4\%} & \textbf{+22.7\%} & +145.1\% & \textbf{+124.5\%} \\
+E1: Bilateral & 74.6\% & +21.4\% & +141.0\% & +97.6\% \\
+E1+E3 Combined & 76.0\% & +21.7\% & +150.7\% & +112.3\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 % ================================================================================
-% TABLE 3: IMPROVEMENT PERCENTAGES
+% TABLE 4: E1 GUIDED FILTER JUSTIFICATION - TRADE-OFF ANALYSIS
 % ================================================================================
 \begin{table}[t]
 \centering
-\caption{Improvement Over Baseline (\%)}
-\label{tab:improvement}
-\begin{tabular}{lcccc}
-\toprule
-Preset & Entropy & Contrast & Sharpness & Colorfulness \\
-\midrule
-Minimal & +2.2\% & +9.3\% & +19.9\% & +9.6\% \\
-\textbf{Balanced} & \textbf{+23.9\%} & \textbf{+144.8\%} & +1271.9\% & \textbf{+104.4\%} \\
-Aggressive & -22.2\% & +173.1\% & +3283.5\% & +97.0\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% ================================================================================
-% TABLE 4: BALANCED PRESET JUSTIFICATION - TRADE-OFF ANALYSIS
-% ================================================================================
-\begin{table}[t]
-\centering
-\caption{Why Balanced Works Best: Trade-off Analysis}
+\caption{Why E1 Guided Filter Works Best: Trade-off Analysis}
 \label{tab:tradeoff}
 \begin{tabular}{lccc}
 \toprule
-Metric & Balanced & Aggressive & Analysis \\
+Metric & E1: Guided & Balanced & Analysis \\
 \midrule
-Entropy & 7.32 & 4.60 & +59.6\% information preserved \\
-Contrast & 57.22 & 63.82 & Sufficient for visibility \\
-Sharpness & 2069 & 5104 & Natural edges, no halo artifacts \\
-Colorfulness & 51.20 & 49.36 & +3.7\% better color fidelity \\
-Brightness & 165.4 & 217.1 & 65\% vs 85\% (no over-exposure) \\
+SSIM & \textbf{0.556} & 0.455 & +22.2\% better structure preservation \\
+SSIM Retention & \textbf{80.4\%} & 65.8\% & Maintains fidelity to ground truth \\
+Entropy & \textbf{7.47} & 7.42 & Best information preservation \\
+Colorfulness & \textbf{22.16} & 20.14 & +10\% more vivid colors \\
+Processing Time & 0.038s & 0.024s & Acceptable overhead \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 % ================================================================================
-% TABLE 5: ENHANCEMENT TECHNIQUES PER PRESET
+% TABLE 5: ENHANCEMENT TECHNIQUES PER PRESET (Updated with E1/E3)
 % ================================================================================
 \begin{table}[t]
 \centering
 \caption{DIP Techniques Applied per Enhancement Preset}
 \label{tab:techniques}
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
-Technique & Target & Minimal & Balanced & Aggressive \\
+Technique & Target & Balanced & E1: Guided & E1: Bilateral & E1+E3 \\
 \midrule
-CLAHE & Illumination & -- & \checkmark & \checkmark\checkmark \\
-Bilateral Filter & Illumination & -- & \checkmark & \checkmark \\
-Adaptive Gamma & Illumination & \checkmark & -- & \checkmark \\
-Unsharp Masking & Output & -- & \checkmark & \checkmark\checkmark \\
-Color Balance & Output & -- & \checkmark & \checkmark \\
-Tone Mapping & Output & -- & -- & \checkmark \\
+CLAHE & Illumination & \checkmark & \checkmark & \checkmark & \checkmark \\
+Bilateral Filter & Illumination & \checkmark & \checkmark & \checkmark & \checkmark \\
+Illum-Aware Guided & Reflectance & -- & \textbf{\checkmark} & -- & \checkmark \\
+Illum-Aware Bilateral & Reflectance & -- & -- & \textbf{\checkmark} & -- \\
+Micro-Contrast (DoG) & Reflectance & -- & -- & -- & \checkmark \\
+Unsharp Masking & Output & \checkmark & \checkmark & \checkmark & \checkmark \\
+Color Balance & Output & \checkmark & \checkmark & \checkmark & \checkmark \\
 \bottomrule
 \end{tabular}
 \end{table}
