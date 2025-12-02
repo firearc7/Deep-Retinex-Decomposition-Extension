@@ -2,6 +2,9 @@
 
 ## Deep Retinex Decomposition Enhanced with Traditional DIP Techniques
 
+## Results
+
+The link to the results folder can be found in [here](https://drive.google.com/drive/folders/19FJj0dF5fJPFPah-pQ1SKeHtHnN5Co6Y?usp=sharing).
 
 ## I. Model Architecture
 
@@ -14,6 +17,7 @@
 | **Total** | Complete RetinexNet | **555,205** |
 
 ### B. DecomNet Architecture
+
 - **Input:** 4-channel (RGB + max channel)
 - **Encoder:** 64-channel convolutional layers with 9×9 initial kernel
 - **Feature Extraction:** 5 conv layers with ReLU activation (3×3 kernels)
@@ -21,6 +25,7 @@
 - **Activation:** Sigmoid for both outputs
 
 ### C. RelightNet Architecture
+
 - **Input:** 4-channel (Reflectance R + Illumination L)
 - **Encoder:** Multi-scale with stride-2 convolutions (3 levels)
 - **Decoder:** Skip connections with upsampling
@@ -46,6 +51,7 @@
 | Training Time | ~18 minutes |
 
 ### Loss Function
+
 The total loss combines decomposition and relighting losses:
 
 $$\mathcal{L}_{total} = \mathcal{L}_{decom} + \mathcal{L}_{relight}$$
@@ -198,7 +204,7 @@ Phase 2 (Epochs 51-100, LR=0.0001):
 
 1. **E1 Guided Filter achieves best visual quality trade-off:**
    - Highest entropy (7.47) indicates best information preservation
-   - Best colorfulness improvement (+124.5%) 
+   - Best colorfulness improvement (+124.5%)
    - Best SSIM among enhanced presets (0.556, only -19.6% vs baseline)
 
 2. **E1 Techniques outperform standard balanced preset in SSIM:**
@@ -255,5 +261,3 @@ Phase 2 (Epochs 51-100, LR=0.0001):
 **Key Finding:** E1 illumination-aware guided filter provides the best balance between perceptual improvement and structural fidelity (SSIM retention).
 
 ---
-
-
