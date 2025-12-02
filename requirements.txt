@@ -1,30 +1,16 @@
-# Requirements for Deep Retinex + Traditional DIP Enhancement
-
-# Core dependencies
+# Deep learning
 torch>=1.8.0
 torchvision>=0.9.0
+
+# Image processing
 numpy>=1.19.0
 opencv-python>=4.5.0
 Pillow>=8.0.0
-
-# Image quality metrics
 scikit-image>=0.18.0
 
-# Visualization and plotting
+# Visualization
 matplotlib>=3.3.0
-seaborn>=0.11.0
 
-# Experiment tracking and logging
+# Utilities
 tqdm>=4.60.0
-
-# Dataset management
-datasets>=2.0.0  # For downloading LOL dataset from Hugging Face
-kagglehub>=0.2.0  # For downloading LOL-v2 from Kaggle
-
-# Optional: For advanced metrics
-# lpips>=0.1.4  # Learned Perceptual Image Patch Similarity
-# pyiqa>=0.1.0  # Image Quality Assessment
-
-# Development tools (optional)
-jupyter>=1.0.0
-ipython>=7.20.0
+datasets>=2.0.0

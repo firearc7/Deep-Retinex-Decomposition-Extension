@@ -1,6 +1,5 @@
-"""
-Enhancement modules for Deep Retinex
-"""
+# Enhancement modules for Deep Retinex
+
 from .traditional_dip import TraditionalEnhancements
 from .pipeline import EnhancementPipeline, EnhancementFactory
 
