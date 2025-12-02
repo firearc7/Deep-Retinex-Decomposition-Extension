@@ -1,0 +1,56 @@
+{
+    "timestamp": "2025-11-28 23:18:31",
+    "num_images": 100,
+    "presets_tested": [
+        "baseline",
+        "minimal",
+        "balanced",
+        "aggressive",
+        "illumination_only",
+        "output_only"
+    ],
+    "average_metrics": {
+        "baseline": {
+            "entropy": 5.908246994018555,
+            "contrast": 23.370724344016356,
+            "sharpness": 150.84300482095364,
+            "colorfulness": 25.05236713516539,
+            "brightness": 112.701924125
+        },
+        "minimal": {
+            "entropy": 6.040858268737793,
+            "contrast": 25.532640349268704,
+            "sharpness": 180.7881333316728,
+            "colorfulness": 27.46641497172115,
+            "brightness": 123.71113366666668
+        },
+        "balanced": {
+            "entropy": 7.3221025466918945,
+            "contrast": 57.21826003588556,
+            "sharpness": 2069.3979420153873,
+            "colorfulness": 51.204774518913446,
+            "brightness": 165.39944066666664
+        },
+        "aggressive": {
+            "entropy": 4.598564147949219,
+            "contrast": 63.82455387435789,
+            "sharpness": 5103.828008691362,
+            "colorfulness": 49.35847008988923,
+            "brightness": 217.08318666666665
+        },
+        "illumination_only": {
+            "entropy": 6.219578266143799,
+            "contrast": 26.400234010897588,
+            "sharpness": 186.30714976452202,
+            "colorfulness": 28.155283119038028,
+            "brightness": 126.48736879166665
+        },
+        "output_only": {
+            "entropy": 7.172581195831299,
+            "contrast": 56.57098685030678,
+            "sharpness": 2370.2229413758823,
+            "colorfulness": 50.4942223106887,
+            "brightness": 166.70740604166664
+        }
+    }
+}

@@ -5,9 +5,9 @@ __pycache__/
 
 # Data and outputs
 data/
-results/
 outputs/
 
 # IDE
 .vscode/
 .idea/
+quick_inference/

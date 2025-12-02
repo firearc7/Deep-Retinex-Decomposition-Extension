@@ -1,0 +1,6176 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DIP Enhancement Comparison Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .metric-card {
+            display: inline-block;
+            width: 200px;
+            margin: 10px;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .metric-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .best {
+            background-color: #4CAF50 !important;
+            font-weight: bold;
+        }
+        .summary {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .preset-section {
+            margin: 30px 0;
+            padding: 20px;
+            border-left: 4px solid #4CAF50;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 DIP Enhancement Comparison Report</h1>
+        <div class="summary">
+            <strong>Generated:</strong> 2025-11-28 23:18:31<br>
+            <strong>Images Tested:</strong> 100<br>
+            <strong>Presets Compared:</strong> baseline, minimal, balanced, aggressive, illumination_only, output_only
+        </div>
+        
+        <h2>📊 Average Metrics Comparison</h2>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+                <th>Brightness</th>
+            </tr>
+
+            <tr>
+                <td><strong>baseline</strong></td>
+                <td class="">5.9082</td>
+                <td class="">23.3707</td>
+                <td class="">150.8430</td>
+                <td class="">25.0524</td>
+                <td>112.7019</td>
+            </tr>
+
+            <tr>
+                <td><strong>minimal</strong></td>
+                <td class="">6.0409</td>
+                <td class="">25.5326</td>
+                <td class="">180.7881</td>
+                <td class="">27.4664</td>
+                <td>123.7111</td>
+            </tr>
+
+            <tr>
+                <td><strong>balanced</strong></td>
+                <td class="best">7.3221</td>
+                <td class="">57.2183</td>
+                <td class="">2069.3979</td>
+                <td class="best">51.2048</td>
+                <td>165.3994</td>
+            </tr>
+
+            <tr>
+                <td><strong>aggressive</strong></td>
+                <td class="">4.5986</td>
+                <td class="best">63.8246</td>
+                <td class="best">5103.8280</td>
+                <td class="">49.3585</td>
+                <td>217.0832</td>
+            </tr>
+
+            <tr>
+                <td><strong>illumination_only</strong></td>
+                <td class="">6.2196</td>
+                <td class="">26.4002</td>
+                <td class="">186.3071</td>
+                <td class="">28.1553</td>
+                <td>126.4874</td>
+            </tr>
+
+            <tr>
+                <td><strong>output_only</strong></td>
+                <td class="">7.1726</td>
+                <td class="">56.5710</td>
+                <td class="">2370.2229</td>
+                <td class="">50.4942</td>
+                <td>166.7074</td>
+            </tr>
+
+        </table>
+        
+        <h2>🎯 Recommendations</h2>
+        <div class="preset-section">
+
+            <p><strong>Best for Information Content:</strong> balanced 
+            (7.3221)</p>
+
+            <p><strong>Best for Contrast:</strong> aggressive 
+            (63.8246)</p>
+
+            <p><strong>Best for Sharpness:</strong> aggressive 
+            (5103.8280)</p>
+
+        </div>
+        
+        <h2>📋 Per-Image Results</h2>
+
+        <h3>Image: low00690</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.4104</td>
+                <td>27.5242</td>
+                <td>158.9976</td>
+                <td>20.9410</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6315</td>
+                <td>30.1984</td>
+                <td>187.4396</td>
+                <td>22.8520</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0762</td>
+                <td>63.7882</td>
+                <td>2189.1178</td>
+                <td>43.0425</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.7171</td>
+                <td>60.5186</td>
+                <td>4681.2952</td>
+                <td>44.4053</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.8652</td>
+                <td>30.4447</td>
+                <td>198.4051</td>
+                <td>23.6291</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.7246</td>
+                <td>62.7829</td>
+                <td>2376.1437</td>
+                <td>41.3714</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00691</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.3779</td>
+                <td>27.4474</td>
+                <td>159.9674</td>
+                <td>20.7548</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6060</td>
+                <td>30.1145</td>
+                <td>188.4773</td>
+                <td>22.6562</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0644</td>
+                <td>63.5756</td>
+                <td>2194.4193</td>
+                <td>42.7509</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.7053</td>
+                <td>60.4668</td>
+                <td>4712.0773</td>
+                <td>44.0367</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.8443</td>
+                <td>30.3664</td>
+                <td>199.3870</td>
+                <td>23.4418</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.6709</td>
+                <td>62.5212</td>
+                <td>2382.0112</td>
+                <td>40.9800</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00692</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3418</td>
+                <td>31.1172</td>
+                <td>225.7813</td>
+                <td>25.2824</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4957</td>
+                <td>34.0348</td>
+                <td>269.4863</td>
+                <td>27.6871</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5128</td>
+                <td>69.1684</td>
+                <td>2770.9277</td>
+                <td>47.7979</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1669</td>
+                <td>75.1768</td>
+                <td>5991.8238</td>
+                <td>47.8550</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.5477</td>
+                <td>35.4112</td>
+                <td>292.9862</td>
+                <td>28.7392</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4882</td>
+                <td>67.3268</td>
+                <td>3018.8573</td>
+                <td>46.1828</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00693</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3456</td>
+                <td>30.3527</td>
+                <td>202.8218</td>
+                <td>25.4735</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4960</td>
+                <td>33.2009</td>
+                <td>242.0423</td>
+                <td>27.8801</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5295</td>
+                <td>68.6222</td>
+                <td>2561.7287</td>
+                <td>48.5010</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1625</td>
+                <td>74.7838</td>
+                <td>5599.3371</td>
+                <td>47.5036</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.5489</td>
+                <td>34.5444</td>
+                <td>262.5539</td>
+                <td>28.9081</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4972</td>
+                <td>66.7221</td>
+                <td>2792.0191</td>
+                <td>47.3597</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00694</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.1166</td>
+                <td>30.5061</td>
+                <td>186.6955</td>
+                <td>15.4906</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.2632</td>
+                <td>33.3408</td>
+                <td>222.5206</td>
+                <td>16.9569</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3921</td>
+                <td>68.6884</td>
+                <td>2380.0612</td>
+                <td>29.6363</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.9663</td>
+                <td>72.5341</td>
+                <td>5077.5848</td>
+                <td>30.5646</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.3821</td>
+                <td>34.7673</td>
+                <td>241.9302</td>
+                <td>17.6400</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3390</td>
+                <td>66.7998</td>
+                <td>2610.5372</td>
+                <td>29.0517</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00695</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.1192</td>
+                <td>30.5173</td>
+                <td>185.1522</td>
+                <td>15.4546</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.2639</td>
+                <td>33.3560</td>
+                <td>220.8266</td>
+                <td>16.9205</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3966</td>
+                <td>68.6370</td>
+                <td>2349.1228</td>
+                <td>29.5772</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.9766</td>
+                <td>72.5182</td>
+                <td>5087.8946</td>
+                <td>30.4649</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.3867</td>
+                <td>34.7824</td>
+                <td>240.1853</td>
+                <td>17.6058</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3370</td>
+                <td>66.7969</td>
+                <td>2579.6504</td>
+                <td>29.0674</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00696</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6918</td>
+                <td>32.3344</td>
+                <td>150.0902</td>
+                <td>31.3613</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.8395</td>
+                <td>35.3761</td>
+                <td>178.8680</td>
+                <td>34.2853</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8595</td>
+                <td>69.7655</td>
+                <td>1852.3217</td>
+                <td>60.3107</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.6495</td>
+                <td>72.8942</td>
+                <td>4344.9180</td>
+                <td>55.9603</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.9035</td>
+                <td>36.6298</td>
+                <td>192.9962</td>
+                <td>35.7993</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8305</td>
+                <td>68.1648</td>
+                <td>2053.3264</td>
+                <td>57.9495</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00697</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6911</td>
+                <td>32.3284</td>
+                <td>149.1397</td>
+                <td>31.5110</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.8385</td>
+                <td>35.3697</td>
+                <td>177.5747</td>
+                <td>34.4474</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8620</td>
+                <td>69.9780</td>
+                <td>1854.6268</td>
+                <td>60.4356</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.6453</td>
+                <td>72.9223</td>
+                <td>4364.0773</td>
+                <td>56.0277</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.9025</td>
+                <td>36.6262</td>
+                <td>191.8351</td>
+                <td>35.9719</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8329</td>
+                <td>68.3930</td>
+                <td>2057.4245</td>
+                <td>58.1529</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00698</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.1859</td>
+                <td>25.9565</td>
+                <td>80.6818</td>
+                <td>32.4625</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.3120</td>
+                <td>28.3632</td>
+                <td>95.8692</td>
+                <td>35.5206</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4702</td>
+                <td>61.7865</td>
+                <td>1156.7487</td>
+                <td>67.1238</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.7392</td>
+                <td>65.2326</td>
+                <td>2755.8849</td>
+                <td>60.1859</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.3653</td>
+                <td>29.0084</td>
+                <td>103.6671</td>
+                <td>37.0223</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4143</td>
+                <td>61.8496</td>
+                <td>1290.4038</td>
+                <td>65.0481</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00699</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.1875</td>
+                <td>25.9860</td>
+                <td>80.8002</td>
+                <td>32.3513</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.3160</td>
+                <td>28.3977</td>
+                <td>95.9574</td>
+                <td>35.4018</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4597</td>
+                <td>61.5272</td>
+                <td>1149.9384</td>
+                <td>66.9043</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.7244</td>
+                <td>64.9970</td>
+                <td>2761.4618</td>
+                <td>60.0784</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.3585</td>
+                <td>29.0278</td>
+                <td>103.7173</td>
+                <td>36.8906</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4134</td>
+                <td>61.6702</td>
+                <td>1284.8155</td>
+                <td>64.9626</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00700</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.9907</td>
+                <td>26.2670</td>
+                <td>99.6722</td>
+                <td>38.4672</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.1007</td>
+                <td>28.8040</td>
+                <td>118.8801</td>
+                <td>42.1004</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.7050</td>
+                <td>63.8000</td>
+                <td>1621.6573</td>
+                <td>86.3432</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.6711</td>
+                <td>66.4408</td>
+                <td>3157.2787</td>
+                <td>88.5283</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.6006</td>
+                <td>28.7955</td>
+                <td>121.5054</td>
+                <td>43.2790</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.1409</td>
+                <td>63.3472</td>
+                <td>1806.1565</td>
+                <td>82.6535</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00701</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.9971</td>
+                <td>26.2629</td>
+                <td>100.4396</td>
+                <td>38.4322</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.1102</td>
+                <td>28.8054</td>
+                <td>119.6390</td>
+                <td>42.0638</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.7031</td>
+                <td>63.7319</td>
+                <td>1617.6557</td>
+                <td>86.1442</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.6717</td>
+                <td>66.5176</td>
+                <td>3159.2935</td>
+                <td>88.3893</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.6025</td>
+                <td>28.7886</td>
+                <td>122.4416</td>
+                <td>43.2405</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.1555</td>
+                <td>63.2451</td>
+                <td>1798.6679</td>
+                <td>82.7381</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00702</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0148</td>
+                <td>22.7580</td>
+                <td>112.7721</td>
+                <td>26.2574</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1471</td>
+                <td>24.8896</td>
+                <td>134.6720</td>
+                <td>28.7027</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3454</td>
+                <td>58.1248</td>
+                <td>1726.6486</td>
+                <td>50.0917</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1847</td>
+                <td>65.1907</td>
+                <td>4256.7858</td>
+                <td>43.7693</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.2355</td>
+                <td>25.9589</td>
+                <td>140.3973</td>
+                <td>29.6379</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.2938</td>
+                <td>56.3516</td>
+                <td>1947.4113</td>
+                <td>48.9857</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00703</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0159</td>
+                <td>22.7812</td>
+                <td>112.6928</td>
+                <td>26.1866</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1480</td>
+                <td>24.9113</td>
+                <td>134.5065</td>
+                <td>28.6251</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3436</td>
+                <td>58.0924</td>
+                <td>1719.7109</td>
+                <td>49.9252</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1733</td>
+                <td>65.1920</td>
+                <td>4241.4618</td>
+                <td>43.4709</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.2353</td>
+                <td>25.9793</td>
+                <td>140.2423</td>
+                <td>29.5608</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.2918</td>
+                <td>56.3534</td>
+                <td>1940.6252</td>
+                <td>48.8091</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00704</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0168</td>
+                <td>22.7850</td>
+                <td>112.0749</td>
+                <td>26.2818</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1462</td>
+                <td>24.9140</td>
+                <td>133.7822</td>
+                <td>28.7257</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3457</td>
+                <td>58.2987</td>
+                <td>1720.9249</td>
+                <td>50.4124</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1910</td>
+                <td>65.4263</td>
+                <td>4271.3831</td>
+                <td>43.6757</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.2338</td>
+                <td>25.9914</td>
+                <td>139.5287</td>
+                <td>29.6871</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.2935</td>
+                <td>56.5186</td>
+                <td>1940.9514</td>
+                <td>49.0775</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00705</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0417</td>
+                <td>20.3080</td>
+                <td>57.4907</td>
+                <td>16.4962</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1670</td>
+                <td>22.1847</td>
+                <td>68.3328</td>
+                <td>18.0270</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4892</td>
+                <td>57.0142</td>
+                <td>1148.3708</td>
+                <td>35.6774</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.3968</td>
+                <td>61.1536</td>
+                <td>2914.3490</td>
+                <td>30.7374</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.2355</td>
+                <td>23.2469</td>
+                <td>74.8280</td>
+                <td>18.8858</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4758</td>
+                <td>56.3567</td>
+                <td>1298.9801</td>
+                <td>34.6596</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00706</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.9294</td>
+                <td>20.2028</td>
+                <td>52.7081</td>
+                <td>16.1748</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.0565</td>
+                <td>22.0775</td>
+                <td>62.6166</td>
+                <td>17.6767</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3816</td>
+                <td>57.1127</td>
+                <td>1054.0011</td>
+                <td>38.7143</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.2621</td>
+                <td>63.5378</td>
+                <td>2742.6873</td>
+                <td>30.7175</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.1253</td>
+                <td>23.1364</td>
+                <td>68.5642</td>
+                <td>18.5043</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3747</td>
+                <td>56.6278</td>
+                <td>1203.3965</td>
+                <td>37.9059</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00707</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0213</td>
+                <td>20.1395</td>
+                <td>58.2055</td>
+                <td>16.6417</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1475</td>
+                <td>22.0029</td>
+                <td>69.2360</td>
+                <td>18.1877</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4725</td>
+                <td>56.7444</td>
+                <td>1161.7793</td>
+                <td>36.3844</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.4039</td>
+                <td>61.2109</td>
+                <td>2933.9735</td>
+                <td>31.0711</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.2154</td>
+                <td>23.0549</td>
+                <td>75.7544</td>
+                <td>19.0512</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4586</td>
+                <td>56.0875</td>
+                <td>1312.2947</td>
+                <td>35.4285</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00708</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0865</td>
+                <td>28.6458</td>
+                <td>40.7534</td>
+                <td>41.9519</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.2507</td>
+                <td>31.3667</td>
+                <td>48.3587</td>
+                <td>45.9145</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4135</td>
+                <td>65.3667</td>
+                <td>527.6199</td>
+                <td>84.8428</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.6456</td>
+                <td>67.2777</td>
+                <td>1408.9083</td>
+                <td>86.9588</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4285</td>
+                <td>32.2025</td>
+                <td>45.9621</td>
+                <td>46.6797</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.1991</td>
+                <td>63.6988</td>
+                <td>648.5630</td>
+                <td>81.9840</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00709</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.9962</td>
+                <td>28.7434</td>
+                <td>40.8319</td>
+                <td>42.6336</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1675</td>
+                <td>31.4886</td>
+                <td>48.4591</td>
+                <td>46.6540</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3274</td>
+                <td>65.2844</td>
+                <td>524.5486</td>
+                <td>85.6656</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.6459</td>
+                <td>67.4331</td>
+                <td>1404.6682</td>
+                <td>88.2963</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.3851</td>
+                <td>32.3717</td>
+                <td>46.0949</td>
+                <td>47.4370</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0928</td>
+                <td>63.6533</td>
+                <td>648.6785</td>
+                <td>83.0492</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00710</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0441</td>
+                <td>25.0055</td>
+                <td>69.2839</td>
+                <td>28.6950</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1456</td>
+                <td>26.8333</td>
+                <td>86.8363</td>
+                <td>32.1789</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.2493</td>
+                <td>52.1054</td>
+                <td>643.7955</td>
+                <td>46.0103</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.7269</td>
+                <td>59.3005</td>
+                <td>2255.9132</td>
+                <td>61.2181</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4239</td>
+                <td>28.8113</td>
+                <td>82.3682</td>
+                <td>30.7941</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0502</td>
+                <td>52.4370</td>
+                <td>989.4329</td>
+                <td>54.5275</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00711</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0402</td>
+                <td>25.0140</td>
+                <td>70.1872</td>
+                <td>28.6249</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1384</td>
+                <td>26.8519</td>
+                <td>88.1256</td>
+                <td>32.0964</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.2588</td>
+                <td>52.0978</td>
+                <td>651.7625</td>
+                <td>45.9619</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.7225</td>
+                <td>59.3048</td>
+                <td>2280.8384</td>
+                <td>61.0103</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4345</td>
+                <td>28.8321</td>
+                <td>83.4777</td>
+                <td>30.7037</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0524</td>
+                <td>52.5006</td>
+                <td>1002.8029</td>
+                <td>54.4658</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00712</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.6921</td>
+                <td>15.8314</td>
+                <td>61.0496</td>
+                <td>15.3226</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>4.7057</td>
+                <td>17.2421</td>
+                <td>74.4034</td>
+                <td>17.0070</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.5667</td>
+                <td>39.4780</td>
+                <td>824.4946</td>
+                <td>41.7028</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.0810</td>
+                <td>49.0126</td>
+                <td>2471.5155</td>
+                <td>38.2472</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.5420</td>
+                <td>18.5409</td>
+                <td>74.5678</td>
+                <td>16.8132</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>5.7975</td>
+                <td>38.8211</td>
+                <td>1081.0966</td>
+                <td>42.9090</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00713</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.6710</td>
+                <td>15.7593</td>
+                <td>60.9861</td>
+                <td>15.2669</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>4.6562</td>
+                <td>17.1469</td>
+                <td>74.3569</td>
+                <td>16.9481</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.5517</td>
+                <td>39.4191</td>
+                <td>814.8422</td>
+                <td>41.6884</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.1035</td>
+                <td>48.9834</td>
+                <td>2452.8640</td>
+                <td>38.3579</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.5512</td>
+                <td>18.5950</td>
+                <td>74.8066</td>
+                <td>16.7907</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>5.7700</td>
+                <td>38.5891</td>
+                <td>1073.8475</td>
+                <td>43.0190</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00714</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6811</td>
+                <td>30.2015</td>
+                <td>307.2398</td>
+                <td>26.2162</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7988</td>
+                <td>32.9757</td>
+                <td>369.2857</td>
+                <td>28.7647</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7893</td>
+                <td>63.5213</td>
+                <td>3361.4390</td>
+                <td>45.1634</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.0150</td>
+                <td>74.3145</td>
+                <td>8831.4065</td>
+                <td>49.3879</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8662</td>
+                <td>32.3683</td>
+                <td>362.9708</td>
+                <td>28.6750</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.7568</td>
+                <td>64.3236</td>
+                <td>3854.6442</td>
+                <td>44.2858</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00715</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6593</td>
+                <td>29.9586</td>
+                <td>358.7327</td>
+                <td>22.5195</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7766</td>
+                <td>32.7110</td>
+                <td>431.7214</td>
+                <td>24.7000</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7850</td>
+                <td>63.6967</td>
+                <td>3912.6613</td>
+                <td>39.6858</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.8950</td>
+                <td>74.5781</td>
+                <td>10202.9652</td>
+                <td>41.7023</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8553</td>
+                <td>32.1227</td>
+                <td>424.2647</td>
+                <td>24.5990</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.7454</td>
+                <td>64.4756</td>
+                <td>4464.2924</td>
+                <td>39.5605</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00716</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.7850</td>
+                <td>17.1763</td>
+                <td>66.0995</td>
+                <td>12.2329</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>4.9387</td>
+                <td>18.6558</td>
+                <td>80.8762</td>
+                <td>13.4035</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.3462</td>
+                <td>40.2386</td>
+                <td>723.3240</td>
+                <td>24.0857</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.7643</td>
+                <td>52.5833</td>
+                <td>2265.0085</td>
+                <td>27.9740</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.4375</td>
+                <td>19.9368</td>
+                <td>78.1001</td>
+                <td>13.5140</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.0413</td>
+                <td>41.8981</td>
+                <td>1112.8848</td>
+                <td>26.4271</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00717</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.2989</td>
+                <td>22.8839</td>
+                <td>69.7706</td>
+                <td>13.2782</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4188</td>
+                <td>24.9711</td>
+                <td>83.5631</td>
+                <td>14.5368</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4082</td>
+                <td>50.6884</td>
+                <td>824.2136</td>
+                <td>25.5155</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.2138</td>
+                <td>63.0170</td>
+                <td>2419.2508</td>
+                <td>24.0193</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4574</td>
+                <td>25.1534</td>
+                <td>85.5085</td>
+                <td>14.8442</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4852</td>
+                <td>53.8609</td>
+                <td>1031.5336</td>
+                <td>26.5497</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00718</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.6275</td>
+                <td>26.4717</td>
+                <td>191.2089</td>
+                <td>24.3791</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6992</td>
+                <td>29.1899</td>
+                <td>240.1477</td>
+                <td>26.9401</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.1194</td>
+                <td>54.5576</td>
+                <td>1711.6867</td>
+                <td>41.7119</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.0588</td>
+                <td>65.9821</td>
+                <td>5834.9544</td>
+                <td>41.2093</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.2671</td>
+                <td>30.6904</td>
+                <td>219.9815</td>
+                <td>26.2361</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.5117</td>
+                <td>54.9595</td>
+                <td>2503.2545</td>
+                <td>44.5537</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00719</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.6177</td>
+                <td>26.5553</td>
+                <td>191.2044</td>
+                <td>24.2857</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6694</td>
+                <td>29.2711</td>
+                <td>239.9975</td>
+                <td>26.8342</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.1466</td>
+                <td>54.6397</td>
+                <td>1705.5230</td>
+                <td>41.6031</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.0632</td>
+                <td>66.1486</td>
+                <td>5844.3587</td>
+                <td>41.1990</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.2738</td>
+                <td>30.7514</td>
+                <td>219.6505</td>
+                <td>26.1975</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.6430</td>
+                <td>55.1476</td>
+                <td>2503.2643</td>
+                <td>44.4075</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00720</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3843</td>
+                <td>29.2779</td>
+                <td>221.1113</td>
+                <td>10.8995</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5312</td>
+                <td>31.9998</td>
+                <td>263.6435</td>
+                <td>11.9220</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.6401</td>
+                <td>67.5176</td>
+                <td>2811.1107</td>
+                <td>20.5818</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1401</td>
+                <td>74.0140</td>
+                <td>6689.6425</td>
+                <td>23.4817</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.5957</td>
+                <td>33.4623</td>
+                <td>283.4766</td>
+                <td>12.3482</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.6152</td>
+                <td>65.7385</td>
+                <td>3113.6425</td>
+                <td>20.5074</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00721</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.2870</td>
+                <td>29.6379</td>
+                <td>243.4608</td>
+                <td>10.9699</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4403</td>
+                <td>32.3930</td>
+                <td>290.3055</td>
+                <td>11.9905</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5382</td>
+                <td>68.1734</td>
+                <td>3080.0894</td>
+                <td>20.5621</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.0465</td>
+                <td>74.4934</td>
+                <td>7135.7694</td>
+                <td>23.1450</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4983</td>
+                <td>33.8818</td>
+                <td>312.2598</td>
+                <td>12.4336</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.5394</td>
+                <td>66.3164</td>
+                <td>3402.6250</td>
+                <td>20.2252</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00722</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.1216</td>
+                <td>26.3804</td>
+                <td>398.3005</td>
+                <td>17.1850</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.2438</td>
+                <td>28.8967</td>
+                <td>477.0409</td>
+                <td>18.8015</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5183</td>
+                <td>65.4988</td>
+                <td>5157.3926</td>
+                <td>35.6248</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.3884</td>
+                <td>72.2059</td>
+                <td>11325.7747</td>
+                <td>33.6954</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4267</td>
+                <td>29.6021</td>
+                <td>491.2850</td>
+                <td>19.0111</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3812</td>
+                <td>65.4332</td>
+                <td>5831.9721</td>
+                <td>35.2954</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00723</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.0443</td>
+                <td>25.8946</td>
+                <td>379.2303</td>
+                <td>13.4926</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1707</td>
+                <td>28.3676</td>
+                <td>453.9029</td>
+                <td>14.7591</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5008</td>
+                <td>64.8429</td>
+                <td>5018.0926</td>
+                <td>28.1186</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.2487</td>
+                <td>71.4793</td>
+                <td>11078.3556</td>
+                <td>28.4730</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.3751</td>
+                <td>29.0787</td>
+                <td>467.0241</td>
+                <td>14.9107</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3581</td>
+                <td>64.7765</td>
+                <td>5701.4469</td>
+                <td>27.7428</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00724</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.1058</td>
+                <td>19.8123</td>
+                <td>194.9918</td>
+                <td>11.1511</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.2498</td>
+                <td>21.6903</td>
+                <td>232.9428</td>
+                <td>12.1717</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7291</td>
+                <td>60.7691</td>
+                <td>3938.2155</td>
+                <td>27.1264</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.5769</td>
+                <td>67.4241</td>
+                <td>10449.1675</td>
+                <td>28.7966</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.3390</td>
+                <td>21.6464</td>
+                <td>244.4598</td>
+                <td>12.4891</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.6486</td>
+                <td>61.6891</td>
+                <td>4349.9591</td>
+                <td>26.6969</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00725</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.1019</td>
+                <td>19.7363</td>
+                <td>196.4446</td>
+                <td>11.1695</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.2440</td>
+                <td>21.6037</td>
+                <td>234.6373</td>
+                <td>12.1940</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7083</td>
+                <td>60.2124</td>
+                <td>3927.6485</td>
+                <td>27.2037</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.5552</td>
+                <td>66.9908</td>
+                <td>10391.1897</td>
+                <td>28.8654</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.3215</td>
+                <td>21.5184</td>
+                <td>245.3533</td>
+                <td>12.4991</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.6307</td>
+                <td>61.4325</td>
+                <td>4381.8925</td>
+                <td>26.8288</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00726</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.4184</td>
+                <td>20.0549</td>
+                <td>332.8341</td>
+                <td>13.6042</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6386</td>
+                <td>21.9687</td>
+                <td>396.8056</td>
+                <td>14.8195</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.1129</td>
+                <td>60.2127</td>
+                <td>5717.9658</td>
+                <td>34.2435</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.0484</td>
+                <td>64.8647</td>
+                <td>11222.0908</td>
+                <td>33.6392</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.7880</td>
+                <td>22.5458</td>
+                <td>414.8560</td>
+                <td>15.2119</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0456</td>
+                <td>59.0353</td>
+                <td>6065.5680</td>
+                <td>33.5535</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00727</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.4348</td>
+                <td>20.9293</td>
+                <td>378.5621</td>
+                <td>10.6131</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6661</td>
+                <td>22.9190</td>
+                <td>451.5498</td>
+                <td>11.5842</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.1415</td>
+                <td>61.0440</td>
+                <td>6152.0104</td>
+                <td>25.7929</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.9707</td>
+                <td>65.5885</td>
+                <td>12094.8089</td>
+                <td>26.2455</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.8103</td>
+                <td>23.5795</td>
+                <td>474.8931</td>
+                <td>11.9068</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0695</td>
+                <td>59.8917</td>
+                <td>6521.0286</td>
+                <td>25.2285</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00728</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.4402</td>
+                <td>20.9477</td>
+                <td>378.2654</td>
+                <td>10.6002</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6702</td>
+                <td>22.9370</td>
+                <td>451.2266</td>
+                <td>11.5699</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.1444</td>
+                <td>61.0270</td>
+                <td>6131.9961</td>
+                <td>25.6758</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.9719</td>
+                <td>65.6422</td>
+                <td>12123.7083</td>
+                <td>26.1941</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.8148</td>
+                <td>23.6205</td>
+                <td>474.9436</td>
+                <td>11.8990</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0753</td>
+                <td>59.9251</td>
+                <td>6513.1820</td>
+                <td>25.1608</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00729</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.4492</td>
+                <td>15.0470</td>
+                <td>82.4381</td>
+                <td>9.2889</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>4.5521</td>
+                <td>15.5763</td>
+                <td>102.2574</td>
+                <td>10.4122</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.3176</td>
+                <td>36.4177</td>
+                <td>755.7548</td>
+                <td>18.8623</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.2952</td>
+                <td>50.4379</td>
+                <td>2740.3932</td>
+                <td>27.1471</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.4012</td>
+                <td>18.6802</td>
+                <td>95.4871</td>
+                <td>10.1512</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>5.3562</td>
+                <td>32.6940</td>
+                <td>1124.3667</td>
+                <td>20.8225</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00730</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.4003</td>
+                <td>15.4677</td>
+                <td>86.8991</td>
+                <td>8.5571</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>4.5049</td>
+                <td>16.0616</td>
+                <td>107.9192</td>
+                <td>9.6077</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.2769</td>
+                <td>36.5871</td>
+                <td>783.8747</td>
+                <td>18.5437</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.3580</td>
+                <td>49.8771</td>
+                <td>2767.5492</td>
+                <td>26.1425</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.4124</td>
+                <td>19.0727</td>
+                <td>100.4688</td>
+                <td>9.3544</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>5.3808</td>
+                <td>33.0511</td>
+                <td>1161.0712</td>
+                <td>20.0347</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00731</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.1161</td>
+                <td>18.5987</td>
+                <td>114.0761</td>
+                <td>13.7382</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.2446</td>
+                <td>20.3484</td>
+                <td>138.1198</td>
+                <td>15.1266</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.9594</td>
+                <td>47.7735</td>
+                <td>1683.7693</td>
+                <td>28.7299</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.3453</td>
+                <td>53.4112</td>
+                <td>4756.5759</td>
+                <td>32.2092</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.9221</td>
+                <td>21.3041</td>
+                <td>139.0055</td>
+                <td>15.1387</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.2707</td>
+                <td>49.3935</td>
+                <td>2242.5609</td>
+                <td>30.3679</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00732</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.1621</td>
+                <td>19.1485</td>
+                <td>128.7628</td>
+                <td>13.6255</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.2807</td>
+                <td>20.9560</td>
+                <td>155.8236</td>
+                <td>14.9895</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.9634</td>
+                <td>48.0422</td>
+                <td>1811.8484</td>
+                <td>26.7853</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.2859</td>
+                <td>53.4535</td>
+                <td>4955.8143</td>
+                <td>30.5513</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.9545</td>
+                <td>21.8920</td>
+                <td>156.6809</td>
+                <td>15.0137</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.2999</td>
+                <td>49.5165</td>
+                <td>2377.0385</td>
+                <td>28.7084</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00733</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.5918</td>
+                <td>18.8985</td>
+                <td>97.0503</td>
+                <td>27.2069</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.7011</td>
+                <td>20.6132</td>
+                <td>116.9882</td>
+                <td>30.0711</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0276</td>
+                <td>49.0981</td>
+                <td>1436.8079</td>
+                <td>57.7914</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.9371</td>
+                <td>55.7453</td>
+                <td>3416.9280</td>
+                <td>52.2565</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.9562</td>
+                <td>21.5827</td>
+                <td>112.9240</td>
+                <td>29.7673</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.8037</td>
+                <td>49.8295</td>
+                <td>1924.1244</td>
+                <td>61.2649</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00734</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.5620</td>
+                <td>18.8464</td>
+                <td>95.2748</td>
+                <td>27.8762</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6439</td>
+                <td>20.5529</td>
+                <td>114.9074</td>
+                <td>30.8083</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0213</td>
+                <td>48.8337</td>
+                <td>1401.3592</td>
+                <td>58.7448</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.0199</td>
+                <td>55.6627</td>
+                <td>3398.8482</td>
+                <td>52.8076</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.9440</td>
+                <td>21.4923</td>
+                <td>110.4186</td>
+                <td>30.4776</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.7612</td>
+                <td>49.8576</td>
+                <td>1902.6075</td>
+                <td>62.8947</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00735</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.4888</td>
+                <td>25.6139</td>
+                <td>300.6293</td>
+                <td>12.7229</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5702</td>
+                <td>27.9529</td>
+                <td>365.6482</td>
+                <td>14.0204</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8095</td>
+                <td>62.2670</td>
+                <td>3634.2267</td>
+                <td>26.5372</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.6040</td>
+                <td>70.2462</td>
+                <td>10586.5847</td>
+                <td>30.1095</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8073</td>
+                <td>29.1643</td>
+                <td>344.2111</td>
+                <td>13.7956</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.6932</td>
+                <td>63.8485</td>
+                <td>4942.1023</td>
+                <td>27.9650</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00736</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.4917</td>
+                <td>25.6357</td>
+                <td>302.7665</td>
+                <td>12.6707</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5716</td>
+                <td>27.9751</td>
+                <td>368.0325</td>
+                <td>13.9616</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8176</td>
+                <td>62.3429</td>
+                <td>3640.1814</td>
+                <td>26.3828</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.6032</td>
+                <td>70.1499</td>
+                <td>10539.2011</td>
+                <td>29.8728</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8187</td>
+                <td>29.2344</td>
+                <td>346.2645</td>
+                <td>13.7411</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.6942</td>
+                <td>63.8733</td>
+                <td>4960.6838</td>
+                <td>27.8321</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00737</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.1788</td>
+                <td>17.8851</td>
+                <td>114.7332</td>
+                <td>10.4048</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>4.5211</td>
+                <td>19.6595</td>
+                <td>137.1769</td>
+                <td>11.3778</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>5.8900</td>
+                <td>50.3290</td>
+                <td>2150.8570</td>
+                <td>27.8518</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.1223</td>
+                <td>55.0120</td>
+                <td>4613.8853</td>
+                <td>27.5867</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>4.8783</td>
+                <td>20.3885</td>
+                <td>144.6616</td>
+                <td>11.7501</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>5.4473</td>
+                <td>48.8506</td>
+                <td>2382.6266</td>
+                <td>26.4825</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00738</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.7507</td>
+                <td>19.1157</td>
+                <td>129.1305</td>
+                <td>11.0108</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.0211</td>
+                <td>20.9643</td>
+                <td>154.3999</td>
+                <td>12.0341</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.3283</td>
+                <td>51.7997</td>
+                <td>2267.6599</td>
+                <td>24.5773</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.2282</td>
+                <td>56.2374</td>
+                <td>4835.6377</td>
+                <td>24.4868</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.2676</td>
+                <td>21.7122</td>
+                <td>163.1468</td>
+                <td>12.3818</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.0039</td>
+                <td>50.3197</td>
+                <td>2501.6965</td>
+                <td>24.8416</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00739</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.7604</td>
+                <td>21.8930</td>
+                <td>52.1283</td>
+                <td>28.8662</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.8888</td>
+                <td>23.9566</td>
+                <td>62.0111</td>
+                <td>31.5436</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0929</td>
+                <td>58.4426</td>
+                <td>924.3704</td>
+                <td>62.1535</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.8414</td>
+                <td>59.6361</td>
+                <td>2218.3790</td>
+                <td>51.6609</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.9531</td>
+                <td>25.0802</td>
+                <td>67.8925</td>
+                <td>33.0341</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0829</td>
+                <td>57.4090</td>
+                <td>1033.5863</td>
+                <td>60.2746</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00740</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.7488</td>
+                <td>21.8028</td>
+                <td>51.2884</td>
+                <td>28.7549</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.8793</td>
+                <td>23.8590</td>
+                <td>60.9037</td>
+                <td>31.4226</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0950</td>
+                <td>58.8098</td>
+                <td>924.9058</td>
+                <td>62.0997</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.8361</td>
+                <td>59.7496</td>
+                <td>2206.6765</td>
+                <td>51.6086</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.9463</td>
+                <td>24.9746</td>
+                <td>66.6534</td>
+                <td>32.9072</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0822</td>
+                <td>57.7502</td>
+                <td>1034.3383</td>
+                <td>60.1693</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00741</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>4.8249</td>
+                <td>13.4604</td>
+                <td>48.8868</td>
+                <td>20.2603</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>4.9771</td>
+                <td>14.7323</td>
+                <td>57.9651</td>
+                <td>22.2116</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.6341</td>
+                <td>41.8453</td>
+                <td>1003.5535</td>
+                <td>57.4083</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.5785</td>
+                <td>46.9965</td>
+                <td>2073.6873</td>
+                <td>44.6673</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.1905</td>
+                <td>15.3433</td>
+                <td>60.6352</td>
+                <td>22.7121</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.3886</td>
+                <td>40.6094</td>
+                <td>1100.5330</td>
+                <td>56.1933</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00742</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.9830</td>
+                <td>17.5128</td>
+                <td>52.4926</td>
+                <td>23.4154</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.1128</td>
+                <td>19.1501</td>
+                <td>62.2913</td>
+                <td>25.6319</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4455</td>
+                <td>49.7524</td>
+                <td>935.4505</td>
+                <td>49.5077</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.8081</td>
+                <td>58.3269</td>
+                <td>2458.4428</td>
+                <td>38.8691</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.1779</td>
+                <td>20.0012</td>
+                <td>67.4397</td>
+                <td>26.7264</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4315</td>
+                <td>49.4522</td>
+                <td>1058.2194</td>
+                <td>47.9128</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00743</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.0284</td>
+                <td>13.2513</td>
+                <td>56.1336</td>
+                <td>35.0803</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.1173</td>
+                <td>14.4936</td>
+                <td>66.5693</td>
+                <td>38.4443</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.6910</td>
+                <td>44.3006</td>
+                <td>1214.1773</td>
+                <td>89.0798</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.2509</td>
+                <td>49.9089</td>
+                <td>2720.4650</td>
+                <td>72.5435</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.2819</td>
+                <td>15.4455</td>
+                <td>68.1717</td>
+                <td>39.5939</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.5110</td>
+                <td>41.8628</td>
+                <td>1362.8230</td>
+                <td>85.8422</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00744</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.5945</td>
+                <td>18.7362</td>
+                <td>58.3273</td>
+                <td>32.1885</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.7138</td>
+                <td>20.4911</td>
+                <td>69.1076</td>
+                <td>35.3200</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0508</td>
+                <td>55.6794</td>
+                <td>1128.0883</td>
+                <td>77.8999</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.9836</td>
+                <td>59.4300</td>
+                <td>2633.8252</td>
+                <td>51.4836</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.7850</td>
+                <td>21.5582</td>
+                <td>72.5856</td>
+                <td>36.6728</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0155</td>
+                <td>54.0041</td>
+                <td>1279.8146</td>
+                <td>75.0826</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00745</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.1707</td>
+                <td>16.8048</td>
+                <td>157.0650</td>
+                <td>37.9892</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.2844</td>
+                <td>18.4113</td>
+                <td>193.0734</td>
+                <td>41.7859</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.9956</td>
+                <td>47.1100</td>
+                <td>2781.8990</td>
+                <td>82.1618</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.1088</td>
+                <td>56.5549</td>
+                <td>7646.5834</td>
+                <td>52.9017</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.6743</td>
+                <td>18.7051</td>
+                <td>201.0667</td>
+                <td>42.3083</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.5887</td>
+                <td>47.9658</td>
+                <td>3219.7955</td>
+                <td>84.2565</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00746</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.1829</td>
+                <td>17.0039</td>
+                <td>164.6422</td>
+                <td>37.7019</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.2981</td>
+                <td>18.6324</td>
+                <td>201.8626</td>
+                <td>41.4689</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0041</td>
+                <td>47.4248</td>
+                <td>2896.4333</td>
+                <td>81.5111</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.1196</td>
+                <td>56.6610</td>
+                <td>7834.9787</td>
+                <td>51.9899</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.6861</td>
+                <td>18.9175</td>
+                <td>210.4261</td>
+                <td>41.9973</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.5981</td>
+                <td>48.1313</td>
+                <td>3326.2317</td>
+                <td>83.3043</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00747</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.8381</td>
+                <td>21.2002</td>
+                <td>132.5974</td>
+                <td>22.4525</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.9725</td>
+                <td>23.2207</td>
+                <td>157.3019</td>
+                <td>24.5295</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.2797</td>
+                <td>52.7979</td>
+                <td>1835.8709</td>
+                <td>46.8676</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.2340</td>
+                <td>61.4820</td>
+                <td>4073.7816</td>
+                <td>43.1181</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.1294</td>
+                <td>23.7566</td>
+                <td>160.8925</td>
+                <td>24.8555</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.1312</td>
+                <td>51.8851</td>
+                <td>2044.6995</td>
+                <td>46.0928</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00748</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.8564</td>
+                <td>21.2197</td>
+                <td>134.2443</td>
+                <td>22.1015</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.9946</td>
+                <td>23.2457</td>
+                <td>159.2948</td>
+                <td>24.1440</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3067</td>
+                <td>52.9518</td>
+                <td>1886.1500</td>
+                <td>46.4533</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.2359</td>
+                <td>61.3463</td>
+                <td>4132.9514</td>
+                <td>42.8854</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.1510</td>
+                <td>23.7218</td>
+                <td>163.0302</td>
+                <td>24.4528</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.1606</td>
+                <td>52.0790</td>
+                <td>2097.8405</td>
+                <td>45.6047</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00749</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.4721</td>
+                <td>14.9255</td>
+                <td>47.6281</td>
+                <td>21.4532</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6084</td>
+                <td>16.3166</td>
+                <td>56.5625</td>
+                <td>23.4610</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0137</td>
+                <td>44.7925</td>
+                <td>876.8602</td>
+                <td>50.1210</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.4845</td>
+                <td>51.5931</td>
+                <td>2014.3128</td>
+                <td>44.3855</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.6907</td>
+                <td>17.1773</td>
+                <td>59.6958</td>
+                <td>24.2462</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.9515</td>
+                <td>43.4499</td>
+                <td>975.8352</td>
+                <td>49.5065</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00750</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.5100</td>
+                <td>17.2778</td>
+                <td>64.6507</td>
+                <td>19.2667</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.6365</td>
+                <td>18.8845</td>
+                <td>76.8551</td>
+                <td>21.1019</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.9782</td>
+                <td>50.7564</td>
+                <td>1184.8296</td>
+                <td>45.9214</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1037</td>
+                <td>56.1242</td>
+                <td>2778.4350</td>
+                <td>41.4330</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.6715</td>
+                <td>19.9357</td>
+                <td>81.6667</td>
+                <td>21.8710</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.9596</td>
+                <td>48.9307</td>
+                <td>1312.9086</td>
+                <td>44.7347</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00751</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.6549</td>
+                <td>21.4959</td>
+                <td>60.3996</td>
+                <td>24.3297</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.7892</td>
+                <td>23.5143</td>
+                <td>71.8507</td>
+                <td>26.6638</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.2212</td>
+                <td>62.1938</td>
+                <td>1212.9670</td>
+                <td>56.8013</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.7002</td>
+                <td>60.7585</td>
+                <td>3260.6385</td>
+                <td>49.6394</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.8603</td>
+                <td>24.5800</td>
+                <td>78.4000</td>
+                <td>27.8715</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.1934</td>
+                <td>60.5693</td>
+                <td>1335.4042</td>
+                <td>54.7888</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00752</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.3840</td>
+                <td>14.5589</td>
+                <td>41.7963</td>
+                <td>20.8718</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.5147</td>
+                <td>15.9235</td>
+                <td>49.6305</td>
+                <td>22.8699</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.9937</td>
+                <td>45.7322</td>
+                <td>894.2724</td>
+                <td>48.8374</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.5046</td>
+                <td>51.3077</td>
+                <td>2107.4233</td>
+                <td>41.3340</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.5815</td>
+                <td>16.6830</td>
+                <td>54.2855</td>
+                <td>23.9399</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.9776</td>
+                <td>45.1302</td>
+                <td>983.7829</td>
+                <td>47.3338</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00753</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.3603</td>
+                <td>19.9116</td>
+                <td>69.9283</td>
+                <td>21.9927</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.4764</td>
+                <td>21.7637</td>
+                <td>83.1796</td>
+                <td>24.0414</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.9016</td>
+                <td>58.2488</td>
+                <td>1450.5130</td>
+                <td>51.7101</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1961</td>
+                <td>64.1364</td>
+                <td>3452.7399</td>
+                <td>37.7269</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.5510</td>
+                <td>22.8075</td>
+                <td>91.0252</td>
+                <td>25.1747</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.9008</td>
+                <td>57.2937</td>
+                <td>1618.7279</td>
+                <td>50.0024</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00754</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.3597</td>
+                <td>20.0828</td>
+                <td>69.7808</td>
+                <td>22.0447</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.4764</td>
+                <td>21.9527</td>
+                <td>82.9977</td>
+                <td>24.0959</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.8926</td>
+                <td>58.3385</td>
+                <td>1431.3954</td>
+                <td>51.6112</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.1904</td>
+                <td>64.5283</td>
+                <td>3427.1325</td>
+                <td>37.5389</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.5495</td>
+                <td>23.0035</td>
+                <td>90.8582</td>
+                <td>25.2294</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.8940</td>
+                <td>57.4755</td>
+                <td>1603.6451</td>
+                <td>49.9653</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00755</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.2699</td>
+                <td>22.1842</td>
+                <td>81.1222</td>
+                <td>27.1434</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.3979</td>
+                <td>24.2481</td>
+                <td>96.4233</td>
+                <td>29.6706</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7018</td>
+                <td>59.9390</td>
+                <td>1466.9826</td>
+                <td>60.5117</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.2303</td>
+                <td>67.8871</td>
+                <td>3517.9044</td>
+                <td>53.4098</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4650</td>
+                <td>25.4021</td>
+                <td>105.5849</td>
+                <td>31.0835</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.7056</td>
+                <td>59.7138</td>
+                <td>1684.9539</td>
+                <td>59.3460</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00756</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.2723</td>
+                <td>22.1528</td>
+                <td>81.7926</td>
+                <td>27.3316</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4005</td>
+                <td>24.2160</td>
+                <td>97.2394</td>
+                <td>29.8765</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7054</td>
+                <td>59.8410</td>
+                <td>1472.0764</td>
+                <td>60.4398</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.2376</td>
+                <td>67.8565</td>
+                <td>3551.5202</td>
+                <td>53.5351</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4674</td>
+                <td>25.3675</td>
+                <td>106.5360</td>
+                <td>31.2996</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.7104</td>
+                <td>59.6555</td>
+                <td>1691.9958</td>
+                <td>59.3964</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00757</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.7530</td>
+                <td>16.2082</td>
+                <td>67.4779</td>
+                <td>37.8389</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.8821</td>
+                <td>17.7320</td>
+                <td>80.1435</td>
+                <td>41.5150</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3122</td>
+                <td>50.4030</td>
+                <td>1376.7269</td>
+                <td>82.6557</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.0081</td>
+                <td>57.1643</td>
+                <td>3445.9194</td>
+                <td>77.9487</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.9581</td>
+                <td>18.6601</td>
+                <td>86.6201</td>
+                <td>43.3702</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.2753</td>
+                <td>49.3292</td>
+                <td>1526.0908</td>
+                <td>80.7239</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00758</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.7587</td>
+                <td>14.7538</td>
+                <td>55.4767</td>
+                <td>39.7463</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.8873</td>
+                <td>16.1300</td>
+                <td>65.8180</td>
+                <td>43.6211</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3631</td>
+                <td>46.8016</td>
+                <td>1155.7685</td>
+                <td>81.3620</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.9359</td>
+                <td>55.5544</td>
+                <td>3019.1617</td>
+                <td>80.8272</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.9634</td>
+                <td>16.9383</td>
+                <td>70.8671</td>
+                <td>45.5423</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3270</td>
+                <td>46.0838</td>
+                <td>1288.3404</td>
+                <td>79.6960</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00759</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.4831</td>
+                <td>28.9472</td>
+                <td>182.8811</td>
+                <td>34.0857</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5918</td>
+                <td>31.6534</td>
+                <td>218.8801</td>
+                <td>37.4142</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5747</td>
+                <td>58.2304</td>
+                <td>1677.4318</td>
+                <td>62.5390</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.4830</td>
+                <td>62.9556</td>
+                <td>3493.2005</td>
+                <td>63.0770</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.7687</td>
+                <td>32.8259</td>
+                <td>215.7819</td>
+                <td>37.5845</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4098</td>
+                <td>55.6712</td>
+                <td>1888.0828</td>
+                <td>61.5465</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00760</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.4854</td>
+                <td>29.9737</td>
+                <td>201.3181</td>
+                <td>37.2166</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5884</td>
+                <td>32.7900</td>
+                <td>240.8439</td>
+                <td>40.8467</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5569</td>
+                <td>58.9229</td>
+                <td>1773.0838</td>
+                <td>64.4332</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.4722</td>
+                <td>63.6237</td>
+                <td>3629.3332</td>
+                <td>64.4539</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.7810</td>
+                <td>33.9430</td>
+                <td>237.4802</td>
+                <td>40.8963</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3787</td>
+                <td>55.9349</td>
+                <td>1971.0838</td>
+                <td>62.8199</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00761</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.2504</td>
+                <td>30.7384</td>
+                <td>129.8085</td>
+                <td>30.3097</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.3948</td>
+                <td>33.6226</td>
+                <td>154.4737</td>
+                <td>33.1778</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3666</td>
+                <td>61.3847</td>
+                <td>1350.8197</td>
+                <td>56.8568</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.4543</td>
+                <td>71.7157</td>
+                <td>2460.8947</td>
+                <td>38.0673</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.5043</td>
+                <td>34.6140</td>
+                <td>161.9566</td>
+                <td>33.6696</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.2575</td>
+                <td>59.8389</td>
+                <td>1499.5003</td>
+                <td>56.4952</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00762</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.2556</td>
+                <td>30.7151</td>
+                <td>128.9392</td>
+                <td>31.6254</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.3975</td>
+                <td>33.5942</td>
+                <td>153.3781</td>
+                <td>34.6234</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3726</td>
+                <td>61.2850</td>
+                <td>1337.9616</td>
+                <td>59.5335</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.5363</td>
+                <td>71.5299</td>
+                <td>2475.9951</td>
+                <td>40.4921</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.5169</td>
+                <td>34.5938</td>
+                <td>161.2539</td>
+                <td>35.2072</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.2563</td>
+                <td>59.8694</td>
+                <td>1486.9954</td>
+                <td>59.0593</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00763</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.0854</td>
+                <td>11.1922</td>
+                <td>33.2410</td>
+                <td>14.0940</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.2153</td>
+                <td>12.2323</td>
+                <td>39.3905</td>
+                <td>15.4129</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.0819</td>
+                <td>44.1629</td>
+                <td>1296.1528</td>
+                <td>44.2459</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.3408</td>
+                <td>55.0937</td>
+                <td>4592.8865</td>
+                <td>49.8498</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.2843</td>
+                <td>12.8178</td>
+                <td>43.0172</td>
+                <td>16.1439</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.0719</td>
+                <td>43.9530</td>
+                <td>1450.0566</td>
+                <td>43.2010</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00764</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.7025</td>
+                <td>15.2855</td>
+                <td>53.8413</td>
+                <td>24.7705</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.8306</td>
+                <td>16.7094</td>
+                <td>63.9700</td>
+                <td>27.0816</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4393</td>
+                <td>50.1007</td>
+                <td>1530.8651</td>
+                <td>60.1599</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.7254</td>
+                <td>57.2632</td>
+                <td>5348.5599</td>
+                <td>68.8198</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.8979</td>
+                <td>17.5081</td>
+                <td>70.0081</td>
+                <td>28.3702</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4270</td>
+                <td>49.7431</td>
+                <td>1730.6224</td>
+                <td>59.9016</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00765</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6637</td>
+                <td>26.9817</td>
+                <td>275.0961</td>
+                <td>38.3981</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7913</td>
+                <td>29.5174</td>
+                <td>329.2272</td>
+                <td>42.0917</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8786</td>
+                <td>62.6129</td>
+                <td>3321.5876</td>
+                <td>69.9993</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.7646</td>
+                <td>72.2642</td>
+                <td>8523.8731</td>
+                <td>74.6694</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8332</td>
+                <td>29.8879</td>
+                <td>337.5808</td>
+                <td>42.8185</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8735</td>
+                <td>62.8632</td>
+                <td>3806.3758</td>
+                <td>69.2060</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00766</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6630</td>
+                <td>26.9297</td>
+                <td>276.7870</td>
+                <td>38.4873</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7907</td>
+                <td>29.4619</td>
+                <td>331.0497</td>
+                <td>42.1880</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8802</td>
+                <td>62.7032</td>
+                <td>3351.3659</td>
+                <td>70.1855</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.7658</td>
+                <td>72.2760</td>
+                <td>8560.5541</td>
+                <td>74.9031</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8310</td>
+                <td>29.8060</td>
+                <td>338.7690</td>
+                <td>42.8737</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8712</td>
+                <td>62.6957</td>
+                <td>3808.6741</td>
+                <td>69.1828</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00767</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6091</td>
+                <td>35.1550</td>
+                <td>125.9071</td>
+                <td>39.4836</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7362</td>
+                <td>38.4346</td>
+                <td>150.1950</td>
+                <td>43.2372</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.6288</td>
+                <td>72.6559</td>
+                <td>1347.0560</td>
+                <td>70.3407</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>6.3693</td>
+                <td>71.7414</td>
+                <td>3695.6353</td>
+                <td>80.8272</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.7549</td>
+                <td>39.4426</td>
+                <td>158.3100</td>
+                <td>44.8681</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.6345</td>
+                <td>71.3543</td>
+                <td>1526.6312</td>
+                <td>68.9650</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00768</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.4952</td>
+                <td>29.7421</td>
+                <td>77.1319</td>
+                <td>52.1329</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.6233</td>
+                <td>32.4905</td>
+                <td>91.7932</td>
+                <td>57.1099</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.6091</td>
+                <td>64.4090</td>
+                <td>849.6014</td>
+                <td>95.7561</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>6.6051</td>
+                <td>66.5696</td>
+                <td>2667.7538</td>
+                <td>111.1500</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.6566</td>
+                <td>33.2158</td>
+                <td>96.4372</td>
+                <td>59.2404</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.6043</td>
+                <td>63.5310</td>
+                <td>957.1908</td>
+                <td>94.0697</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00769</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3961</td>
+                <td>22.4014</td>
+                <td>114.0233</td>
+                <td>30.1319</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5230</td>
+                <td>24.3210</td>
+                <td>135.3653</td>
+                <td>33.1315</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3464</td>
+                <td>42.9053</td>
+                <td>1061.3943</td>
+                <td>54.3024</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.6085</td>
+                <td>54.8561</td>
+                <td>3567.5262</td>
+                <td>73.4823</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4804</td>
+                <td>22.8037</td>
+                <td>122.9044</td>
+                <td>33.4953</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4779</td>
+                <td>48.0137</td>
+                <td>1475.0914</td>
+                <td>53.0627</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00770</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3882</td>
+                <td>22.3159</td>
+                <td>114.0738</td>
+                <td>30.4131</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5145</td>
+                <td>24.2262</td>
+                <td>135.5138</td>
+                <td>33.4440</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.3405</td>
+                <td>42.8747</td>
+                <td>1066.3169</td>
+                <td>54.7309</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.6092</td>
+                <td>54.6920</td>
+                <td>3559.0553</td>
+                <td>74.0580</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4743</td>
+                <td>22.7584</td>
+                <td>123.3263</td>
+                <td>33.8362</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4699</td>
+                <td>47.8606</td>
+                <td>1477.7867</td>
+                <td>53.4158</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00771</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.6581</td>
+                <td>18.4830</td>
+                <td>96.3422</td>
+                <td>22.9413</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.7872</td>
+                <td>20.2024</td>
+                <td>114.8723</td>
+                <td>25.0781</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.1918</td>
+                <td>54.1228</td>
+                <td>1836.5745</td>
+                <td>45.4920</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.7087</td>
+                <td>62.9609</td>
+                <td>3905.7781</td>
+                <td>44.4250</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.8604</td>
+                <td>20.8668</td>
+                <td>120.8725</td>
+                <td>25.9102</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.1209</td>
+                <td>52.9137</td>
+                <td>2019.1244</td>
+                <td>44.3752</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00772</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>5.4384</td>
+                <td>17.2578</td>
+                <td>78.2727</td>
+                <td>28.1422</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>5.5653</td>
+                <td>18.8668</td>
+                <td>93.1715</td>
+                <td>30.7762</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>6.9967</td>
+                <td>50.8660</td>
+                <td>1482.4297</td>
+                <td>55.4501</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>3.6428</td>
+                <td>60.3738</td>
+                <td>3138.0390</td>
+                <td>57.2506</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>5.6835</td>
+                <td>19.5453</td>
+                <td>97.8123</td>
+                <td>31.7754</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>6.8846</td>
+                <td>49.8162</td>
+                <td>1640.4022</td>
+                <td>54.0812</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00773</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.2394</td>
+                <td>21.0406</td>
+                <td>100.3782</td>
+                <td>29.7481</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.3768</td>
+                <td>23.0075</td>
+                <td>119.3840</td>
+                <td>32.5090</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5361</td>
+                <td>52.1501</td>
+                <td>1437.2756</td>
+                <td>57.5585</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.1995</td>
+                <td>58.5544</td>
+                <td>3335.8980</td>
+                <td>53.0199</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4479</td>
+                <td>24.0929</td>
+                <td>129.2037</td>
+                <td>33.9822</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.5162</td>
+                <td>51.2555</td>
+                <td>1603.7249</td>
+                <td>55.6192</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00774</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.2280</td>
+                <td>21.2169</td>
+                <td>113.6332</td>
+                <td>26.3824</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.3740</td>
+                <td>23.1962</td>
+                <td>135.1155</td>
+                <td>28.8415</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.5107</td>
+                <td>51.8510</td>
+                <td>1571.9318</td>
+                <td>52.1891</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.8909</td>
+                <td>59.4011</td>
+                <td>3746.5498</td>
+                <td>48.8254</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4488</td>
+                <td>24.2777</td>
+                <td>146.2121</td>
+                <td>30.1462</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4987</td>
+                <td>51.1052</td>
+                <td>1759.4379</td>
+                <td>50.4317</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00775</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3614</td>
+                <td>30.1812</td>
+                <td>198.6542</td>
+                <td>38.6986</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5352</td>
+                <td>33.0552</td>
+                <td>236.8824</td>
+                <td>42.3650</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.6754</td>
+                <td>67.5813</td>
+                <td>2528.6766</td>
+                <td>73.1493</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.2491</td>
+                <td>71.2832</td>
+                <td>5783.4127</td>
+                <td>68.1938</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.6626</td>
+                <td>33.5630</td>
+                <td>246.0206</td>
+                <td>43.4465</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.5345</td>
+                <td>66.4911</td>
+                <td>2832.9455</td>
+                <td>70.9615</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00776</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3503</td>
+                <td>29.6148</td>
+                <td>218.5203</td>
+                <td>36.2356</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.5262</td>
+                <td>32.4293</td>
+                <td>260.5738</td>
+                <td>39.6717</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.6723</td>
+                <td>66.0185</td>
+                <td>2727.8770</td>
+                <td>68.8004</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.2672</td>
+                <td>70.9476</td>
+                <td>6391.9069</td>
+                <td>61.9144</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.6654</td>
+                <td>32.9074</td>
+                <td>270.8868</td>
+                <td>40.5546</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.4952</td>
+                <td>65.1050</td>
+                <td>3048.3152</td>
+                <td>66.8448</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00777</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.7519</td>
+                <td>31.5264</td>
+                <td>201.8121</td>
+                <td>30.7583</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.8864</td>
+                <td>34.4665</td>
+                <td>240.6163</td>
+                <td>33.6517</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.9058</td>
+                <td>69.4569</td>
+                <td>2483.0026</td>
+                <td>57.5088</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.5152</td>
+                <td>75.4520</td>
+                <td>6191.3428</td>
+                <td>54.9079</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.9574</td>
+                <td>35.7264</td>
+                <td>258.8521</td>
+                <td>35.0138</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8741</td>
+                <td>68.0751</td>
+                <td>2762.2605</td>
+                <td>55.7368</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00778</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.7573</td>
+                <td>31.4302</td>
+                <td>182.9618</td>
+                <td>30.9960</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.8856</td>
+                <td>34.3591</td>
+                <td>218.0741</td>
+                <td>33.9116</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.9104</td>
+                <td>70.2502</td>
+                <td>2306.4164</td>
+                <td>59.1002</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.5282</td>
+                <td>75.6465</td>
+                <td>5818.4227</td>
+                <td>56.2462</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.9454</td>
+                <td>35.6947</td>
+                <td>235.1414</td>
+                <td>35.3193</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8940</td>
+                <td>68.8160</td>
+                <td>2570.2519</td>
+                <td>57.2629</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00779</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3517</td>
+                <td>22.3509</td>
+                <td>153.9685</td>
+                <td>57.1623</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4779</td>
+                <td>24.3661</td>
+                <td>182.4943</td>
+                <td>62.7386</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4116</td>
+                <td>49.7818</td>
+                <td>1702.6639</td>
+                <td>110.1409</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.3543</td>
+                <td>55.8667</td>
+                <td>3934.2343</td>
+                <td>112.8219</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4918</td>
+                <td>25.1291</td>
+                <td>173.3068</td>
+                <td>64.2704</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3739</td>
+                <td>47.0288</td>
+                <td>1943.7806</td>
+                <td>101.6447</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00780</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3595</td>
+                <td>22.4185</td>
+                <td>153.9567</td>
+                <td>56.9593</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4857</td>
+                <td>24.4417</td>
+                <td>182.6314</td>
+                <td>62.5095</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.4195</td>
+                <td>49.9030</td>
+                <td>1699.2872</td>
+                <td>109.8498</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.3595</td>
+                <td>55.8904</td>
+                <td>3930.6335</td>
+                <td>112.5848</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.4977</td>
+                <td>25.1981</td>
+                <td>173.3725</td>
+                <td>64.0357</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.3804</td>
+                <td>47.1414</td>
+                <td>1939.5720</td>
+                <td>101.4516</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00781</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3254</td>
+                <td>26.1745</td>
+                <td>395.3297</td>
+                <td>14.2179</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4412</td>
+                <td>28.6376</td>
+                <td>475.8873</td>
+                <td>15.5538</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7269</td>
+                <td>62.4990</td>
+                <td>4844.5008</td>
+                <td>29.5871</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.5167</td>
+                <td>70.5091</td>
+                <td>12157.3750</td>
+                <td>30.0734</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.6386</td>
+                <td>29.1124</td>
+                <td>482.3702</td>
+                <td>15.8202</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.5653</td>
+                <td>61.7228</td>
+                <td>5408.6904</td>
+                <td>28.1668</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00782</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3295</td>
+                <td>26.1616</td>
+                <td>394.9919</td>
+                <td>14.2800</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4463</td>
+                <td>28.6264</td>
+                <td>475.6378</td>
+                <td>15.6204</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7297</td>
+                <td>62.5453</td>
+                <td>4847.7611</td>
+                <td>29.6908</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.5183</td>
+                <td>70.7100</td>
+                <td>12233.5003</td>
+                <td>30.1687</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.6376</td>
+                <td>29.1084</td>
+                <td>482.5077</td>
+                <td>15.8959</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.5800</td>
+                <td>61.7000</td>
+                <td>5400.8302</td>
+                <td>28.3202</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00783</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.3256</td>
+                <td>26.2222</td>
+                <td>397.5279</td>
+                <td>14.2152</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.4437</td>
+                <td>28.6883</td>
+                <td>478.0362</td>
+                <td>15.5523</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.7351</td>
+                <td>62.6926</td>
+                <td>4868.3238</td>
+                <td>29.4261</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.5206</td>
+                <td>70.7413</td>
+                <td>12227.0975</td>
+                <td>30.2390</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.6421</td>
+                <td>29.1737</td>
+                <td>484.3792</td>
+                <td>15.8182</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.5801</td>
+                <td>61.7203</td>
+                <td>5408.5891</td>
+                <td>28.1068</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00784</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6660</td>
+                <td>27.5067</td>
+                <td>296.7652</td>
+                <td>13.7963</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7925</td>
+                <td>30.0839</td>
+                <td>354.1736</td>
+                <td>15.0837</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8799</td>
+                <td>64.1462</td>
+                <td>3728.7255</td>
+                <td>25.8932</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.9681</td>
+                <td>73.2843</td>
+                <td>10179.3592</td>
+                <td>31.8379</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8566</td>
+                <td>30.8612</td>
+                <td>377.3020</td>
+                <td>15.5984</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8405</td>
+                <td>62.7464</td>
+                <td>4022.9949</td>
+                <td>25.7018</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00785</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6616</td>
+                <td>27.3806</td>
+                <td>296.5360</td>
+                <td>13.8923</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7884</td>
+                <td>29.9490</td>
+                <td>353.9607</td>
+                <td>15.1869</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8775</td>
+                <td>63.8994</td>
+                <td>3725.4749</td>
+                <td>26.1393</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.9702</td>
+                <td>73.0721</td>
+                <td>10128.9868</td>
+                <td>32.2875</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8513</td>
+                <td>30.7160</td>
+                <td>376.9022</td>
+                <td>15.6973</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8412</td>
+                <td>62.5850</td>
+                <td>4027.9711</td>
+                <td>25.8803</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00786</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6662</td>
+                <td>27.5425</td>
+                <td>297.2225</td>
+                <td>13.9213</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7951</td>
+                <td>30.1248</td>
+                <td>354.9160</td>
+                <td>15.2192</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8800</td>
+                <td>64.0938</td>
+                <td>3729.3054</td>
+                <td>26.1395</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>4.9674</td>
+                <td>73.4658</td>
+                <td>10167.4171</td>
+                <td>32.1075</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8574</td>
+                <td>30.9023</td>
+                <td>377.9600</td>
+                <td>15.7384</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8402</td>
+                <td>62.7365</td>
+                <td>4029.1608</td>
+                <td>25.9664</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00787</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6211</td>
+                <td>26.3981</td>
+                <td>88.3311</td>
+                <td>33.0735</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7500</td>
+                <td>28.8556</td>
+                <td>105.1025</td>
+                <td>36.1591</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8598</td>
+                <td>63.3021</td>
+                <td>1183.6452</td>
+                <td>65.4575</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.6996</td>
+                <td>72.0199</td>
+                <td>3462.4827</td>
+                <td>59.2450</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8171</td>
+                <td>30.2355</td>
+                <td>114.9665</td>
+                <td>37.8507</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8540</td>
+                <td>62.9047</td>
+                <td>1349.2993</td>
+                <td>64.1606</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00788</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6235</td>
+                <td>26.3045</td>
+                <td>84.3599</td>
+                <td>34.7361</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7526</td>
+                <td>28.7528</td>
+                <td>100.4011</td>
+                <td>37.9752</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8608</td>
+                <td>63.0041</td>
+                <td>1126.1586</td>
+                <td>68.6142</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.7892</td>
+                <td>71.6226</td>
+                <td>3308.8109</td>
+                <td>61.7404</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8179</td>
+                <td>30.1245</td>
+                <td>109.8919</td>
+                <td>39.7634</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8588</td>
+                <td>62.7763</td>
+                <td>1290.7137</td>
+                <td>67.3724</td>
+            </tr>
+
+        </table>
+
+        <h3>Image: low00789</h3>
+        <table>
+            <tr>
+                <th>Preset</th>
+                <th>Entropy</th>
+                <th>Contrast</th>
+                <th>Sharpness</th>
+                <th>Colorfulness</th>
+            </tr>
+
+            <tr>
+                <td>baseline</td>
+                <td>6.6242</td>
+                <td>26.2973</td>
+                <td>85.3361</td>
+                <td>34.8871</td>
+            </tr>
+
+            <tr>
+                <td>minimal</td>
+                <td>6.7531</td>
+                <td>28.7453</td>
+                <td>101.5346</td>
+                <td>38.1430</td>
+            </tr>
+
+            <tr>
+                <td>balanced</td>
+                <td>7.8592</td>
+                <td>62.9143</td>
+                <td>1136.3024</td>
+                <td>68.9467</td>
+            </tr>
+
+            <tr>
+                <td>aggressive</td>
+                <td>5.7785</td>
+                <td>71.4834</td>
+                <td>3343.1829</td>
+                <td>61.8731</td>
+            </tr>
+
+            <tr>
+                <td>illumination_only</td>
+                <td>6.8186</td>
+                <td>30.1157</td>
+                <td>111.0965</td>
+                <td>39.9392</td>
+            </tr>
+
+            <tr>
+                <td>output_only</td>
+                <td>7.8548</td>
+                <td>62.5961</td>
+                <td>1298.4085</td>
+                <td>67.6086</td>
+            </tr>
+
+        </table>
+
+    </div>
+</body>
+</html>
