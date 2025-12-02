@@ -123,13 +123,14 @@ $\Downarrow$
 %===============================================================================
 \begin{frame}{Our Approach: Hybrid Framework}
 \centering
-\begin{tikzpicture}[scale=0.85, transform shape]
+\begin{tikzpicture}[scale=0.85, transform shape,
+    box/.style={draw, rounded corners, minimum width=2.2cm, minimum height=1cm, align=center}]
     % Boxes
-    \node[draw, fill=iiitblue!20, rounded corners, minimum width=2.2cm, minimum height=1cm] (input) at (0,0) {Low-Light\\Image};
-    \node[draw, fill=accentorange!30, rounded corners, minimum width=2.2cm, minimum height=1cm] (decom) at (3.5,0) {DecomNet\\(250K)};
-    \node[draw, fill=accentorange!30, rounded corners, minimum width=2.2cm, minimum height=1cm] (relight) at (7,0) {RelightNet\\(305K)};
-    \node[draw, fill=successgreen!30, rounded corners, minimum width=2.2cm, minimum height=1cm] (dip) at (10.5,0) {DIP\\Pipeline};
-    \node[draw, fill=iiitblue!30, rounded corners, minimum width=2.2cm, minimum height=1cm] (output) at (14,0) {Enhanced\\Output};
+    \node[box, fill=iiitblue!20] (input) at (0,0) {Low-Light\\Image};
+    \node[box, fill=accentorange!30] (decom) at (3.5,0) {DecomNet\\(250K)};
+    \node[box, fill=accentorange!30] (relight) at (7,0) {RelightNet\\(305K)};
+    \node[box, fill=successgreen!30] (dip) at (10.5,0) {DIP\\Pipeline};
+    \node[box, fill=iiitblue!30] (output) at (14,0) {Enhanced\\Output};
     
     % Arrows
     \draw[->, thick] (input) -- (decom);
@@ -138,8 +139,8 @@ $\Downarrow$
     \draw[->, thick] (dip) -- (output);
     
     % Labels
-    \node[above=0.4cm of decom, text=accentorange] {\small\textbf{Deep Learning}};
-    \node[above=0.4cm of dip, text=successgreen!70!black] {\small\textbf{Traditional DIP}};
+    \node[text=accentorange] at (5.25,1.2) {\small\textbf{Deep Learning}};
+    \node[text=successgreen!70!black] at (10.5,1.2) {\small\textbf{Traditional DIP}};
 \end{tikzpicture}
 
 \vspace{0.5cm}
@@ -152,7 +153,7 @@ Learns decomposition
 \end{column}
 \begin{column}{0.33\textwidth}
 \centering
-\textbf{13 DIP Techniques}\\
+\textbf{DIP Techniques}\\
 \small 3-stage pipeline\\
 Controllable enhancement
 \end{column}
@@ -218,12 +219,10 @@ where:
 \textbf{Stage 1: Illumination Enhancement} (Primary)
 \begin{itemize}
     \item \textcolor{iiitblue}{\textbf{CLAHE}}: Adaptive contrast, clip=2.0
-    \item \textcolor{iiitblue}{\textbf{Bilateral Filter}}: Edge-preserving, $\sigma=75$
-    \item \textcolor{iiitblue}{\textbf{Adaptive Gamma}}: $\gamma = -\log_2(\mu)$
+    \item \textcolor{iiitblue}{\textbf{Bilateral Filter}}: Edge-preserving smoothing
+    \item \textcolor{iiitblue}{\textbf{Adaptive Gamma}}: Content-aware brightness
     \item \textcolor{iiitblue}{\textbf{Guided Filter}}: O(N) complexity
     \item \textcolor{iiitblue}{\textbf{Multi-Scale Retinex}}: $\sigma \in \{15,80,250\}$
-    \item \textcolor{iiitblue}{\textbf{Tone Mapping}}: Reinhard operator
-    \item \textcolor{iiitblue}{\textbf{Histogram EQ}}: Baseline comparison
 \end{itemize}
 
 \vspace{0.2cm}
@@ -232,8 +231,8 @@ where:
 \vspace{0.2cm}
 \textbf{Stage 3: Output Enhancement}
 \begin{itemize}
-    \item Unsharp Mask, White Balance, Local Contrast
-    \item Gamma Correction, NLM Denoising
+    \item Unsharp Mask, Color Balance
+    \item Local Contrast, Tone Mapping
 \end{itemize}
 \end{column}
 \begin{column}{0.45\textwidth}
@@ -246,9 +245,9 @@ where:
     \draw[->, thick] (s1) -- (s2);
     \draw[->, thick] (s2) -- (s3);
     
-    \node[right=0.3cm of s1, text=iiitblue] {\small HIGH impact};
-    \node[right=0.3cm of s2, text=gray] {\small SKIP};
-    \node[right=0.3cm of s3, text=successgreen!70!black] {\small REFINE};
+    \node[text=iiitblue] at (3,3) {\small HIGH impact};
+    \node[text=gray] at (2.3,1.5) {\small SKIP};
+    \node[text=successgreen!70!black] at (2.5,0) {\small REFINE};
 \end{tikzpicture}
 
 \vspace{0.5cm}
@@ -266,56 +265,46 @@ where:
 \begin{columns}
 \begin{column}{0.5\textwidth}
 \textbf{1. CLAHE} (Contrast Limited Adaptive HE)
-\begin{itemize}
+\begin{itemize}\setlength{\itemsep}{0pt}
     \item Applied to L channel in LAB space
     \item clip\_limit=2.0, tile\_grid=8$\times$8
-    \item Prevents noise amplification
 \end{itemize}
 
-\vspace{0.2cm}
 \textbf{2. Bilateral Filter}
 \begin{equation*}
 I_{bf}(x) = \frac{1}{W} \sum_{x_i} I(x_i) \cdot G_s \cdot G_r
 \end{equation*}
-\begin{itemize}
-    \item $G_s$: Spatial Gaussian
-    \item $G_r$: Range (intensity) Gaussian
+\vspace{-0.3cm}
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item $G_s$: Spatial, $G_r$: Range Gaussian
 \end{itemize}
 
-\vspace{0.2cm}
 \textbf{3. Adaptive Gamma}
 \begin{equation*}
-\gamma = -\log_2(\mu), \quad I_{out} = I_{in}^\gamma
+\gamma = -0.3/\log_{10}(\mu), \quad I_{out} = I_{in}^{1/\gamma}
 \end{equation*}
-\begin{itemize}
-    \item Matches Weber-Fechner law
-\end{itemize}
 \end{column}
 \begin{column}{0.5\textwidth}
 \textbf{4. Unsharp Masking}
 \begin{equation*}
 I_{sharp} = I + \alpha(I - G_\sigma * I)
 \end{equation*}
-\begin{itemize}
-    \item $\alpha=1.0$, $\sigma=1.0$
-    \item High-frequency enhancement
+\vspace{-0.3cm}
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item $\alpha=1.0$, $\sigma=1.0$ for edge enhancement
 \end{itemize}
 
-\vspace{0.2cm}
 \textbf{5. White Balance (Gray World)}
 \begin{equation*}
 I_c = I_c \times \frac{\bar{I}_{gray}}{\bar{I}_c}
 \end{equation*}
-\begin{itemize}
-    \item Corrects color casts
-\end{itemize}
 
-\vspace{0.2cm}
 \textbf{6. Multi-Scale Retinex}
 \begin{equation*}
 MSR = \sum_{\sigma} w_\sigma \cdot [\log I - \log(G_\sigma * I)]
 \end{equation*}
-\begin{itemize}
+\vspace{-0.3cm}
+\begin{itemize}\setlength{\itemsep}{0pt}
     \item $\sigma \in \{15, 80, 250\}$
 \end{itemize}
 \end{column}
@@ -323,47 +312,47 @@ MSR = \sum_{\sigma} w_\sigma \cdot [\log I - \log(G_\sigma * I)]
 \end{frame}
 
 %===============================================================================
-% SLIDE 8: Advanced DIP & Preprocessing (~45 seconds)
+% SLIDE 8: Additional DIP Techniques (~45 seconds)
 %===============================================================================
-\begin{frame}{Advanced Pipeline: For Custom Images}
+\begin{frame}{Additional DIP Techniques Available}
 \begin{columns}
 \begin{column}{0.5\textwidth}
-\textbf{Preprocessing Module:}\\
-\small Automatic image analysis detects:
+\textbf{Illumination Techniques:}
 \begin{itemize}
-    \item High noise $\rightarrow$ NLM Denoising
-    \item Color cast $\rightarrow$ Gray World + White Patch
-    \item Extreme darkness $\rightarrow$ Spatially-varying gamma
-    \item Low contrast $\rightarrow$ Illumination normalization
+    \item Histogram Equalization
+    \item Multi-Scale Retinex
+    \item Tone Mapping (Reinhard)
+    \item Anisotropic Diffusion
+    \item Guided Filtering
 \end{itemize}
 
 \vspace{0.3cm}
-\textbf{Preprocessing Presets:}
+\textbf{Output Techniques:}
 \begin{itemize}
-    \item \textbf{auto}: Adaptive (recommended)
-    \item \textbf{minimal}: Fast, if noisy only
-    \item \textbf{standard}: Full preprocessing
-    \item \textbf{aggressive}: Very difficult images
+    \item Local Contrast Enhancement
+    \item Multi-Scale Detail (Laplacian)
+    \item Shadow Enhancement
+    \item Contrast Stretching
 \end{itemize}
 \end{column}
 \begin{column}{0.5\textwidth}
-\textbf{8 Advanced DIP Techniques:}
+\textbf{Edge-Preserving Smoothing:}
 
 \small
 \begin{tabular}{@{}ll@{}}
 \toprule
-Technique & Purpose \\
+Technique & Complexity \\
 \midrule
-Anisotropic Diffusion & Better smoothing \\
-Laplacian Pyramid & Multi-scale detail \\
-Shadow Enhancement & Selective brightening \\
-Dark Channel Prior & Haze removal \\
-Adaptive Bilateral & Edge-adaptive \\
-Domain Transform & Fast smoothing \\
-Percentile Stretch & Robust contrast \\
-SSR + Color Restore & Alt. illumination \\
+Bilateral Filter & $O(N \cdot r^2)$ \\
+Guided Filter & $O(N)$ \\
+Anisotropic Diff. & $O(N \cdot k)$ \\
+Domain Transform & $O(N)$ \\
 \bottomrule
 \end{tabular}
+
+\vspace{0.5cm}
+\textbf{Key Point:}\\
+\small All techniques implemented and available for experimentation via preset configuration.
 \end{column}
 \end{columns}
 \end{frame}
@@ -379,13 +368,12 @@ SSR + Color Restore & Alt. illumination \\
 \small
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-Parameter & Base & Min & \textbf{Bal} & Agg \\
+Parameter & None & Min & \textbf{Bal} & Agg \\
 \midrule
-CLAHE Clip & 1.0 & 1.5 & \textbf{2.5} & 4.0 \\
-Bilateral $\sigma$ & 50 & 60 & \textbf{75} & 100 \\
-Gamma & 1.0 & 0.95 & \textbf{0.85} & 0.7 \\
-Sharpening & 0 & 0.3 & \textbf{0.7} & 1.2 \\
-Saturation & 1.0 & 1.05 & \textbf{1.15} & 1.3 \\
+CLAHE Clip & -- & -- & \textbf{2.0} & 3.0 \\
+Bilateral $d$ & -- & -- & \textbf{7} & 9 \\
+Bilateral $\sigma$ & -- & -- & \textbf{50} & 75 \\
+Unsharp Amt & -- & -- & \textbf{1.2} & 2.0 \\
 \midrule
 Time (s) & 0.005 & 0.011 & \textbf{0.089} & 0.134 \\
 \bottomrule
@@ -396,20 +384,20 @@ Time (s) & 0.005 & 0.011 & \textbf{0.089} & 0.134 \\
 \textbf{Preset Use Cases:}
 
 \vspace{0.3cm}
-\textbf{Baseline}: Raw model output\\
-\small Benchmark, when sufficient
+\textbf{None}: Raw model output\\
+\small Benchmark comparison
 
 \vspace{0.2cm}
 \textbf{Minimal}: Subtle improvement\\
 \small Real-time video, mobile
 
 \vspace{0.2cm}
-\textbf{Balanced} ⭐: Best quality/speed\\
+\textbf{Balanced} (Best): Best quality/speed\\
 \small Production default
 
 \vspace{0.2cm}
 \textbf{Aggressive}: Maximum enhancement\\
-\small Extremely poor inputs, forensics
+\small Extremely poor inputs
 \end{column}
 \end{columns}
 \end{frame}
@@ -432,15 +420,15 @@ Time (s) & 0.005 & 0.011 & \textbf{0.089} & 0.134 \\
 \textbf{Training Setup:}
 \begin{itemize}
     \item Epochs: 100 (best at epoch 84)
-    \item Batch size: 8, Patch size: 48
+    \item Batch size: 16, Patch size: 48
     \item Optimizer: Adam ($\beta_1=0.9$, $\beta_2=0.999$)
-    \item LR: $10^{-4}$ with cosine annealing
+    \item LR: $10^{-3}$ with step decay at epoch 50
     \item Training time: $\sim$18 minutes
 \end{itemize}
 \end{column}
 \begin{column}{0.5\textwidth}
 \centering
-\includegraphics[width=\linewidth]{training_curves.png}
+\includegraphics[width=\linewidth]{training_analysis.png}
 \vspace{0.2cm}
 
 \textbf{Best Val Loss: 0.1640}\\
@@ -561,32 +549,29 @@ Output Only & 7.17 & 56.57 & 50.49 & 0.071 \\
 \includegraphics[width=\linewidth]{ablation_study.png}
 \end{column}
 \begin{column}{0.58\textwidth}
+\small
 \textbf{1. Information Preservation}
-\begin{itemize}
-    \item Highest entropy (7.32)
-    \item Aggressive destroys tonal variations (4.60)
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item Highest entropy (7.32); Aggressive destroys tonal info (4.60)
 \end{itemize}
 
 \textbf{2. Optimal Contrast (+144.8\%)}
-\begin{itemize}
-    \item CLAHE + Gamma synergy
-    \item Without saturation artifacts
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item CLAHE + Gamma synergy without saturation artifacts
 \end{itemize}
 
 \textbf{3. Natural Sharpness}
-\begin{itemize}
-    \item No halo artifacts
-    \item Aggressive: edge overshoot
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item No halo artifacts; Aggressive causes edge overshoot
 \end{itemize}
 
 \textbf{4. Color Fidelity (+104.4\%)}
-\begin{itemize}
-    \item Highest colorfulness: 51.20
-    \item Natural relationships preserved
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item Highest colorfulness (51.20) with natural relationships
 \end{itemize}
 
 \textbf{5. Appropriate Brightness}
-\begin{itemize}
+\begin{itemize}\setlength{\itemsep}{0pt}
     \item Preserves highlight headroom
 \end{itemize}
 \end{column}
@@ -630,8 +615,7 @@ Natural-looking enhancement with improved visibility, enhanced colors, and prese
 \begin{itemize}
     \centering
     \item[$\bullet$] Custom image enhancement
-    \item[$\bullet$] Preset comparison (Baseline vs Balanced vs Aggressive)
-    \item[$\bullet$] Preprocessing for out-of-distribution images
+    \item[$\bullet$] Preset comparison (None vs Balanced vs Aggressive)
     \item[$\bullet$] Real-time processing
 \end{itemize}
 \end{frame}
@@ -718,7 +702,7 @@ Output enhancement amplifies illumination improvements
     \item Modular architecture
     \item Independent updates
     \item Flexible presets
-    \item Two-tier approach
+    \item Three-stage pipeline
 \end{itemize}
 \end{block}
 \end{column}
@@ -734,8 +718,8 @@ Component & Specification \\
 \midrule
 Total Parameters & 555,205 \\
 Training Time & $\sim$18 minutes \\
-Inference & Real-time capable (11 fps CPU) \\
-DIP Techniques & 13 standard + 8 advanced \\
+Inference & Real-time capable \\
+DIP Techniques & 16 implemented \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -747,48 +731,37 @@ DIP Techniques & 13 standard + 8 advanced \\
 \begin{frame}{Future Work}
 \begin{columns}
 \begin{column}{0.5\textwidth}
-\textbf{Frequency Domain Processing:}
+\textbf{Enhancement Techniques:}
 \begin{itemize}
+    \item Frequency domain processing
     \item Homomorphic filtering
     \item FFT-based denoising
-    \item DCT-based enhancement
+    \item Advanced color space processing
 \end{itemize}
 
-\textbf{Advanced Techniques:}
-\begin{itemize}
-    \item Morphological operations
-    \item Lab/HSV color space processing
-    \item Texture enhancement (LBP, Gabor)
-    \item Exposure fusion from single image
-\end{itemize}
-
+\vspace{0.3cm}
 \textbf{Content-Aware Processing:}
 \begin{itemize}
-    \item Saliency-based enhancement
+    \item Adaptive preset selection
     \item Semantic segmentation-guided
-    \item Depth-aware processing
+    \item Automatic parameter tuning
 \end{itemize}
 \end{column}
 \begin{column}{0.5\textwidth}
 \textbf{Quality Assessment:}
 \begin{itemize}
-    \item NIQE, BRISQUE (no-reference)
-    \item LPIPS (perceptual)
-    \item Automatic parameter optimization
+    \item NIQE, BRISQUE metrics
+    \item LPIPS perceptual metric
+    \item Automated optimization
 \end{itemize}
 
-\textbf{Computational Efficiency:}
-\begin{itemize}
-    \item GPU acceleration
-    \item Integral images
-    \item Lookup tables (LUTs)
-\end{itemize}
-
+\vspace{0.3cm}
 \textbf{Applications:}
 \begin{itemize}
-    \item Video processing with temporal consistency
+    \item Video processing
+    \item Temporal consistency
     \item Mobile deployment
-    \item Interactive parameter tuning
+    \item GPU acceleration
 \end{itemize}
 \end{column}
 \end{columns}
@@ -800,12 +773,12 @@ DIP Techniques & 13 standard + 8 advanced \\
 \begin{frame}{Conclusion}
 \begin{block}{Summary}
 \begin{itemize}
-    \item Proposed a \textbf{hybrid framework} combining deep Retinex decomposition with \textbf{13 traditional DIP techniques}
+    \item Proposed a \textbf{hybrid framework} combining deep Retinex decomposition with \textbf{traditional DIP techniques}
     \item \textbf{``Train Once, Experiment Forever''}: No retraining for new enhancement combinations
-    \item \textbf{Two-tier approach}: Standard pipeline + Advanced pipeline with preprocessing
+    \item \textbf{Three-stage pipeline}: Illumination, Reflectance (skip), Output enhancement
     \item \textbf{Balanced preset} achieves optimal results:
     \begin{itemize}
-        \item +23.9\% entropy, +144.8\% contrast, +104.4\% colorfulness, +866\% sharpness
+        \item +23.9\% entropy, +144.8\% contrast, +104.4\% colorfulness
     \end{itemize}
     \item \textbf{Key insight}: Illumination enhancement $>$ Reflectance enhancement
 \end{itemize}
