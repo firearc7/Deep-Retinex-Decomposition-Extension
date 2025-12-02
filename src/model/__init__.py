@@ -1,4 +1,4 @@
-# Model components for Deep Retinex Decomposition
+# model components for deep retinex decomposition
 
 from .decomnet import DecomNet
 from .relightnet import RelightNet

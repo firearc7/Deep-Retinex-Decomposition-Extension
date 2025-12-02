@@ -1,4 +1,4 @@
-# Configuration for Deep Retinex + Traditional DIP Enhancement
+# configuration for deep retinex and traditional dip enhancement
 
 import os
 

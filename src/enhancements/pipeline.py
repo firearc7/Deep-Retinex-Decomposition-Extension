@@ -1,4 +1,4 @@
-# Enhancement Pipeline combining Deep Retinex with Traditional DIP
+# enhancement pipeline combining deep retinex with traditional dip
 
 import numpy as np
 from typing import Dict, Optional, Tuple
@@ -6,7 +6,7 @@ from .traditional_dip import TraditionalEnhancements
 
 
 class EnhancementPipeline:
-    # Applies DIP techniques at optimal stages of Retinex decomposition
+    # applies dip techniques at optimal stages of retinex decomposition
     
     def __init__(self, config: Optional[Dict] = None):
         self.enhancements = TraditionalEnhancements()
@@ -28,7 +28,7 @@ class EnhancementPipeline:
         }
     
     def enhance_illumination(self, illumination: np.ndarray) -> np.ndarray:
-        # Enhance illumination map using traditional DIP techniques
+        # enhance illumination map using traditional dip techniques
         if not self.config['apply_to_illumination']:
             return illumination
         
@@ -55,7 +55,7 @@ class EnhancementPipeline:
         return enhanced
     
     def enhance_reflectance(self, reflectance: np.ndarray) -> np.ndarray:
-        # Enhance reflectance map (usually minimal processing needed)
+        # enhance reflectance map usually minimal processing needed
         if not self.config['apply_to_reflectance']:
             return reflectance
         
@@ -70,7 +70,7 @@ class EnhancementPipeline:
         return enhanced
     
     def enhance_output(self, output: np.ndarray) -> np.ndarray:
-        # Enhance final output image
+        # enhance final output image
         if not self.config['apply_to_output']:
             return output
         
@@ -90,14 +90,14 @@ class EnhancementPipeline:
     
     def process_full_pipeline(self, R: np.ndarray, I: np.ndarray, 
                              I_delta: Optional[np.ndarray] = None) -> Tuple[np.ndarray, Dict]:
-        # Process full enhancement pipeline
+        # process full enhancement pipeline
         results = {}
         
-        # Enhance reflectance
+        # enhance reflectance
         R_enhanced = self.enhance_reflectance(R)
         results['reflectance_enhanced'] = R_enhanced
         
-        # Enhance illumination
+        # enhance illumination
         if I_delta is not None:
             I_enhanced = self.enhance_illumination(I_delta)
             results['illumination_type'] = 'I_delta_enhanced'
@@ -107,7 +107,7 @@ class EnhancementPipeline:
         
         results['illumination_enhanced'] = I_enhanced
         
-        # Expand illumination to 3 channels
+        # expand illumination to 3 channels
         if len(I_enhanced.shape) == 2:
             I_enhanced_3 = np.stack([I_enhanced] * 3, axis=-1)
         elif I_enhanced.shape[2] == 1:
@@ -115,11 +115,11 @@ class EnhancementPipeline:
         else:
             I_enhanced_3 = I_enhanced
         
-        # Reconstruct image
+        # reconstruct image
         reconstructed = R_enhanced * I_enhanced_3
         results['reconstructed'] = reconstructed
         
-        # Enhance final output
+        # enhance final output
         final_output = self.enhance_output(reconstructed)
         results['final_output'] = final_output
         
@@ -127,7 +127,7 @@ class EnhancementPipeline:
 
 
 class EnhancementFactory:
-    # Factory class to create enhancement configurations
+    # factory class to create enhancement configurations
     
     @staticmethod
     def create_config(preset: str) -> Dict:

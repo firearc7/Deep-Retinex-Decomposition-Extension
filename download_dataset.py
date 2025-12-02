@@ -1,4 +1,4 @@
-# Download LOL (Low-Light) dataset
+# download lol low light dataset
 
 import os
 import argparse
@@ -20,7 +20,7 @@ def download_lol_dataset(output_dir='data'):
         dataset = load_dataset("zhengli97/LOL-dataset")
         output_path = Path(output_dir)
         
-        # Create directories
+        # create directories
         train_low_dir = output_path / 'train' / 'low'
         train_high_dir = output_path / 'train' / 'high'
         test_low_dir = output_path / 'test' / 'low'
@@ -44,7 +44,7 @@ def download_lol_dataset(output_dir='data'):
             item['low'].save(test_low_dir / f'test_{idx:04d}.png')
             item['high'].save(test_high_dir / f'test_{idx:04d}.png')
         
-        # Copy test to eval
+        # copy test to eval
         print("Creating evaluation split...")
         for f in test_low_dir.glob('*.png'):
             shutil.copy(f, eval_low_dir / f.name)

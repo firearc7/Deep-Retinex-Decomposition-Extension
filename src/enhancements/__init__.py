@@ -1,4 +1,4 @@
-# Enhancement modules for Deep Retinex
+# enhancement modules for deep retinex
 
 from .traditional_dip import TraditionalEnhancements
 from .pipeline import EnhancementPipeline, EnhancementFactory

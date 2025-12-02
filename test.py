@@ -1,4 +1,4 @@
-# Inference script for Deep Retinex Decomposition Network
+# inference script for deep retinex decomposition network
 
 import os
 import argparse
@@ -70,13 +70,13 @@ def process_single_image(model, image_path, output_dir, device, enhance_config=N
     I_delta_np = tensor_to_numpy(I_delta)
     S_np = tensor_to_numpy(S)
     
-    # Save decomposition results
+    # save decomposition results
     save_image(R_np, img_output_dir / 'reflectance.png')
     save_image(I_np, img_output_dir / 'illumination_low.png')
     save_image(I_delta_np, img_output_dir / 'illumination_enhanced.png')
     save_image(S_np, img_output_dir / 'output_baseline.png')
     
-    # Apply DIP enhancement if requested
+    # apply dip enhancement if requested
     if enhance_config:
         pipeline = EnhancementPipeline(enhance_config)
         enhanced_output, _ = pipeline.process_full_pipeline(R_np, I_np, I_delta_np)
@@ -103,13 +103,13 @@ def compute_metrics(img1, img2):
     psnr_value = psnr(img1, img2, data_range=1.0)
     ssim_value = ssim(img1, img2, multichannel=True, channel_axis=2, data_range=1.0)
     
-    # Entropy
+    # entropy
     hist, _ = np.histogram(img2.flatten(), bins=256, range=(0, 1))
     hist = hist / hist.sum()
     hist = hist[hist > 0]
     entropy = -np.sum(hist * np.log2(hist))
     
-    # Contrast
+    # contrast
     gray = cv2.cvtColor((img2 * 255).astype(np.uint8), cv2.COLOR_RGB2GRAY) / 255.0
     contrast = gray.std()
     
@@ -162,7 +162,7 @@ def main(args):
         except Exception as e:
             print(f"Error processing {image_path}: {str(e)}")
     
-    # Save summary
+    # save summary
     summary = {
         'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         'checkpoint': args.checkpoint,

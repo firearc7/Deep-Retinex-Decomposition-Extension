@@ -1,4 +1,4 @@
-# Training script for Deep Retinex Decomposition Network
+# training script for deep retinex decomposition network
 
 import os
 import argparse
@@ -18,7 +18,7 @@ from config import TRAIN_CONFIG, PROJECT_ROOT
 
 
 class LOLDataset(Dataset):
-    # LOL (Low-Light) Dataset loader
+    # lol low light dataset loader
     
     def __init__(self, low_dir, high_dir, patch_size=48, augment=True):
         self.low_dir = Path(low_dir)
@@ -44,7 +44,7 @@ class LOLDataset(Dataset):
         low_np = np.array(low_img).astype(np.float32) / 255.0
         high_np = np.array(high_img).astype(np.float32) / 255.0
         
-        # Random crop
+        # random crop
         if self.patch_size > 0:
             h, w = low_np.shape[:2]
             if h > self.patch_size and w > self.patch_size:
@@ -53,7 +53,7 @@ class LOLDataset(Dataset):
                 low_np = low_np[y:y+self.patch_size, x:x+self.patch_size]
                 high_np = high_np[y:y+self.patch_size, x:x+self.patch_size]
         
-        # Data augmentation
+        # data augmentation
         if self.augment:
             if np.random.random() > 0.5:
                 low_np = np.fliplr(low_np)
@@ -124,20 +124,20 @@ def main(args):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
     
-    # Create directories
+    # create directories
     checkpoint_dir = Path(PROJECT_ROOT) / 'checkpoints'
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
     logs_dir = Path(PROJECT_ROOT) / 'logs'
     logs_dir.mkdir(parents=True, exist_ok=True)
     
-    # Setup logging
+    # setup logging
     log_file = logs_dir / f'training_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
     logging.basicConfig(level=logging.INFO,
                        format='%(asctime)s - %(message)s',
                        handlers=[logging.FileHandler(log_file), logging.StreamHandler()])
     logger = logging.getLogger(__name__)
     
-    # Initialize model
+    # initialize model
     model = RetinexNet().to(device)
     num_params = sum(p.numel() for p in model.parameters())
     logger.info(f"Model parameters: {num_params:,}")
@@ -145,7 +145,7 @@ def main(args):
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=args.lr_decay_step, gamma=0.1)
     
-    # Resume from checkpoint if specified
+    # resume from checkpoint if specified
     start_epoch = 0
     if args.resume and os.path.exists(args.resume):
         checkpoint = torch.load(args.resume, map_location=device)
@@ -154,7 +154,7 @@ def main(args):
         start_epoch = checkpoint['epoch'] + 1
         logger.info(f"Resumed from epoch {start_epoch}")
     
-    # Prepare datasets
+    # prepare datasets
     train_dataset = LOLDataset(args.train_low_dir, args.train_high_dir, 
                                patch_size=args.patch_size, augment=True)
     val_dataset = LOLDataset(args.val_low_dir, args.val_high_dir, 
@@ -165,7 +165,7 @@ def main(args):
     val_loader = DataLoader(val_dataset, batch_size=4, shuffle=False, 
                             num_workers=args.num_workers, pin_memory=True)
     
-    # Training loop
+    # training loop
     best_val_loss = float('inf')
     training_history = {'train_loss': [], 'val_loss': [], 'learning_rate': []}
     
@@ -183,19 +183,19 @@ def main(args):
         training_history['val_loss'].append(val_loss)
         training_history['learning_rate'].append(current_lr)
         
-        # Save checkpoint periodically
+        # save checkpoint periodically
         if (epoch + 1) % args.save_interval == 0:
             save_checkpoint(model, optimizer, epoch + 1, train_loss, 
                            checkpoint_dir / f'retinexnet_epoch_{epoch + 1}.pt')
         
-        # Save best model
+        # save best model
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             save_checkpoint(model, optimizer, epoch + 1, val_loss, 
                            checkpoint_dir / 'retinexnet_best.pt')
             logger.info(f"New best model saved with val loss: {val_loss:.4f}")
     
-    # Save final model and history
+    # save final model and history
     save_checkpoint(model, optimizer, args.epochs, train_loss, 
                    checkpoint_dir / 'retinexnet_final.pt')
     

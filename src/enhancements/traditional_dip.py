@@ -1,4 +1,4 @@
-# Traditional DIP Enhancement Techniques for Low-Light Image Enhancement
+# traditional dip enhancement techniques for low light image enhancement
 
 import cv2
 import numpy as np
@@ -6,11 +6,11 @@ from typing import Tuple, Optional
 
 
 class TraditionalEnhancements:
-    # Collection of traditional DIP methods for image enhancement
+    # collection of traditional dip methods for image enhancement
     
     @staticmethod
     def histogram_equalization(image: np.ndarray) -> np.ndarray:
-        # Apply histogram equalization to improve contrast
+        # apply histogram equalization to improve contrast
         if len(image.shape) == 3:
             ycrcb = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
             ycrcb[:, :, 0] = cv2.equalizeHist(ycrcb[:, :, 0])
@@ -21,7 +21,7 @@ class TraditionalEnhancements:
     @staticmethod
     def clahe(image: np.ndarray, clip_limit: float = 2.0, 
               tile_size: Tuple[int, int] = (8, 8)) -> np.ndarray:
-        # Contrast Limited Adaptive Histogram Equalization
+        # contrast limited adaptive histogram equalization
         clahe_obj = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_size)
         is_normalized = image.max() <= 1.0
         
@@ -43,7 +43,7 @@ class TraditionalEnhancements:
     
     @staticmethod
     def gamma_correction(image: np.ndarray, gamma: float = 2.2) -> np.ndarray:
-        # Apply gamma correction to adjust brightness
+        # apply gamma correction to adjust brightness
         if image.max() > 1.0:
             image = image / 255.0
         corrected = np.power(image, 1.0 / gamma)
@@ -51,7 +51,7 @@ class TraditionalEnhancements:
     
     @staticmethod
     def adaptive_gamma_correction(image: np.ndarray) -> np.ndarray:
-        # Automatically determine optimal gamma based on image statistics
+        # automatically determine optimal gamma based on image statistics
         if image.max() > 1.0:
             image = image / 255.0
         
@@ -64,7 +64,7 @@ class TraditionalEnhancements:
     @staticmethod
     def bilateral_filter(image: np.ndarray, d: int = 9, 
                         sigma_color: float = 75, sigma_space: float = 75) -> np.ndarray:
-        # Bilateral filtering for edge-preserving smoothing
+        # bilateral filtering for edge preserving smoothing
         if image.max() <= 1.0:
             image = (image * 255).astype(np.uint8)
             result = cv2.bilateralFilter(image, d, sigma_color, sigma_space)
@@ -75,7 +75,7 @@ class TraditionalEnhancements:
     @staticmethod
     def guided_filter(image: np.ndarray, guide: Optional[np.ndarray] = None, 
                      radius: int = 8, eps: float = 0.01) -> np.ndarray:
-        # Guided filter for edge-preserving smoothing
+        # guided filter for edge preserving smoothing
         if guide is None:
             guide = image
             
@@ -101,7 +101,7 @@ class TraditionalEnhancements:
     def unsharp_masking(image: np.ndarray, kernel_size: int = 5, 
                        sigma: float = 1.0, amount: float = 1.5, 
                        threshold: float = 0) -> np.ndarray:
-        # Unsharp masking for sharpening
+        # unsharp masking for sharpening
         blurred = cv2.GaussianBlur(image, (kernel_size, kernel_size), sigma)
         sharpened = image + amount * (image - blurred)
         
@@ -114,7 +114,7 @@ class TraditionalEnhancements:
     @staticmethod
     def multi_scale_retinex(image: np.ndarray, scales: list = [15, 80, 250], 
                            weights: Optional[list] = None) -> np.ndarray:
-        # Multi-Scale Retinex for illumination normalization
+        # multi scale retinex for illumination normalization
         if weights is None:
             weights = [1.0 / len(scales)] * len(scales)
         
@@ -134,7 +134,7 @@ class TraditionalEnhancements:
     
     @staticmethod
     def color_balance(image: np.ndarray, percent: float = 1) -> np.ndarray:
-        # Automatic color balance using percentage stretching
+        # automatic color balance using percentage stretching
         out_channels = []
         for channel in cv2.split(image):
             low_val = np.percentile(channel, percent)
@@ -147,7 +147,7 @@ class TraditionalEnhancements:
     
     @staticmethod
     def local_contrast_enhancement(image: np.ndarray, grid_size: int = 8) -> np.ndarray:
-        # Enhance local contrast by grid-based processing
+        # enhance local contrast by grid based processing
         h, w = image.shape[:2]
         enhanced = np.zeros_like(image, dtype=np.float32)
         
@@ -169,7 +169,7 @@ class TraditionalEnhancements:
     
     @staticmethod
     def tone_mapping(image: np.ndarray, alpha: float = 0.5, beta: float = 0.5) -> np.ndarray:
-        # Simple tone mapping for HDR-like effect
+        # simple tone mapping for hdr like effect
         if image.max() > 1.0:
             image = image / 255.0
         
@@ -182,16 +182,16 @@ class TraditionalEnhancements:
     @staticmethod
     def multi_scale_detail_enhancement(image: np.ndarray, num_scales: int = 3, 
                                       detail_strength: float = 1.5) -> np.ndarray:
-        # Multi-scale detail enhancement using Laplacian pyramid
+        # multi scale detail enhancement using laplacian pyramid
         if image.max() > 1.0:
             image = image / 255.0
         
-        # Build Gaussian pyramid
+        # build gaussian pyramid
         gaussian_pyramid = [image]
         for i in range(num_scales):
             gaussian_pyramid.append(cv2.pyrDown(gaussian_pyramid[-1]))
         
-        # Build Laplacian pyramid
+        # build laplacian pyramid
         laplacian_pyramid = []
         for i in range(num_scales):
             size = (gaussian_pyramid[i].shape[1], gaussian_pyramid[i].shape[0])
@@ -199,10 +199,10 @@ class TraditionalEnhancements:
             laplacian = gaussian_pyramid[i] - upsampled
             laplacian_pyramid.append(laplacian)
         
-        # Enhance details
+        # enhance details
         enhanced_laplacian = [detail * detail_strength for detail in laplacian_pyramid]
         
-        # Reconstruct
+        # reconstruct
         reconstructed = gaussian_pyramid[-1]
         for i in range(num_scales - 1, -1, -1):
             size = (enhanced_laplacian[i].shape[1], enhanced_laplacian[i].shape[0])
@@ -214,7 +214,7 @@ class TraditionalEnhancements:
     @staticmethod
     def anisotropic_diffusion(image: np.ndarray, iterations: int = 10, 
                             kappa: float = 50, gamma: float = 0.1) -> np.ndarray:
-        # Perona-Malik anisotropic diffusion for edge-preserving smoothing
+        # perona malik anisotropic diffusion for edge preserving smoothing
         if image.max() > 1.0:
             image = image / 255.0
         
@@ -238,7 +238,7 @@ class TraditionalEnhancements:
     @staticmethod
     def detail_preserving_smoothing(image: np.ndarray, sigma_s: float = 60, 
                                    sigma_r: float = 0.4) -> np.ndarray:
-        # Domain transform for edge-preserving smoothing
+        # domain transform for edge preserving smoothing
         if image.max() > 1.0:
             image = image / 255.0
         
@@ -250,7 +250,7 @@ class TraditionalEnhancements:
     @staticmethod
     def contrast_stretching(image: np.ndarray, lower_percentile: float = 2, 
                           upper_percentile: float = 98) -> np.ndarray:
-        # Percentile-based contrast stretching
+        # percentile based contrast stretching
         if image.max() > 1.0:
             image = image / 255.0
         
@@ -271,7 +271,7 @@ class TraditionalEnhancements:
     @staticmethod
     def shadow_enhancement(image: np.ndarray, shadow_threshold: float = 0.3,
                          enhancement_factor: float = 1.5) -> np.ndarray:
-        # Selectively enhance shadow regions
+        # selectively enhance shadow regions
         if image.max() > 1.0:
             image = image / 255.0
         
