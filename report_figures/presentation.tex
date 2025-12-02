@@ -127,8 +127,8 @@ $\Downarrow$
     box/.style={draw, rounded corners, minimum width=2.2cm, minimum height=1cm, align=center}]
     % Boxes
     \node[box, fill=iiitblue!20] (input) at (0,0) {Low-Light\\Image};
-    \node[box, fill=accentorange!30] (decom) at (3.5,0) {DecomNet\\(250K)};
-    \node[box, fill=accentorange!30] (relight) at (7,0) {RelightNet\\(305K)};
+    \node[box, fill=accentorange!30] (decom) at (3.5,0) {DecomNet\\(208K)};
+    \node[box, fill=accentorange!30] (relight) at (7,0) {RelightNet\\(347K)};
     \node[box, fill=successgreen!30] (dip) at (10.5,0) {DIP\\Pipeline};
     \node[box, fill=iiitblue!30] (output) at (14,0) {Enhanced\\Output};
     
@@ -148,7 +148,7 @@ $\Downarrow$
 \begin{column}{0.33\textwidth}
 \centering
 \textbf{RetinexNet}\\
-\small 555K params\\
+\small 555K params (208K + 347K)\\
 Learns decomposition
 \end{column}
 \begin{column}{0.33\textwidth}
@@ -291,7 +291,7 @@ I_{sharp} = I + \alpha(I - G_\sigma * I)
 \end{equation*}
 \vspace{-0.3cm}
 \begin{itemize}\setlength{\itemsep}{0pt}
-    \item $\alpha=1.0$, $\sigma=1.0$ for edge enhancement
+    \item $\alpha=1.2$ (balanced), $\sigma=1.0$ for edge enhancement
 \end{itemize}
 
 \textbf{5. White Balance (Gray World)}
@@ -432,7 +432,8 @@ Time (s) & 0.005 & 0.011 & \textbf{0.089} & 0.134 \\
 \vspace{0.2cm}
 
 \textbf{Best Val Loss: 0.1640}\\
-\textbf{Loss Reduction: 59.8\%}
+\textbf{Train Loss Reduction: 59.9\%}\\
+\textbf{Val Loss Reduction: 35.1\%}
 \end{column}
 \end{columns}
 \end{frame}
@@ -529,7 +530,7 @@ Output Only & 7.17 & 56.57 & 50.49 & 0.071 \\
     \item Entropy: \textcolor{successgreen}{\textbf{+23.9\%}}
     \item Contrast: \textcolor{successgreen}{\textbf{+144.8\%}}
     \item Colorfulness: \textcolor{successgreen}{\textbf{+104.4\%}}
-    \item Sharpness: \textcolor{successgreen}{\textbf{+866\%}}
+    \item Sharpness: \textcolor{successgreen}{\textbf{+1272\%}}
 \end{itemize}
 \end{column}
 \begin{column}{0.5\textwidth}
@@ -557,7 +558,7 @@ Output Only & 7.17 & 56.57 & 50.49 & 0.071 \\
 
 \textbf{2. Optimal Contrast (+144.8\%)}
 \begin{itemize}\setlength{\itemsep}{0pt}
-    \item CLAHE + Gamma synergy without saturation artifacts
+    \item CLAHE + Bilateral synergy without saturation artifacts
 \end{itemize}
 
 \textbf{3. Natural Sharpness}
@@ -660,7 +661,7 @@ Configuration & Sharpness \\
 Baseline & 150.84 \\
 Illumination Only & 186.31 (+23.5\%) \\
 Output Only & 2370.22 (+1471\%) \\
-Balanced (both) & 2069.40 (+866\%) \\
+Balanced (both) & 2069.40 (+1272\%) \\
 \bottomrule
 \end{tabular}
 
@@ -778,7 +779,7 @@ DIP Techniques & 16 implemented \\
     \item \textbf{Three-stage pipeline}: Illumination, Reflectance (skip), Output enhancement
     \item \textbf{Balanced preset} achieves optimal results:
     \begin{itemize}
-        \item +23.9\% entropy, +144.8\% contrast, +104.4\% colorfulness
+        \item +23.9\% entropy, +144.8\% contrast, +1272\% sharpness, +104.4\% colorfulness
     \end{itemize}
     \item \textbf{Key insight}: Illumination enhancement $>$ Reflectance enhancement
 \end{itemize}
