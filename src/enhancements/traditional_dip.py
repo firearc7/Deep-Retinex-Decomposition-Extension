@@ -289,3 +289,198 @@ class TraditionalEnhancements:
         
         enhanced = image * (1 + shadow_mask * (enhancement_factor - 1))
         return np.clip(enhanced, 0, 1)
+    
+    # ==================== E1: EDGE-PRESERVING DENOISING ON R ====================
+    
+    @staticmethod
+    def illumination_aware_bilateral(image: np.ndarray, illumination: np.ndarray,
+                                    base_sigma_color: float = 50, 
+                                    base_sigma_space: float = 50,
+                                    strength_multiplier: float = 2.0) -> np.ndarray:
+        """
+        Bilateral filter with illumination-aware strength.
+        Stronger filtering in darker regions where noise is more visible.
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        if illumination.max() > 1.0:
+            illumination = illumination / 255.0
+        
+        # compute local darkness (inverse of illumination)
+        if len(illumination.shape) == 3:
+            darkness = 1.0 - np.mean(illumination, axis=2)
+        else:
+            darkness = 1.0 - illumination
+        
+        # adaptive sigma: stronger in dark regions
+        # scale from 1.0 (bright) to strength_multiplier (dark)
+        adaptive_strength = 1.0 + darkness * (strength_multiplier - 1.0)
+        mean_strength = np.mean(adaptive_strength)
+        
+        sigma_color = base_sigma_color * mean_strength
+        sigma_space = base_sigma_space * mean_strength
+        
+        img_uint8 = (image * 255).astype(np.uint8)
+        result = cv2.bilateralFilter(img_uint8, d=9, 
+                                     sigmaColor=sigma_color, 
+                                     sigmaSpace=sigma_space)
+        return result.astype(np.float32) / 255.0
+    
+    @staticmethod
+    def illumination_aware_guided_filter(image: np.ndarray, illumination: np.ndarray,
+                                        base_radius: int = 8, base_eps: float = 0.01,
+                                        strength_multiplier: float = 3.0) -> np.ndarray:
+        """
+        Guided filter with illumination-aware parameters.
+        Larger radius and higher eps in darker regions for stronger denoising.
+        """
+        if illumination.max() > 1.0:
+            illumination = illumination / 255.0
+        
+        # compute mean darkness
+        if len(illumination.shape) == 3:
+            mean_illum = np.mean(illumination)
+        else:
+            mean_illum = np.mean(illumination)
+        
+        darkness = 1.0 - mean_illum
+        adaptive_eps = base_eps * (1.0 + darkness * (strength_multiplier - 1.0))
+        
+        return TraditionalEnhancements.guided_filter(image, guide=image, 
+                                                     radius=base_radius, 
+                                                     eps=adaptive_eps)
+    
+    @staticmethod
+    def wavelet_shrinkage_denoise(image: np.ndarray, wavelet: str = 'db1',
+                                 level: int = 2, threshold_factor: float = 0.5) -> np.ndarray:
+        """
+        Wavelet-based denoising using soft thresholding.
+        Requires PyWavelets (pywt).
+        """
+        try:
+            import pywt
+        except ImportError:
+            print("Warning: pywt not installed. Falling back to bilateral filter.")
+            return TraditionalEnhancements.bilateral_filter(image)
+        
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        def denoise_channel(channel):
+            coeffs = pywt.wavedec2(channel, wavelet, level=level)
+            # estimate noise from finest detail coefficients
+            sigma = np.median(np.abs(coeffs[-1][-1])) / 0.6745
+            threshold = threshold_factor * sigma * np.sqrt(2 * np.log(channel.size))
+            
+            # soft thresholding on detail coefficients
+            new_coeffs = [coeffs[0]]
+            for detail_level in coeffs[1:]:
+                new_detail = tuple(pywt.threshold(d, threshold, mode='soft') 
+                                  for d in detail_level)
+                new_coeffs.append(new_detail)
+            
+            return pywt.waverec2(new_coeffs, wavelet)[:channel.shape[0], :channel.shape[1]]
+        
+        if len(image.shape) == 3:
+            result = np.zeros_like(image)
+            for c in range(image.shape[2]):
+                result[:, :, c] = denoise_channel(image[:, :, c])
+        else:
+            result = denoise_channel(image)
+        
+        return np.clip(result, 0, 1)
+    
+    @staticmethod  
+    def illumination_aware_wavelet_denoise(image: np.ndarray, illumination: np.ndarray,
+                                          base_threshold: float = 0.5,
+                                          strength_multiplier: float = 2.0) -> np.ndarray:
+        """
+        Wavelet denoising with illumination-aware threshold.
+        Stronger denoising in darker regions.
+        """
+        if illumination.max() > 1.0:
+            illumination = illumination / 255.0
+        
+        mean_illum = np.mean(illumination)
+        darkness = 1.0 - mean_illum
+        adaptive_threshold = base_threshold * (1.0 + darkness * (strength_multiplier - 1.0))
+        
+        return TraditionalEnhancements.wavelet_shrinkage_denoise(
+            image, threshold_factor=adaptive_threshold
+        )
+    
+    # ==================== E3: PHOTOMETRIC POST-ADJUSTMENTS ====================
+    
+    @staticmethod
+    def dog_local_contrast(image: np.ndarray, sigma1: float = 1.0, 
+                          sigma2: float = 2.0, amount: float = 1.0) -> np.ndarray:
+        """
+        Difference of Gaussians (DoG) for local contrast enhancement.
+        Applied specifically to reflectance for micro-contrast control.
+        """
+        if image.max() > 1.0:
+            image = image / 255.0
+        
+        blur1 = cv2.GaussianBlur(image, (0, 0), sigma1)
+        blur2 = cv2.GaussianBlur(image, (0, 0), sigma2)
+        dog = blur1 - blur2
+        
+        enhanced = image + amount * dog
+        return np.clip(enhanced, 0, 1)
+    
+    @staticmethod
+    def reflectance_micro_contrast(reflectance: np.ndarray, 
+                                  method: str = 'unsharp',
+                                  amount: float = 0.5) -> np.ndarray:
+        """
+        Enhance micro-contrast in reflectance component.
+        Options: 'unsharp', 'dog', 'laplacian'
+        """
+        if reflectance.max() > 1.0:
+            reflectance = reflectance / 255.0
+        
+        if method == 'unsharp':
+            return TraditionalEnhancements.unsharp_masking(
+                reflectance, kernel_size=3, sigma=0.5, amount=amount
+            )
+        elif method == 'dog':
+            return TraditionalEnhancements.dog_local_contrast(
+                reflectance, sigma1=0.5, sigma2=1.5, amount=amount
+            )
+        elif method == 'laplacian':
+            if len(reflectance.shape) == 3:
+                gray = cv2.cvtColor((reflectance * 255).astype(np.uint8), 
+                                   cv2.COLOR_RGB2GRAY)
+            else:
+                gray = (reflectance * 255).astype(np.uint8)
+            
+            laplacian = cv2.Laplacian(gray, cv2.CV_64F)
+            laplacian = laplacian / (np.abs(laplacian).max() + 1e-6)
+            
+            if len(reflectance.shape) == 3:
+                laplacian = np.stack([laplacian] * 3, axis=-1)
+            
+            enhanced = reflectance + amount * 0.1 * laplacian
+            return np.clip(enhanced, 0, 1)
+        else:
+            return reflectance
+    
+    @staticmethod
+    def illumination_gamma_curve(illumination: np.ndarray, 
+                                gamma: float = 0.8,
+                                adaptive: bool = True) -> np.ndarray:
+        """
+        Apply gamma curve to illumination for global brightness control.
+        If adaptive=True, gamma is adjusted based on mean illumination.
+        """
+        if illumination.max() > 1.0:
+            illumination = illumination / 255.0
+        
+        if adaptive:
+            mean_illum = np.mean(illumination)
+            # darker images get lower gamma (more brightening)
+            # formula: gamma = base_gamma * (0.5 + mean_illum)
+            gamma = gamma * (0.5 + mean_illum)
+            gamma = np.clip(gamma, 0.4, 1.5)
+        
+        return np.power(np.clip(illumination, 1e-6, 1.0), gamma)
